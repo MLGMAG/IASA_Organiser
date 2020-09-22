@@ -102,4 +102,12 @@ public class Event {
     public void setDuration(LocalTime duration) {
         this.duration = duration;
     }
+    
+    public Link[] getLinks() {
+        return links;
+    }
+
+    public void setLinks(Link[] links) {
+        this.links = links;
+    }
 }
