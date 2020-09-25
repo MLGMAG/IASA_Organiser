@@ -16,7 +16,7 @@ public class Event {
     private LocalTime duration;
     private Link[] links;
 
-    public Event(UUID id, String name, Place place, Human[] invited,
+    public Event(String name, Place place, Human[] invited,
                  LocalDate date, LocalTime time, Priority priority,
                  Tag[] tags, LocalTime duration, Link[] links) {
         this.id = id;
@@ -30,6 +30,7 @@ public class Event {
         this.duration = duration;
         this.links = links;
     }
+    public Event(){}
 
     public UUID getId() {
         return id;
@@ -109,5 +110,12 @@ public class Event {
 
     public void setLinks(Link[] links) {
         this.links = links;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
