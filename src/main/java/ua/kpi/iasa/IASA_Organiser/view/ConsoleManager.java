@@ -23,8 +23,10 @@ public class ConsoleManager {
     }
 
     public static void menu() {
-        System.out.println("1.Create Event;" +
-                "\n2.GetAllEvents;");
+        System.out.println("1. Create Event;" +
+                "\n2. GetAllEvents;" +
+                "\n3. Change event;" +
+                "\n4. Remove event;");
     }
 
     public static void choiceSelector(int choice) {
@@ -34,7 +36,9 @@ public class ConsoleManager {
                 break;
             case 2:
                 eventFormat(controller.getAllEvents());
-
+                break;
+            case 3:
+                controller.changeEvent();
         }
     }
 
@@ -55,4 +59,6 @@ public class ConsoleManager {
             System.out.println("\t " + event.getName() + " : " + event.getId() + ";");
         }
     }
+
+
 }

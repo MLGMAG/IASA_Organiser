@@ -17,6 +17,10 @@ public class Controller {
         return eventService.createEvent(event);
     }
 
+    public boolean changeEvent(Event event){    //TODO add functionality!!!
+        return true;
+    }
+
     public Controller() {
         logger.info("We are starting!!");
         consoleManager.setController(this);

@@ -2,10 +2,9 @@ package ua.kpi.iasa.IASA_Organiser.model;
 
 public class Calendar {
     private Event[] events;
+    private static Calendar instance;
 
-    public Calendar(Event[] events) {
-        this.events = events;
-    }
+    private Calendar(){}
 
     public Event[] getEvents() {
         return events;
@@ -13,5 +12,12 @@ public class Calendar {
 
     public void setEvents(Event[] events) {
         this.events = events;
+    }
+
+    public static Calendar getInstance(){
+        if(instance == null){
+            return new Calendar();
+        }
+        return instance;
     }
 }

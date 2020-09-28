@@ -29,34 +29,23 @@ public class EventCalendar {
 		while((evYear <= year) && (evMonth <= month) && (evDay <= day)) {
 			length++; // count amount all recordings, which are going to happen before some date 
 		}
-		
+
 		CalendarRecording[] recBeforeList = new CalendarRecording[length];
-		
 		for(int i = 0; i < length; i++) {
 			recBeforeList[i] = this.recordings[i]; // write all recordings to array
 		}
-		
 		return recBeforeList;
-		
 	}
-	
-	
 
-	
 	public boolean updateCalendar(Event [] eventList) {
-		
 		this.recordings = new CalendarRecording[eventList.length];
-		
 		for(int i = 0; i < eventList.length; i++) { // iterate over all the events
 			this.recordings[i] = new CalendarRecording(eventList[i]); // create recordings from events
 		}
-		
 		for(int i = 0; i < eventList.length; i++) {
 			
 		}
-		
 		this.sortRecByDateTime();
-		
 		return  true;
 	}
 }
