@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.model;
+package main.java.ua.kpi.iasa.IASA_Organiser.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +19,6 @@ public class Event {
     public Event(String name, Place place, Human[] invited,
                  LocalDate date, LocalTime time, Priority priority,
                  Tag[] tags, LocalTime duration, Link[] links) {
-        this.id = id;
         this.name = name;
         this.place = place;
         this.invited = invited;

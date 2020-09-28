@@ -1,7 +1,7 @@
-package ua.kpi.iasa.IASA_Organiser.view;
+package main.java.ua.kpi.iasa.IASA_Organiser.view;
 
-import ua.kpi.iasa.IASA_Organiser.controller.Controller;
-import ua.kpi.iasa.IASA_Organiser.model.Event;
+import main.java.ua.kpi.iasa.IASA_Organiser.controller.Controller;
+import main.java.ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.util.Arrays;
 import java.util.Scanner;
