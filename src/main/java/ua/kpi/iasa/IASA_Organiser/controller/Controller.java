@@ -6,24 +6,27 @@ import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
 
 
 public class Controller {
-
-    private EventService eventService = new EventService();
-    private ConsoleManager consoleManager = new ConsoleManager();
-
-    public boolean createNewEvent(Event event) {
-        return eventService.createEvent(event);
-    }
-
-    public boolean changeEvent(Event event){    //TODO add functionality!!!
-        return true;
-    }
+    private final EventService eventService = EventService.getInstance();
+    private final ConsoleManager consoleManager;
 
     public Controller() {
-        consoleManager.setController(this);
+        consoleManager = new ConsoleManager(this);
         consoleManager.startUp();
     }
 
     public Event[] getAllEvents() {
         return eventService.getAllEvents();
+    }
+
+    public void createNewEvent(Event event) {
+        eventService.createEvent(event);
+    }
+
+    public void changeEvent(Event event){    //TODO add functionality!!!
+        eventService.updateEvent(event);
+    }
+
+    public void removeEvent(Event event){
+        eventService.removeEvent(event);
     }
 }

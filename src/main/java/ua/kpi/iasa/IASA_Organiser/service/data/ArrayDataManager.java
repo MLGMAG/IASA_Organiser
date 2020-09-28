@@ -2,25 +2,59 @@ package ua.kpi.iasa.IASA_Organiser.service.data;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class ArrayDataManager implements DataManager {
+    private static ArrayDataManager instance;
+    private final EventStore data = new EventStore();
 
-    private EventStore data = new EventStore();
+    private ArrayDataManager(){}
 
     @Override
-    public boolean save(Event event) {
+    public void save(Event event) {
         event.setId(UUID.randomUUID());
         if (data.getSize() == data.getMaxSize()) {
-            return false;
+            throw new ArrayStoreException("Max size!");
         }
-        data.getEvents()[data.getSize()] = event;
+        Event[] events = getAllEvents();
+        events[data.getSize()] = event;
         data.setSize(data.getSize() + 1);
-        return true;
+        data.setEvents(events);
     }
 
     @Override
     public Event[] getAllEvents() {
-        return data.getEvents();
+        return data.clone().getEvents();
+    }
+
+    @Override
+    public void update(Event event) {
+        Event[] events = getAllEvents();
+        for(int i = 0; i < events.length; i++){
+            if(events[i] == null) continue;
+            if(events[i].getId().compareTo(event.getId()) == 0){
+                events[i] = event;
+            }
+        }
+        data.setEvents(events);
+    }
+
+    @Override
+    public void remove(Event event){
+        Event[] events = getAllEvents();
+        for(int i = 0; i < events.length; i++){
+            if(events[i] == null) continue;
+            if(events[i].getId().compareTo(event.getId()) == 0){
+                events[i] = null;
+            }
+        }
+        data.setEvents(events);
+    }
+
+    public static ArrayDataManager getInstance() {
+        if(instance == null)
+            return new ArrayDataManager();
+        return instance;
     }
 }

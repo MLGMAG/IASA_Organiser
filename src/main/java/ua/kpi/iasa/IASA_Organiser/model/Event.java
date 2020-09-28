@@ -31,6 +31,19 @@ public class Event {
     }
     public Event(){}
 
+    private Event(Event event){
+        this.id = event.id;
+        this.name = event.name;
+        this.place = event.place;
+        this.invited = event.invited;
+        this.date = event.date;
+        this.time = event.time;
+        this.priority = event.priority;
+        this.tags = event.tags;
+        this.duration = event.duration;
+        this.links = event.links;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -116,5 +129,9 @@ public class Event {
         return "Event{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public Event clone(){
+        return new Event(this);
     }
 }

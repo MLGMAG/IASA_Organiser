@@ -1,6 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.service.data;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import java.util.Arrays;
 
 public class EventStore {
     private Event[] events;
@@ -14,8 +15,25 @@ public class EventStore {
         maxSize = INIT_SIZE;
     }
 
+    private EventStore(EventStore eventStore){
+         this.size = eventStore.size;
+         this.maxSize = eventStore.maxSize;
+         this.events = new Event[eventStore.events.length];
+         for(int i = 0; i < events.length; i++){
+             if(eventStore.events[i] == null){
+                 this.events[i] = null;
+                 continue;
+             }
+             this.events[i] = eventStore.events[i].clone();
+         }
+    }
+
     public Event[] getEvents() {
         return events;
+    }
+
+    public void setEvents(Event[] events){
+        this.events = events;
     }
 
     public int getSize() {
@@ -33,4 +51,9 @@ public class EventStore {
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
+
+    public EventStore clone(){
+        return new EventStore(this);
+    }
 }
+

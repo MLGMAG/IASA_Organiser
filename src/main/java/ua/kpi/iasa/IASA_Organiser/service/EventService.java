@@ -6,15 +6,17 @@ import ua.kpi.iasa.IASA_Organiser.service.data.DataManager;
 
 public class EventService {
     private static EventService instance;
-    private DataManager dataManager = new ArrayDataManager();
+    private DataManager dataManager = ArrayDataManager.getInstance();
 
-    public boolean createEvent() {
+    private EventService(){}
+
+    public void createEvent() {
         Event event = new Event();
-        return dataManager.save(event);
+        dataManager.save(event);
     }
 
-    public boolean createEvent(Event event) {
-        return dataManager.save(event);
+    public void createEvent(Event event) {
+        dataManager.save(event);
     }
 
     public Event[] getAllEvents() {
@@ -26,5 +28,13 @@ public class EventService {
             return new EventService();
         }
         return instance;
+    }
+
+    public void updateEvent(Event event){
+        dataManager.update(event);
+    }
+
+    public void removeEvent(Event event){
+        dataManager.remove(event);
     }
 }
