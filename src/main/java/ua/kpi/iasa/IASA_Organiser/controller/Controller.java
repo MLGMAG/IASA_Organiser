@@ -1,10 +1,10 @@
-package main.java.ua.kpi.iasa.IASA_Organiser.controller;
+package ua.kpi.iasa.IASA_Organiser.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import main.java.ua.kpi.iasa.IASA_Organiser.model.Event;
-import main.java.ua.kpi.iasa.IASA_Organiser.service.EventService;
-import main.java.ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.service.EventService;
+import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
 
 
 public class Controller {

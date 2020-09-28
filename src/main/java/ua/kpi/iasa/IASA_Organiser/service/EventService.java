@@ -1,8 +1,8 @@
-package main.java.ua.kpi.iasa.IASA_Organiser.service;
+package ua.kpi.iasa.IASA_Organiser.service;
 
-import main.java.ua.kpi.iasa.IASA_Organiser.model.Event;
-import main.java.ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
-import main.java.ua.kpi.iasa.IASA_Organiser.service.data.DataManager;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
+import ua.kpi.iasa.IASA_Organiser.service.data.DataManager;
 
 public class EventService {
 

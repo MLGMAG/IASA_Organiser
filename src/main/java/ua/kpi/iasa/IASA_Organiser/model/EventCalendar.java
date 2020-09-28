@@ -1,4 +1,4 @@
-package main.java.ua.kpi.iasa.IASA_Organiser.model;
+package ua.kpi.iasa.IASA_Organiser.model;
 
 import java.util.GregorianCalendar; 
 import java.util.Arrays;

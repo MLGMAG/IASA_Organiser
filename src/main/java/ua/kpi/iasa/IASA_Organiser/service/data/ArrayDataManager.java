@@ -1,8 +1,8 @@
-package main.java.ua.kpi.iasa.IASA_Organiser.service.data;
+package ua.kpi.iasa.IASA_Organiser.service.data;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import main.java.ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.util.UUID;
 
