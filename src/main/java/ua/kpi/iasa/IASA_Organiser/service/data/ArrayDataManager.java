@@ -2,7 +2,6 @@ package ua.kpi.iasa.IASA_Organiser.service.data;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public class ArrayDataManager implements DataManager {
