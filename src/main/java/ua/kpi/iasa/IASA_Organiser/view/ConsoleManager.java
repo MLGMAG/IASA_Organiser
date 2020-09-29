@@ -2,15 +2,17 @@ package ua.kpi.iasa.IASA_Organiser.view;
 
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleManager {
 
-    private Controller controller;
+    private final Controller controller;
     private Scanner scanner;
 
-    public ConsoleManager(Controller controller){
+    public ConsoleManager(Controller controller) {
         this.controller = controller;
     }
 
@@ -64,22 +66,34 @@ public class ConsoleManager {
     }
 
     private void eventFormat(Event[] events) {
-        for (int i = 0; i < events.length; i++) {
-            if (events[i] == null) break;
-            System.out.println("\t" + (i + 1) + ". " + events[i].getName() + " : " + events[i].getId() + ";");
+        int counter = 1;
+        for (Event event : events) {
+            if (event == null) continue;
+            System.out.println("\t" + counter + ". " + event.getName() + " : " + event.getId() + ";");
+            counter++;
         }
     }
 
-    private Event chooseEvent(Event[] events){
+    private Event chooseEvent(Event[] events) {
         System.out.println("Choose event:\n");
         eventFormat(events);
         System.out.println("Enter the number: ");
         scanner = new Scanner(System.in);
         int num = scanner.nextInt();
-        return events[num - 1];
+
+        for (Event event : events) {
+            if (event != null) {
+                if (num == 1) {
+                    return event;
+                }
+                num--;
+            }
+        }
+
+        throw new InputMismatchException("Wrong number!");
     }
 
-    private void editEvent(Event event){
+    private void editEvent(Event event) {
         System.out.println("Input new name: ");
         scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -87,7 +101,7 @@ public class ConsoleManager {
         controller.changeEvent(event);
     }
 
-    private void removeEvent(Event event){
+    private void removeEvent(Event event) {
         controller.removeEvent(event);
     }
 }

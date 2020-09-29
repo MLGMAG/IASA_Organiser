@@ -9,7 +9,8 @@ public class ArrayDataManager implements DataManager {
     private static ArrayDataManager instance;
     private final EventStore data = new EventStore();
 
-    private ArrayDataManager(){}
+    private ArrayDataManager() {
+    }
 
     @Override
     public void save(Event event) {
@@ -31,30 +32,34 @@ public class ArrayDataManager implements DataManager {
     @Override
     public void update(Event event) {
         Event[] events = getAllEvents();
-        for(int i = 0; i < events.length; i++){
-            if(events[i] == null) continue;
-            if(events[i].getId().compareTo(event.getId()) == 0){
+        for (int i = 0; i < events.length; i++) {
+            if (events[i] == null) continue;
+            if (events[i].getId().compareTo(event.getId()) == 0) {
                 events[i] = event;
+                break;
             }
         }
         data.setEvents(events);
     }
 
     @Override
-    public void remove(Event event){
+    public void remove(Event event) {
         Event[] events = getAllEvents();
-        for(int i = 0; i < events.length; i++){
-            if(events[i] == null) continue;
-            if(events[i].getId().compareTo(event.getId()) == 0){
+        for (int i = 0; i < events.length; i++) {
+            if (events[i] == null) continue;
+            if (events[i].getId().compareTo(event.getId()) == 0) {
                 events[i] = null;
+                break;
             }
         }
+        data.setSize(data.getSize() - 1);
         data.setEvents(events);
     }
 
     public static ArrayDataManager getInstance() {
-        if(instance == null)
-            return new ArrayDataManager();
+        if (instance == null) {
+            instance = new ArrayDataManager();
+        }
         return instance;
     }
 }
