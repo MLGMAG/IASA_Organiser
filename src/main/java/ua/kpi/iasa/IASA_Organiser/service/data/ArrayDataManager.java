@@ -26,6 +26,15 @@ public class ArrayDataManager implements DataManager {
         data.setSize(data.getSize() + 1);
         data.setEvents(events);
         logger.debug("Successful save; array size: {}, array max_size: {}", data.getSize(), data.getMaxSize());
+        data.setChanged(true);
+    }
+
+    public boolean checkChanges(){
+        return data.isChanged();
+    }
+
+    public void backUpChangFlag(){
+        data.setChanged(false);
     }
 
     @Override

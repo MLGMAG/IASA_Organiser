@@ -15,8 +15,8 @@ public class CalendarRecording implements Comparator<CalendarRecording>{
 		return this.event;
 	}
 	
-	public void setEvent(Event ev) {
-		this.event = ev;
+	public void setEvent(Event event) {
+		this.event = event;
 	}
 	
 	public boolean getExpiredFlag() {

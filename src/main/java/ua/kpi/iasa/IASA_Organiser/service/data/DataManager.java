@@ -7,4 +7,6 @@ public interface DataManager {
     void update(Event event);
     void remove(Event event);
     Event[] getAllEvents();
+    boolean checkChanges();
+    void backUpChangFlag();
 }

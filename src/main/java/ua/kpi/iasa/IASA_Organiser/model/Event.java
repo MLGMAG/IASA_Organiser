@@ -29,9 +29,9 @@ public class Event {
         this.duration = duration;
         this.links = links;
     }
-    public Event(){}
+    public Event(){}  //TODO: remove this constructor for testing for next lab
 
-    private Event(Event event){
+    private Event(Event event){     //constructor for cloning(Prototype pattern)
         this.id = event.id;
         this.name = event.name;
         this.place = event.place;

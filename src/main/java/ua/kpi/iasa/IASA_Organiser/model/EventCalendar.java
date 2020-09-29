@@ -42,7 +42,7 @@ public class EventCalendar {
 		for(int i = 0; i < eventList.length; i++) { // iterate over all the events
 			this.recordings[i] = new CalendarRecording(eventList[i]); // create recordings from events
 		}
-		for(int i = 0; i < eventList.length; i++) {
+		for(int i = 0; i < eventList.length; i++) { //FIXME : Need to fix empty cycle!
 			
 		}
 		this.sortRecByDateTime();

@@ -1,6 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.view;
 
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
+import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.util.InputMismatchException;
@@ -31,6 +32,7 @@ public class ConsoleManager implements View {
                 "\n2. GetAllEvents;" +
                 "\n3. Change event;" +
                 "\n4. Remove event;" +
+                "\n5. View calendar" +
                 "\n\n0. Exit;");
     }
 
@@ -51,6 +53,9 @@ public class ConsoleManager implements View {
                 break;
             case 4:
                 removeEvent(chooseEvent(controller.getAllEvents()));
+            case 5:
+                printCalendar(controller.getCalendar());
+                break;
         }
     }
 
@@ -109,5 +114,12 @@ public class ConsoleManager implements View {
     @Override
     public void configController(Controller controller) {
         this.controller = controller;
+    }
+
+    private void printCalendar(Calendar calendar){
+        Event[] events = calendar.getEvents();
+        for(int i = 0; i < events.length; i++){
+            System.out.println((i + 1) + ". " + events[i]);
+        }
     }
 }
