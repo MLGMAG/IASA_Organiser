@@ -16,7 +16,7 @@ public class Calendar {
 
     public static Calendar getInstance(){
         if(instance == null){
-            return new Calendar();
+            instance =  new Calendar();
         }
         return instance;
     }
