@@ -25,8 +25,8 @@ public class ArrayDataManager implements DataManager {
         events[data.getSize()] = event;
         data.setSize(data.getSize() + 1);
         data.setEvents(events);
-        logger.debug("Successful save; array size: {}, array max_size: {}", data.getSize(), data.getMaxSize());
         data.setChanged(true);
+        logger.debug("Successful save; array size: {}, array max_size: {}", data.getSize(), data.getMaxSize());
     }
 
     public boolean checkChanges(){
@@ -70,6 +70,7 @@ public class ArrayDataManager implements DataManager {
         }
         data.setSize(data.getSize() - 1);
         data.setEvents(events);
+        logger.debug("Successful delete; array size: {}, array max_size: {}", data.getSize(), data.getMaxSize());
     }
 
     public static ArrayDataManager getInstance() {

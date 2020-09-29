@@ -116,9 +116,13 @@ public class ConsoleManager implements View {
         this.controller = controller;
     }
 
-    private void printCalendar(Calendar calendar){
+    private void printCalendar(Calendar calendar){  //TODO: rewrite in next version!
         Event[] events = calendar.getEvents();
         for(int i = 0; i < events.length; i++){
+            if(events[i] == null) {
+                System.out.println((i + 1) + ". No events.");
+                continue;
+            }
             System.out.println((i + 1) + ". " + events[i]);
         }
     }
