@@ -8,13 +8,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleManager implements View {
-
     private Controller controller;
     private Scanner scanner;
 
     public ConsoleManager() {
     }
 
+    @Override
     public void startUp() {
         System.out.println("Hello!");
         System.out.println("It's IASA Organiser");
@@ -27,7 +27,7 @@ public class ConsoleManager implements View {
         }
     }
 
-    public void menu() {
+    private void menu() {
         System.out.println("1. Create Event;" +
                 "\n2. GetAllEvents;" +
                 "\n3. Change event;" +
@@ -36,7 +36,7 @@ public class ConsoleManager implements View {
                 "\n\n0. Exit;");
     }
 
-    public void choiceSelector(int choice) {
+    private void choiceSelector(int choice) {
         switch (choice) {
             case 0:
                 System.out.println("It was nice to see you. Good bye! <3");
@@ -107,19 +107,15 @@ public class ConsoleManager implements View {
         controller.removeEvent(event);
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
     @Override
     public void configController(Controller controller) {
         this.controller = controller;
     }
 
-    private void printCalendar(Calendar calendar){  //TODO: rewrite in next version!
+    private void printCalendar(Calendar calendar) {  //TODO: rewrite in next version!
         Event[] events = calendar.getEvents();
-        for(int i = 0; i < events.length; i++){
-            if(events[i] == null) {
+        for (int i = 0; i < events.length; i++) {
+            if (events[i] == null) {
                 System.out.println((i + 1) + ". No events.");
                 continue;
             }
