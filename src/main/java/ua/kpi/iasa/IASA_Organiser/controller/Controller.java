@@ -1,5 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
 import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
@@ -8,8 +10,10 @@ import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
 public class Controller {
     private final EventService eventService = EventService.getInstance();
     private final ConsoleManager consoleManager;
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
     public Controller() {
+        logger.info("We are starting!");
         consoleManager = new ConsoleManager(this);
         consoleManager.startUp();
     }
@@ -22,11 +26,11 @@ public class Controller {
         eventService.createEvent(event);
     }
 
-    public void changeEvent(Event event){    //TODO add functionality!!!
+    public void changeEvent(Event event) {    //TODO add functionality!!!
         eventService.updateEvent(event);
     }
 
-    public void removeEvent(Event event){
+    public void removeEvent(Event event) {
         eventService.removeEvent(event);
     }
 }
