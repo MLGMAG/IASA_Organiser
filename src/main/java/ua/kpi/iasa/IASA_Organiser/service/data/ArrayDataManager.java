@@ -29,18 +29,20 @@ public class ArrayDataManager implements DataManager {
         logger.debug("Successful save; array size: {}, array max_size: {}", data.getSize(), data.getMaxSize());
     }
 
-    public boolean checkChanges(){
+    @Override
+    public boolean checkChanges() {
         return data.isChanged();
     }
 
-    public void backUpChangFlag(){
+    @Override
+    public void backUpChangeFlag() {
         data.setChanged(false);
     }
 
     @Override
     public Event[] getAllEvents() {
         logger.debug("Returning events from array");
-        return data.clone().getEvents();
+        return data.prototype().getEvents();
     }
 
     @Override
@@ -80,5 +82,9 @@ public class ArrayDataManager implements DataManager {
         }
         logger.debug("Returning instance");
         return instance;
+    }
+
+    public int getMaxSizeOfData() {
+        return data.getMaxSize();
     }
 }

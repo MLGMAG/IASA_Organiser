@@ -2,9 +2,10 @@ package ua.kpi.iasa.IASA_Organiser.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.UUID;
 
-public class Event {
+public class Event implements Comparator<Event> {
     private UUID id;
     private String name;
     private Place place;
@@ -15,6 +16,7 @@ public class Event {
     private Tag[] tags;
     private LocalTime duration;
     private Link[] links;
+    //TODO add expired field
 
     public Event(String name, Place place, Human[] invited,
                  LocalDate date, LocalTime time, Priority priority,
@@ -29,9 +31,11 @@ public class Event {
         this.duration = duration;
         this.links = links;
     }
-    public Event(){}  //TODO: remove this constructor for testing for next lab
 
-    private Event(Event event){     //constructor for cloning(Prototype pattern)
+    public Event() {
+    }  //TODO: remove this constructor for testing for next lab
+
+    private Event(Event event) {     //constructor for cloning(Prototype pattern)
         this.id = event.id;
         this.name = event.name;
         this.place = event.place;
@@ -115,7 +119,7 @@ public class Event {
     public void setDuration(LocalTime duration) {
         this.duration = duration;
     }
-    
+
     public Link[] getLinks() {
         return links;
     }
@@ -131,7 +135,27 @@ public class Event {
                 '}';
     }
 
-    public Event clone(){
+    public Event prototype() {
         return new Event(this);
+    }
+
+    @Override
+    public int compare(Event event1, Event event2) {
+        int yearDif = event1.getDate().getYear() - event2.getDate().getYear();
+        int dayDif = event1.getDate().getDayOfYear() - event2.getDate().getDayOfYear();
+        int hourDif = event1.getTime().getHour() - event2.getTime().getHour();
+        int minuteDif = event1.getTime().getMinute() - event2.getTime().getMinute();
+        int secondDif = event1.getTime().getSecond() - event2.getTime().getSecond();
+        if (yearDif != 0) {
+            return yearDif;
+        } else if (dayDif != 0) {
+            return dayDif;
+        } else if (hourDif != 0) {
+            return hourDif;
+        } else if (minuteDif != 0) {
+            return minuteDif;
+        } else {
+            return secondDif;
+        }
     }
 }

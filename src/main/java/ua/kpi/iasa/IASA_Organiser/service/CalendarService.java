@@ -5,6 +5,8 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
 import ua.kpi.iasa.IASA_Organiser.service.data.DataManager;
 
+import java.util.Arrays;
+
 public class CalendarService {
     private static CalendarService instance;
     private DataManager dataManager = ArrayDataManager.getInstance();
@@ -19,17 +21,39 @@ public class CalendarService {
         return instance;
     }
 
-    public void updateCalendar(){
+    public void updateCalendar() {
         Calendar calendar = Calendar.getInstance();
         calendar.setEvents(dataManager.getAllEvents());
     }
 
-    public Calendar getCalendar(){
+    public Calendar getCalendar() {
         Calendar calendar = Calendar.getInstance();
-        if(dataManager.checkChanges()){
+        if (dataManager.checkChanges()) {
             updateCalendar();
-            dataManager.backUpChangFlag();
+            dataManager.backUpChangeFlag();
         }
         return calendar;
+    }
+
+    public Event[] getRecordingsBeforeDate(int year, int month, int day) {    //TODO finish for next ver
+        Event[] events = Calendar.getInstance().getEvents();
+        Arrays.sort(events);
+        int length = 0;
+        int evYear = (events[length]).getDate().getYear();
+        int evMonth = (events[length]).getDate().getMonthValue();
+        int evDay = (events[length]).getDate().getDayOfMonth();
+        while ((evYear <= year) && (evMonth <= month) && (evDay <= day)) {
+            evYear = (events[length]).getDate().getYear();
+            evMonth = (events[length]).getDate().getMonthValue();
+            evDay = (events[length]).getDate().getDayOfMonth();
+            length++; // count amount all recordings, which are going to happen before some date
+        }
+
+        Event[] eventsForCopy = new Event[length];
+        for (int i = 0; i < length; i++) {
+            eventsForCopy[i] = events[i]; // write all recordings to array
+        }
+//        Arrays.copyOf()
+        return eventsForCopy;
     }
 }
