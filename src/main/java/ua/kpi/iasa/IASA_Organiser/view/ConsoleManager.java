@@ -76,7 +76,7 @@ public class ConsoleManager {
         System.out.println("Enter the number: ");
         scanner = new Scanner(System.in);
         int num = scanner.nextInt();
-        return events[num];
+        return events[num - 1];
     }
 
     private void editEvent(Event event){
