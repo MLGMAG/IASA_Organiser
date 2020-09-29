@@ -6,17 +6,15 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ConsoleManager {
+public class ConsoleManager implements View {
 
-    private final Controller controller;
+    private Controller controller;
     private Scanner scanner;
 
-    public ConsoleManager(Controller controller) {
-        this.controller = controller;
+    public ConsoleManager() {
     }
 
     public void startUp() {
-
         System.out.println("Hello!");
         System.out.println("It's IASA Organiser");
         System.out.println("Choose action:");
@@ -102,5 +100,14 @@ public class ConsoleManager {
 
     private void removeEvent(Event event) {
         controller.removeEvent(event);
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    @Override
+    public void configController(Controller controller) {
+        this.controller = controller;
     }
 }

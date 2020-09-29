@@ -4,18 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
-import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
+import ua.kpi.iasa.IASA_Organiser.view.View;
 
 
 public class Controller {
     private final EventService eventService = EventService.getInstance();
-    private final ConsoleManager consoleManager;
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
-    public Controller() {
+    public Controller(View view) {
         logger.info("We are starting!");
-        consoleManager = new ConsoleManager(this);
-        consoleManager.startUp();
+        view.configController(this);
+        view.startUp();
     }
 
     public Event[] getAllEvents() {
