@@ -19,7 +19,10 @@ public class Event implements Comparator<Event> {
     private Link[] links;
     private Type type;
     private boolean expire;
-    //TODO add expired field
+    private boolean periodic;
+    private boolean completable;
+    private boolean deadline;
+
 
     public Event(String name, Place place,
                  LocalDate date, LocalTime time, Priority priority, LocalTime duration) {
