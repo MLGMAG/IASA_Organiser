@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.UUID;
 
+
 public class Event implements Comparator<Event> {
     private UUID id;
     private String name;
@@ -16,20 +17,18 @@ public class Event implements Comparator<Event> {
     private Tag[] tags;
     private LocalTime duration;
     private Link[] links;
+    private Type type;
+    private boolean expire;
     //TODO add expired field
 
-    public Event(String name, Place place, Human[] invited,
-                 LocalDate date, LocalTime time, Priority priority,
-                 Tag[] tags, LocalTime duration, Link[] links) {
+    public Event(String name, Place place,
+                 LocalDate date, LocalTime time, Priority priority, LocalTime duration) {
         this.name = name;
         this.place = place;
-        this.invited = invited;
         this.date = date;
         this.time = time;
         this.priority = priority;
-        this.tags = tags;
         this.duration = duration;
-        this.links = links;
     }
 
     public Event() {
@@ -46,6 +45,7 @@ public class Event implements Comparator<Event> {
         this.tags = event.tags;
         this.duration = event.duration;
         this.links = event.links;
+        this.type = event.type;
     }
 
     public UUID getId() {
@@ -126,6 +126,22 @@ public class Event implements Comparator<Event> {
 
     public void setLinks(Link[] links) {
         this.links = links;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public boolean isExpire() {
+        return expire;
+    }
+
+    public void setExpire(boolean expire) {
+        this.expire = expire;
     }
 
     @Override
