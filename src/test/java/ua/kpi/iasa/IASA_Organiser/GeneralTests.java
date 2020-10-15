@@ -26,8 +26,8 @@ public class GeneralTests {
     Link link1 = new Link("blblblblbbl");
     Link link2 = new Link("ghghghhghghgh");
     Link[] links = {link1, link2};
-    Event event1 = new Event("Event 1", place1, invited, localDate, time, Priority.HIGH, tags, duration, links);
-    Event event2 = new Event("Event 2", place1, invited, localDate, time, Priority.HIGH, tags, duration, links);
+    Event event1 = new Event("Event 1", place1, localDate, time, Priority.HIGH, duration);
+    Event event2 = new Event("Event 2", place1, localDate, time, Priority.HIGH, duration);
 
     EventService eventService;
 
