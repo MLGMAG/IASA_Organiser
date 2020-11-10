@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class EventBuilder implements Builder{
+public class EventBuilder implements Builder {
     private UUID id;
     private String name;
     private Place place;
@@ -82,4 +82,7 @@ public class EventBuilder implements Builder{
 
     }
 
+    public Event getResult() {
+        return new Event(id, name, place, invited, date, time, priority, tags, duration, links);
+    }
 }

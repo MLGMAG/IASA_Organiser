@@ -28,4 +28,7 @@ public interface Builder {
     void setDuration(LocalTime duration);
 
     void setLinks(Link[] links);
+
+    Event getResult();
+
 }
