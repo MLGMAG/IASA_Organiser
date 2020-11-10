@@ -6,37 +6,33 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.List;
 import java.util.UUID;
 
 public class Event implements Comparator<Event>, Serializable {
     private UUID id;
     private String name;
     private Place place;
-    private Human[] invited;
+    private List<Human> invited;
     private LocalDate date;
     private LocalTime time;
     private Priority priority;
-    private Tag[] tags;
+    private List<Tag> tags;
     private LocalTime duration;
-    private Link[] links;
+    private List<Link> links;
     private Type type;
-//    private boolean expire;
-//    private boolean single;
-//    private boolean expired;
-//    private boolean periodic;
-//    private boolean completable;
-//    private boolean deadline;
 
-    public Event(UUID id, String name, Place place, Human[] invited,
-                 LocalDate date, LocalTime time, Priority priority,
-                 Tag[] tags, LocalTime duration, Link[] links) {
+    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links) {
         this.id = id;
         this.name = name;
         this.place = place;
+        this.invited = invited;
         this.date = date;
         this.time = time;
         this.priority = priority;
+        this.tags = tags;
         this.duration = duration;
+        this.links = links;
     }
 
     private Event(Event event) {     //constructor for cloning(Prototype pattern)
@@ -51,108 +47,55 @@ public class Event implements Comparator<Event>, Serializable {
         this.duration = event.duration;
         this.links = event.links;
         this.type = event.type;
-//        this.expired = event.expired;
-//        this.deadline = event.deadline;
-//        this.completable = event.completable;
-//        this.periodic = event.periodic;
-//        this.single = event.single;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Place getPlace() {
         return place;
     }
 
-    public void setPlace(Place place) {
-        this.place = place;
-    }
-
-    public Human[] getInvited() {
+    public List<Human> getInvited() {
         return invited;
-    }
-
-    public void setInvited(Human[] invited) {
-        this.invited = invited;
     }
 
     public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public LocalTime getTime() {
         return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
     }
 
     public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public Tag[] getTags() {
+    public List<Tag> getTags() {
         return tags;
-    }
-
-    public void setTags(Tag[] tags) {
-        this.tags = tags;
     }
 
     public LocalTime getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
-        this.duration = duration;
-    }
-
-    public Link[] getLinks() {
+    public List<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(Link[] links) {
+    public void setLinks(List<Link> links) {
         this.links = links;
     }
 
     public Type getType() {
         return type;
     }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-//    public boolean isExpire() {
-//        return expire;
-//    }
-//
-//    public void setExpire(boolean expire) {
-//        this.expire = expire;
-//    }
 
     @Override
     public String toString() {
@@ -188,29 +131,21 @@ public class Event implements Comparator<Event>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-//        return expire == event.expire &&
-//                periodic == event.periodic &&
-//                completable == event.completable &&
-//                deadline == event.deadline &&
-                return Objects.equals(id, event.id) &&
+        return Objects.equals(id, event.id) &&
                 Objects.equals(name, event.name) &&
                 Objects.equals(place, event.place) &&
-                Arrays.equals(invited, event.invited) &&
+                Objects.equals(invited, event.invited) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(time, event.time) &&
                 priority == event.priority &&
-                Arrays.equals(tags, event.tags) &&
+                Objects.equals(tags, event.tags) &&
                 Objects.equals(duration, event.duration) &&
-                Arrays.equals(links, event.links) &&
+                Objects.equals(links, event.links) &&
                 type == event.type;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, place, date, time, priority, duration, type);
-        result = 31 * result + Arrays.hashCode(invited);
-        result = 31 * result + Arrays.hashCode(tags);
-        result = 31 * result + Arrays.hashCode(links);
-        return result;
+        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, type);
     }
 }
