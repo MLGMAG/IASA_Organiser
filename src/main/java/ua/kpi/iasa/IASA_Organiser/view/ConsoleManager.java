@@ -3,6 +3,8 @@ package ua.kpi.iasa.IASA_Organiser.view;
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.service.Builder;
+import ua.kpi.iasa.IASA_Organiser.service.EventBuilder;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class ConsoleManager implements View {
     private Controller controller;
     private Scanner scanner;
+    private Builder builder = new EventBuilder();
 
     public ConsoleManager() {
     }

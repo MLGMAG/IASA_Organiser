@@ -74,10 +74,8 @@ public class EventBuilder implements Builder {
         this.type = type;
     }
 
-    public void eventAdditionalInfo(){
 
-    }
-
+    @Override
     public Event getResult() {
         return new Event(id, name, place, invited, date, time, priority, tags, duration, links);
     }
