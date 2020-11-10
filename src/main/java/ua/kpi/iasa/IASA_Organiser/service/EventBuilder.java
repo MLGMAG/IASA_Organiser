@@ -11,14 +11,14 @@ public class EventBuilder implements Builder {
     private UUID id;
     private String name;
     private Place place;
-    private List invited;
+    private List<Human> invited;
     private LocalDate date;
     private LocalTime time;
     private Priority priority;
-    private List tags;
+    private List<Tag> tags;
     private LocalTime duration;
-    private List links;
     private Type type;
+    private List<Link> links;
 
     @Override
     public void setId(UUID id) {
@@ -36,7 +36,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setInvited(List invited) {
+    public void setInvited(List<Human> invited) {
         this.invited = invited;
     }
 
@@ -56,7 +56,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setTags(List tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -66,7 +66,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setLinks(List links) {
+    public void setLinks(List<Link> links) {
         this.links = links;
     }
 

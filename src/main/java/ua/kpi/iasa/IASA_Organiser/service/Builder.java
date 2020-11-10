@@ -16,7 +16,7 @@ public interface Builder {
 
     void setPlace(Place place);
 
-    void setInvited(List invited);
+    void setInvited(List<Human> invited);
 
     void setDate(LocalDate date);
 
@@ -24,11 +24,11 @@ public interface Builder {
 
     void setPriority(Priority priority);
 
-    void setTags(List tags);
+    void setTags(List<Tag> tags);
 
     void setDuration(LocalTime duration);
 
-    void setLinks(List links);
+    void setLinks(List<Link> links);
 
     Event getResult();
 
