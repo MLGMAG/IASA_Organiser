@@ -74,10 +74,6 @@ public class EventBuilder implements Builder {
         this.type = type;
     }
 
-    public Event buildEvent(){
-        return new Event(name, place, date, time, priority, duration);
-    }
-
     public void eventAdditionalInfo(){
 
     }

@@ -20,14 +20,17 @@ public class Event implements Comparator<Event>, Serializable {
     private LocalTime duration;
     private Link[] links;
     private Type type;
-    private boolean expire;
-    private boolean periodic;
-    private boolean completable;
-    private boolean deadline;
+//    private boolean expire;
+//    private boolean single;
+//    private boolean expired;
+//    private boolean periodic;
+//    private boolean completable;
+//    private boolean deadline;
 
-
-    public Event(String name, Place place,
-                 LocalDate date, LocalTime time, Priority priority, LocalTime duration) {
+    public Event(UUID id, String name, Place place, Human[] invited,
+                 LocalDate date, LocalTime time, Priority priority,
+                 Tag[] tags, LocalTime duration, Link[] links) {
+        this.id = id;
         this.name = name;
         this.place = place;
         this.date = date;
@@ -35,9 +38,6 @@ public class Event implements Comparator<Event>, Serializable {
         this.priority = priority;
         this.duration = duration;
     }
-
-    public Event() {
-    }  //TODO: remove this constructor for testing for next lab
 
     private Event(Event event) {     //constructor for cloning(Prototype pattern)
         this.id = event.id;
@@ -51,6 +51,11 @@ public class Event implements Comparator<Event>, Serializable {
         this.duration = event.duration;
         this.links = event.links;
         this.type = event.type;
+//        this.expired = event.expired;
+//        this.deadline = event.deadline;
+//        this.completable = event.completable;
+//        this.periodic = event.periodic;
+//        this.single = event.single;
     }
 
     public UUID getId() {
@@ -141,19 +146,17 @@ public class Event implements Comparator<Event>, Serializable {
         this.type = type;
     }
 
-    public boolean isExpire() {
-        return expire;
-    }
-
-    public void setExpire(boolean expire) {
-        this.expire = expire;
-    }
+//    public boolean isExpire() {
+//        return expire;
+//    }
+//
+//    public void setExpire(boolean expire) {
+//        this.expire = expire;
+//    }
 
     @Override
     public String toString() {
-        return "Event{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 
     public Event prototype() {
@@ -185,11 +188,11 @@ public class Event implements Comparator<Event>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return expire == event.expire &&
-                periodic == event.periodic &&
-                completable == event.completable &&
-                deadline == event.deadline &&
-                Objects.equals(id, event.id) &&
+//        return expire == event.expire &&
+//                periodic == event.periodic &&
+//                completable == event.completable &&
+//                deadline == event.deadline &&
+                return Objects.equals(id, event.id) &&
                 Objects.equals(name, event.name) &&
                 Objects.equals(place, event.place) &&
                 Arrays.equals(invited, event.invited) &&
@@ -204,7 +207,7 @@ public class Event implements Comparator<Event>, Serializable {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, place, date, time, priority, duration, type, expire, periodic, completable, deadline);
+        int result = Objects.hash(id, name, place, date, time, priority, duration, type);
         result = 31 * result + Arrays.hashCode(invited);
         result = 31 * result + Arrays.hashCode(tags);
         result = 31 * result + Arrays.hashCode(links);
