@@ -4,19 +4,20 @@ import ua.kpi.iasa.IASA_Organiser.model.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 public class EventBuilder implements Builder {
     private UUID id;
     private String name;
     private Place place;
-    private Human[] invited;
+    private List invited;
     private LocalDate date;
     private LocalTime time;
     private Priority priority;
-    private Tag[] tags;
+    private List tags;
     private LocalTime duration;
-    private Link[] links;
+    private List links;
     private Type type;
 
     @Override
@@ -35,7 +36,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setInvited(Human[] invited) {
+    public void setInvited(List invited) {
         this.invited = invited;
     }
 
@@ -55,7 +56,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setTags(Tag[] tags) {
+    public void setTags(List tags) {
         this.tags = tags;
     }
 
@@ -65,7 +66,7 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setLinks(Link[] links) {
+    public void setLinks(List links) {
         this.links = links;
     }
 
