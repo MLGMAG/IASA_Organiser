@@ -1,9 +1,9 @@
-package ua.kpi.iasa.IASA_Organiser.model;;
+package ua.kpi.iasa.IASA_Organiser.model;
 
 public class Link {
     private String url;
 
-    public Link(String url){
+    public Link(String url) {
         this.url = url;
     }
 

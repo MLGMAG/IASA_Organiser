@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.UUID;
 
-
 public class Event implements Comparator<Event> {
     private UUID id;
     private String name;
