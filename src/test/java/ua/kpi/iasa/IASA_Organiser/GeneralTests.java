@@ -3,11 +3,9 @@ package ua.kpi.iasa.IASA_Organiser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.*;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
-import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
-import ua.kpi.iasa.IASA_Organiser.view.ConsoleManager;
+import ua.kpi.iasa.IASA_Organiser.service.data.impl.DefaultArrayDataManager;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,7 +46,7 @@ public class GeneralTests {
 
     @Test(expected = ArrayStoreException.class)
     public void test2() {
-        for (int i = 0; i < ArrayDataManager.getInstance().getMaxSizeOfData() + 1; i++) {
+        for (int i = 0; i < DefaultArrayDataManager.getInstance().getMaxSizeOfData() + 1; i++) {
             eventService.createEvent(event1);
         }
     }

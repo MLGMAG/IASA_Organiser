@@ -3,13 +3,13 @@ package ua.kpi.iasa.IASA_Organiser.service;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
-import ua.kpi.iasa.IASA_Organiser.service.data.DataManager;
+import ua.kpi.iasa.IASA_Organiser.service.data.impl.DefaultArrayDataManager;
 
 import java.util.Arrays;
 
 public class CalendarService {
     private static CalendarService instance;
-    private DataManager dataManager = ArrayDataManager.getInstance();
+    private ArrayDataManager arrayDataManager = DefaultArrayDataManager.getInstance();
 
     private CalendarService() {
     }
@@ -23,14 +23,14 @@ public class CalendarService {
 
     public void updateCalendar() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setEvents(dataManager.getAllEvents());
+        calendar.setEvents(arrayDataManager.getAllEvents());
     }
 
     public Calendar getCalendar() {
         Calendar calendar = Calendar.getInstance();
-        if (dataManager.checkChanges()) {
+        if (arrayDataManager.checkChanges()) {
             updateCalendar();
-            dataManager.backUpChangeFlag();
+            arrayDataManager.backUpChangeFlag();
         }
         return calendar;
     }
