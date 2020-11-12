@@ -4,10 +4,10 @@ import ua.kpi.iasa.IASA_Organiser.model.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 public interface Builder {
-    void setType(Type type);
 
     void setId(UUID id);
 
@@ -15,7 +15,7 @@ public interface Builder {
 
     void setPlace(Place place);
 
-    void setInvited(Human[] invited);
+    void setInvited(List<Human> invited);
 
     void setDate(LocalDate date);
 
@@ -23,9 +23,22 @@ public interface Builder {
 
     void setPriority(Priority priority);
 
-    void setTags(Tag[] tags);
+    void setTags(List<Tag> tags);
 
     void setDuration(LocalTime duration);
 
-    void setLinks(Link[] links);
+    void setLinks(List<Link> links);
+
+    void setSingle(boolean single);
+
+    void setExpired(boolean expired);
+
+    void setCompletable(boolean completable);
+
+    void setPeriodic(boolean periodic);
+
+    void setDeadline(boolean deadline);
+
+    Event getResult();
+
 }

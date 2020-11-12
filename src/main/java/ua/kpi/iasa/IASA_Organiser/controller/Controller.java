@@ -8,6 +8,8 @@ import ua.kpi.iasa.IASA_Organiser.service.CalendarService;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
 import ua.kpi.iasa.IASA_Organiser.view.View;
 
+import java.util.List;
+
 
 public class Controller {
     private final EventService eventService = EventService.getInstance();
@@ -19,16 +21,21 @@ public class Controller {
         view.configController(this);
         view.startUp();
     }
-
-    public Event[] getAllEvents() {
+    @Deprecated
+    public Event[] getAllEvents() {     //was needed in the last lab, now useless
         return eventService.getAllEvents();
+    }
+
+    public List<Event> getAllEventsList(){
+        return eventService.getAllEventsList();
     }
 
     public Calendar getCalendar(){
         return calendarService.getCalendar();
     }
 
-    public void createNewEvent(Event event) { //TODO:  change to FactoryMethod in lab3 (may be)
+    public void createNewEvent(Event event) {
+        System.out.println(event);
         eventService.createEvent(event);
     }
 

@@ -8,9 +8,9 @@ public class Place implements Serializable {
     private String city;
     private String street;
     private int number;
-    private char letter;
+    private String letter;
 
-    public Place(String country, String city, String street, int number, char letter) {
+    public Place(String country, String city, String street, int number, String letter) {
         this.country = country;
         this.city = city;
         this.street = street;
@@ -50,12 +50,8 @@ public class Place implements Serializable {
         this.number = number;
     }
 
-    public char getLetter() {
+    public String getLetter() {
         return letter;
-    }
-
-    public void setLetter(char letter) {
-        this.letter = letter;
     }
 
     @Override
@@ -73,5 +69,14 @@ public class Place implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(country, city, street, number, letter);
+    }
+    public String toString() {
+        return "Place{" +
+                "country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", number=" + number +
+                ", letter='" + letter + '\'' +
+                '}';
     }
 }

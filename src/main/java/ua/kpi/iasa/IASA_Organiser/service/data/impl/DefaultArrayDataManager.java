@@ -19,7 +19,6 @@ public class DefaultArrayDataManager implements ArrayDataManager {
     @Override
     public void save(Event event) {
         logger.debug("Saving event with name: '{}'", event.getName());
-        event.setId(UUID.randomUUID());
         if (data.getSize() == data.getMaxSize()) {
             throw new ArrayStoreException("Max size!");
         }

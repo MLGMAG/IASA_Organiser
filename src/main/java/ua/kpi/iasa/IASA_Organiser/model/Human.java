@@ -63,4 +63,12 @@ public class Human implements Serializable {
     public int hashCode() {
         return Objects.hash(firstName, lastName, phoneNumber, email);
     }
+    public String toString() {
+        return "Human{" +
+                "firstName='" + firstName + '\'' +
+                "\n lastName='" + lastName + '\'' +
+                "\n phoneNumber='" + phoneNumber + '\'' +
+                "\n email='" + email + '\'' +
+                '}';
+    }
 }
