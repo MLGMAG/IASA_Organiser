@@ -17,8 +17,12 @@ public class EventBuilder implements Builder {
     private Priority priority;
     private List<Tag> tags;
     private LocalTime duration;
-    private Type type;
     private List<Link> links;
+    private boolean expired;
+    private boolean single;
+    private boolean periodic;
+    private boolean deadline;
+    private boolean completable;
 
     @Override
     public void setId(UUID id) {
@@ -71,10 +75,29 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public void setType(Type type) {
-        this.type = type;
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
+    @Override
+    public void setSingle(boolean single) {
+        this.single = single;
+    }
+
+    @Override
+    public void setPeriodic(boolean periodic) {
+        this.periodic = periodic;
+    }
+
+    @Override
+    public void setDeadline(boolean deadline) {
+        this.deadline = deadline;
+    }
+
+    @Override
+    public void setCompletable(boolean completable) {
+        this.completable = completable;
+    }
 
     @Override
     public Event getResult() {

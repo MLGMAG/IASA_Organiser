@@ -70,4 +70,13 @@ public class Place implements Serializable {
     public int hashCode() {
         return Objects.hash(country, city, street, number, letter);
     }
+    public String toString() {
+        return "Place{" +
+                "country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", number=" + number +
+                ", letter='" + letter + '\'' +
+                '}';
+    }
 }

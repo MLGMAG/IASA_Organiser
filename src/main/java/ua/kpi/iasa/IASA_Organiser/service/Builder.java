@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface Builder {
-    void setType(Type type);
 
     void setId(UUID id);
 
@@ -29,6 +28,16 @@ public interface Builder {
     void setDuration(LocalTime duration);
 
     void setLinks(List<Link> links);
+
+    void setSingle(boolean single);
+
+    void setExpired(boolean expired);
+
+    void setCompletable(boolean completable);
+
+    void setPeriodic(boolean periodic);
+
+    void setDeadline(boolean deadline);
 
     Event getResult();
 

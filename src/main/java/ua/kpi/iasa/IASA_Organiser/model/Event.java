@@ -3,7 +3,6 @@ package ua.kpi.iasa.IASA_Organiser.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.List;
@@ -20,7 +19,11 @@ public class Event implements Comparator<Event>, Serializable {
     private List<Tag> tags;
     private LocalTime duration;
     private List<Link> links;
-    private Type type;
+    private boolean expired;
+    private boolean single;
+    private boolean periodic;
+    private boolean deadline;
+    private boolean completable;
 
     public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links) {
         this.id = id;
@@ -46,7 +49,11 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = event.tags;
         this.duration = event.duration;
         this.links = event.links;
-        this.type = event.type;
+        this.periodic = event.periodic;
+        this.completable = event.completable;
+        this.deadline = event.deadline;
+        this.expired = event.expired;
+        this.single = event.single;
     }
 
     public UUID getId() {
@@ -89,19 +96,6 @@ public class Event implements Comparator<Event>, Serializable {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public Event prototype() {
         return new Event(this);
     }
@@ -131,7 +125,12 @@ public class Event implements Comparator<Event>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id) &&
+        return expired == event.expired &&
+                single == event.single &&
+                periodic == event.periodic &&
+                deadline == event.deadline &&
+                completable == event.completable &&
+                Objects.equals(id, event.id) &&
                 Objects.equals(name, event.name) &&
                 Objects.equals(place, event.place) &&
                 Objects.equals(invited, event.invited) &&
@@ -140,12 +139,32 @@ public class Event implements Comparator<Event>, Serializable {
                 priority == event.priority &&
                 Objects.equals(tags, event.tags) &&
                 Objects.equals(duration, event.duration) &&
-                Objects.equals(links, event.links) &&
-                type == event.type;
+                Objects.equals(links, event.links);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, type);
+        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                "\n name='" + name + '\'' +
+                "\n place=" + place +
+                "\n invited=" + invited +
+                "\n date=" + date +
+                "\n time=" + time +
+                "\n priority=" + priority +
+                "\n tags=" + tags +
+                "\n duration=" + duration +
+                "\n links=" + links +
+                "\n expired=" + expired +
+                "\n single=" + single +
+                "\n periodic=" + periodic +
+                "\n deadline=" + deadline +
+                "\n completable=" + completable +
+                '}';
     }
 }

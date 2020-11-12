@@ -14,4 +14,11 @@ public enum Priority implements Serializable {
     public int getPriority() {
         return priority;
     }
+
+    @Override
+    public String toString() {
+        return "Priority{" +
+                "priority=" + priority +
+                '}';
+    }
 }

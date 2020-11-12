@@ -7,7 +7,6 @@ import ua.kpi.iasa.IASA_Organiser.service.EventBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -40,7 +39,8 @@ public class ConsoleManager implements View {
                 "\n2. GetAllEvents;" +
                 "\n3. Change event;" +
                 "\n4. Remove event;" +
-                "\n5. View calendar" +
+                "\n5. View calendar;" +
+                "\n6. Check event;" +
                 "\n\n0. Exit;");
     }
 
@@ -64,6 +64,8 @@ public class ConsoleManager implements View {
             case 5:
                 printCalendar(controller.getCalendar());
                 break;
+            case 6:
+                showEventProperties(chooseEvent(controller.getAllEvents()));
         }
     }
 
@@ -245,5 +247,9 @@ public class ConsoleManager implements View {
             }
             System.out.println((i + 1) + ". " + events[i]);
         }
+    }
+
+    public void showEventProperties(Event event){
+        System.out.println(event);
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CreationUtility {
+    private CreationUtility(){}
+
     public static String inputName(){
         Scanner scannerName = new Scanner(System.in);
         System.out.print("Enter name of event:");

@@ -30,4 +30,10 @@ public class Link implements Serializable {
     public int hashCode() {
         return Objects.hash(url);
     }
+
+    public String toString() {
+        return "Link{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }
