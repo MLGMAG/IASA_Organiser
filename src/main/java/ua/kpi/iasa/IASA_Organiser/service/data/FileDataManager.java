@@ -14,7 +14,7 @@ import java.util.List;
 public class FileDataManager implements GenericDataManager {
 
     private File file;
-    private boolean isChanged;
+    private boolean isDataChanged;
     private List<Event> events;
 
     public void init(String path) {
@@ -29,7 +29,7 @@ public class FileDataManager implements GenericDataManager {
         } else {
             parseData();
         }
-        backUpChangeFlag();
+        isDataChanged = false;
     }
 
     @Override
@@ -62,13 +62,9 @@ public class FileDataManager implements GenericDataManager {
         throw new UnsupportedOperationException("You are working with FileDataManager!");
     }
 
-    private void backUpChangeFlag() {
-        isChanged = false;
-    }
-
     @Override
     public List<Event> getAllEventsList() {
-        if (isChanged) {
+        if (isDataChanged) {
             events = getList();
             parseData();
         }
@@ -123,5 +119,9 @@ public class FileDataManager implements GenericDataManager {
         if (!file.createNewFile()) {
             throw new IOException("Can't create new file!");
         }
+    }
+
+    boolean isDataChanged() {
+        return isDataChanged;
     }
 }
