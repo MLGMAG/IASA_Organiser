@@ -1,11 +1,14 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.UUID;
 
-public class Event implements Comparator<Event> {
+public class Event implements Comparator<Event>, Serializable {
     private UUID id;
     private String name;
     private Place place;
@@ -175,5 +178,36 @@ public class Event implements Comparator<Event> {
         } else {
             return secondDif;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return expire == event.expire &&
+                periodic == event.periodic &&
+                completable == event.completable &&
+                deadline == event.deadline &&
+                Objects.equals(id, event.id) &&
+                Objects.equals(name, event.name) &&
+                Objects.equals(place, event.place) &&
+                Arrays.equals(invited, event.invited) &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(time, event.time) &&
+                priority == event.priority &&
+                Arrays.equals(tags, event.tags) &&
+                Objects.equals(duration, event.duration) &&
+                Arrays.equals(links, event.links) &&
+                type == event.type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, name, place, date, time, priority, duration, type, expire, periodic, completable, deadline);
+        result = 31 * result + Arrays.hashCode(invited);
+        result = 31 * result + Arrays.hashCode(tags);
+        result = 31 * result + Arrays.hashCode(links);
+        return result;
     }
 }

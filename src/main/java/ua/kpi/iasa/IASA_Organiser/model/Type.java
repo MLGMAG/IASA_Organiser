@@ -1,5 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
-public enum Type {
+import java.io.Serializable;
+
+public enum Type implements Serializable {
     SINGLE, PERIODIC, REPEATABLE, COMPLETABLE, CONTINUOUS, DEADLINES;
 }
