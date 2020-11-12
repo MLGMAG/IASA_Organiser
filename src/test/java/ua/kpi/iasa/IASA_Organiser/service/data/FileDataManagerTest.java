@@ -1,6 +1,5 @@
 package ua.kpi.iasa.IASA_Organiser.service.data;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -9,16 +8,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -48,19 +44,7 @@ public class FileDataManagerTest {
     @Spy
     private FileDataManager fileDataManager;
 
-    private static File OUTPUT_FILE;
-    private static final String FILE_PATH = "/home/mlgmag/IdeaProjects/IASA_Organiser/src/main/resources/data/test_output.txt";
-    private static final Class<Event> DATA_TYPE = Event.class;
-    private static final String TEST_STRING = "test";
-
-    @Before
-    public void setUp() throws IOException {
-        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
-        doReturn(eventList).when(fileDataManager).getList();
-        when(file.exists()).thenReturn(false);
-        doNothing().when(fileDataManager).initFile(file);
-        fileDataManager.init(FILE_PATH);
-    }
+    private static final String FILE_PATH = "test_path";
 
     @Test
     public void shouldInitNotExistingFile() throws IOException {
@@ -70,14 +54,14 @@ public class FileDataManagerTest {
 
         fileDataManager.init(FILE_PATH);
 
-        verify(fileDataManager).backUpChangeFlag();
+        assertFalse(fileDataManager.isDataChanged());
     }
 
     @Test
     public void shouldInitOnExistingFile() throws IOException, ClassNotFoundException {
         doReturn(file).when(fileDataManager).getFile(FILE_PATH);
         doReturn(eventList).when(fileDataManager).getList();
-        when(file.exists()).thenReturn(true);
+        when(file.exists()).thenReturn(true, true);
         doReturn(objectInputStream).when(fileDataManager).getObjectInputStream(file);
         when(objectInputStream.available()).thenReturn(0, 0, -1);
         doReturn(event, event).when(fileDataManager).readObjectFromObjectInputStream(objectInputStream);
@@ -86,11 +70,12 @@ public class FileDataManagerTest {
 
         verify(fileDataManager, never()).initFile(file);
         verify(eventList, times(2)).add(event);
-        verify(fileDataManager).backUpChangeFlag();
+        assertFalse(fileDataManager.isDataChanged());
     }
 
     @Test
     public void shouldSave() throws IOException {
+        setUpMocks();
         List<Event> testData = new ArrayList<>();
         testData.add(event);
         testData.add(event);
@@ -108,5 +93,14 @@ public class FileDataManagerTest {
 
         verify(spyList).add(event);
         verify(fileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
+    }
+
+    private void setUpMocks() throws IOException {
+        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
+        doReturn(eventList).when(fileDataManager).getList();
+        when(file.exists()).thenReturn(false);
+        doNothing().when(fileDataManager).initFile(file);
+
+        fileDataManager.init(FILE_PATH);
     }
 }
