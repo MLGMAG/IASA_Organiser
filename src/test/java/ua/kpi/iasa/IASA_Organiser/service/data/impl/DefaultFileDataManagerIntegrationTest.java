@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.service.data;
+package ua.kpi.iasa.IASA_Organiser.service.data.impl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +20,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FileDataManagerIntegrationTest {
+public class DefaultFileDataManagerIntegrationTest {
 
     @Spy
-    private FileDataManager fileDataManager;
+    private DefaultFileDataManager defaultFileDataManager;
 
     private static final String FILE_PATH = "/home/mlgmag/IdeaProjects/IASA_Organiser/src/main/resources/data/test_output.txt";
     private static final File OUTPUT_FILE = new File(FILE_PATH);
@@ -38,7 +38,7 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldCreateFile() throws IOException {
         cleanDirectory();
-        fileDataManager.initFile(OUTPUT_FILE);
+        defaultFileDataManager.initFile(OUTPUT_FILE);
 
         assertTrue(OUTPUT_FILE.exists());
         cleanDirectory();
@@ -47,10 +47,10 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldSaveAndCompareEvents() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
-        fileDataManager.save(event1);
+        defaultFileDataManager.init(FILE_PATH);
+        defaultFileDataManager.save(event1);
 
-        List<Event> result = fileDataManager.getAllEventsList();
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertTrue(result.contains(event1));
@@ -59,11 +59,11 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldSaveTwoObjectsAndCompare() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
-        fileDataManager.save(event1);
-        fileDataManager.save(event2);
-        List<Event> result = fileDataManager.getAllEventsList();
+        defaultFileDataManager.save(event1);
+        defaultFileDataManager.save(event2);
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertEquals(2, result.size());
@@ -74,12 +74,12 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldAddTwoObjectsAndRemoveOne() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
-        fileDataManager.save(event1);
-        fileDataManager.save(event2);
-        fileDataManager.remove(event1);
-        List<Event> result = fileDataManager.getAllEventsList();
+        defaultFileDataManager.save(event1);
+        defaultFileDataManager.save(event2);
+        defaultFileDataManager.remove(event1);
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertEquals(1, result.size());
@@ -90,11 +90,11 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldRemoveFromEmptyFile() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
-        fileDataManager.remove(event1);
-        fileDataManager.remove(event2);
-        List<Event> result = fileDataManager.getAllEventsList();
+        defaultFileDataManager.remove(event1);
+        defaultFileDataManager.remove(event2);
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertEquals(0, result.size());
@@ -103,15 +103,15 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldUpdateItem() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
         event1.setId(UUID.randomUUID());
         event2.setId(UUID.randomUUID());
 
-        fileDataManager.save(event1);
-        fileDataManager.save(event2);
+        defaultFileDataManager.save(event1);
+        defaultFileDataManager.save(event2);
         event1.setName("Event Updated");
-        fileDataManager.update(event1);
-        List<Event> result = fileDataManager.getAllEventsList();
+        defaultFileDataManager.update(event1);
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertEquals(2, result.size());
@@ -122,11 +122,11 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void shouldNotUpdateItemOnEmpty() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
         event1.setName("Event Updated");
-        fileDataManager.update(event1);
-        List<Event> result = fileDataManager.getAllEventsList();
+        defaultFileDataManager.update(event1);
+        List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertEquals(0, result.size());
@@ -135,11 +135,11 @@ public class FileDataManagerIntegrationTest {
     @Test
     public void multiInit() {
         cleanDirectory();
-        fileDataManager.init(FILE_PATH);
-        fileDataManager.save(event1);
+        defaultFileDataManager.init(FILE_PATH);
+        defaultFileDataManager.save(event1);
 
-        fileDataManager.init(FILE_PATH);
-        List<Event> allEventsList = fileDataManager.getAllEventsList();
+        defaultFileDataManager.init(FILE_PATH);
+        List<Event> allEventsList = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
         assertTrue(allEventsList.contains(event1));

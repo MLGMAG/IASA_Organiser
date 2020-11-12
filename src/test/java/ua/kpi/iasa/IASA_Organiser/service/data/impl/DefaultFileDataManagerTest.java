@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.service.data;
+package ua.kpi.iasa.IASA_Organiser.service.data.impl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FileDataManagerTest {
+public class DefaultFileDataManagerTest {
 
     @Mock
     private Event event;
@@ -42,35 +42,35 @@ public class FileDataManagerTest {
     private List<Event> eventList;
 
     @Spy
-    private FileDataManager fileDataManager;
+    private DefaultFileDataManager defaultFileDataManager;
 
     private static final String FILE_PATH = "test_path";
 
     @Test
     public void shouldInitNotExistingFile() throws IOException {
-        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
+        doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
         when(file.exists()).thenReturn(false);
-        doNothing().when(fileDataManager).initFile(file);
+        doNothing().when(defaultFileDataManager).initFile(file);
 
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
-        assertFalse(fileDataManager.isDataChanged());
+        assertFalse(defaultFileDataManager.isDataChanged());
     }
 
     @Test
     public void shouldInitOnExistingFile() throws IOException, ClassNotFoundException {
-        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
-        doReturn(eventList).when(fileDataManager).getList();
+        doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
+        doReturn(eventList).when(defaultFileDataManager).getList();
         when(file.exists()).thenReturn(true, true);
-        doReturn(objectInputStream).when(fileDataManager).getObjectInputStream(file);
+        doReturn(objectInputStream).when(defaultFileDataManager).getObjectInputStream(file);
         when(objectInputStream.available()).thenReturn(0, 0, -1);
-        doReturn(event, event).when(fileDataManager).readObjectFromObjectInputStream(objectInputStream);
+        doReturn(event, event).when(defaultFileDataManager).readObjectFromObjectInputStream(objectInputStream);
 
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
 
-        verify(fileDataManager, never()).initFile(file);
+        verify(defaultFileDataManager, never()).initFile(file);
         verify(eventList, times(2)).add(event);
-        assertFalse(fileDataManager.isDataChanged());
+        assertFalse(defaultFileDataManager.isDataChanged());
     }
 
     @Test
@@ -80,27 +80,26 @@ public class FileDataManagerTest {
         testData.add(event);
         testData.add(event);
         List<Event> spyList = spy(testData);
-        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
-        doReturn(spyList).when(fileDataManager).getList();
+        doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
+        doReturn(spyList).when(defaultFileDataManager).getList();
         when(file.exists()).thenReturn(false);
-        doNothing().when(fileDataManager).initFile(file);
-        fileDataManager.init(FILE_PATH);
-        doReturn(objectInputStream).when(fileDataManager).getObjectInputStream(file);
-        doReturn(objectOutputStream).when(fileDataManager).getObjectOutputStream(file);
-        doNothing().when(fileDataManager).writeObjectToFile(objectOutputStream, event);
+        doNothing().when(defaultFileDataManager).initFile(file);
+        defaultFileDataManager.init(FILE_PATH);
+        doReturn(objectOutputStream).when(defaultFileDataManager).getObjectOutputStream(file);
+        doNothing().when(defaultFileDataManager).writeObjectToFile(objectOutputStream, event);
 
-        fileDataManager.save(event);
+        defaultFileDataManager.save(event);
 
         verify(spyList).add(event);
-        verify(fileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
+        verify(defaultFileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
     }
 
     private void setUpMocks() throws IOException {
-        doReturn(file).when(fileDataManager).getFile(FILE_PATH);
-        doReturn(eventList).when(fileDataManager).getList();
+        doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
+        doReturn(eventList).when(defaultFileDataManager).getList();
         when(file.exists()).thenReturn(false);
-        doNothing().when(fileDataManager).initFile(file);
+        doNothing().when(defaultFileDataManager).initFile(file);
 
-        fileDataManager.init(FILE_PATH);
+        defaultFileDataManager.init(FILE_PATH);
     }
 }
