@@ -37,35 +37,35 @@ public class FileDataManagerIntegrationTest {
 
     @Test
     public void shouldCreateFile() throws IOException {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.initFile(OUTPUT_FILE);
 
         assertTrue(OUTPUT_FILE.exists());
-        OUTPUT_FILE.delete();
+        cleanDirectory();
     }
 
     @Test
     public void shouldSaveAndCompareEvents() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
         fileDataManager.save(event1);
 
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertTrue(result.contains(event1));
     }
 
     @Test
     public void shouldSaveTwoObjectsAndCompare() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
 
         fileDataManager.save(event1);
         fileDataManager.save(event2);
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertEquals(2, result.size());
         assertTrue(result.contains(event1));
         assertTrue(result.contains(event2));
@@ -73,7 +73,7 @@ public class FileDataManagerIntegrationTest {
 
     @Test
     public void shouldAddTwoObjectsAndRemoveOne() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
 
         fileDataManager.save(event1);
@@ -81,7 +81,7 @@ public class FileDataManagerIntegrationTest {
         fileDataManager.remove(event1);
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertEquals(1, result.size());
         assertFalse(result.contains(event1));
         assertTrue(result.contains(event2));
@@ -89,20 +89,20 @@ public class FileDataManagerIntegrationTest {
 
     @Test
     public void shouldRemoveFromEmptyFile() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
 
         fileDataManager.remove(event1);
         fileDataManager.remove(event2);
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertEquals(0, result.size());
     }
 
     @Test
     public void shouldUpdateItem() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
         event1.setId(UUID.randomUUID());
         event2.setId(UUID.randomUUID());
@@ -113,7 +113,7 @@ public class FileDataManagerIntegrationTest {
         fileDataManager.update(event1);
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertEquals(2, result.size());
         assertTrue(result.contains(event1));
         assertTrue(result.contains(event2));
@@ -121,28 +121,33 @@ public class FileDataManagerIntegrationTest {
 
     @Test
     public void shouldNotUpdateItemOnEmpty() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
 
         event1.setName("Event Updated");
         fileDataManager.update(event1);
         List<Event> result = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertEquals(0, result.size());
     }
 
     @Test
     public void multiInit() {
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         fileDataManager.init(FILE_PATH);
         fileDataManager.save(event1);
 
         fileDataManager.init(FILE_PATH);
         List<Event> allEventsList = fileDataManager.getAllEventsList();
 
-        OUTPUT_FILE.delete();
+        cleanDirectory();
         assertTrue(allEventsList.contains(event1));
     }
 
+    private void cleanDirectory() {
+        if (!OUTPUT_FILE.delete()) {
+            System.out.println("Can't delete file: " + FILE_PATH);
+        }
+    }
 }
