@@ -1,6 +1,9 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
-public class Human {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Human implements Serializable {
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -43,5 +46,21 @@ public class Human {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Human human = (Human) o;
+        return Objects.equals(firstName, human.firstName) &&
+                Objects.equals(lastName, human.lastName) &&
+                Objects.equals(phoneNumber, human.phoneNumber) &&
+                Objects.equals(email, human.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, phoneNumber, email);
     }
 }

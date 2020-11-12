@@ -1,6 +1,9 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
-public class Place {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Place implements Serializable {
     private String country;
     private String city;
     private String street;
@@ -53,5 +56,22 @@ public class Place {
 
     public void setLetter(char letter) {
         this.letter = letter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Place place = (Place) o;
+        return number == place.number &&
+                letter == place.letter &&
+                Objects.equals(country, place.country) &&
+                Objects.equals(city, place.city) &&
+                Objects.equals(street, place.street);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(country, city, street, number, letter);
     }
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DefaultArrayDataManager implements ArrayDataManager {
@@ -44,6 +45,11 @@ public class DefaultArrayDataManager implements ArrayDataManager {
     public Event[] getAllEvents() {
         logger.debug("Returning events from array");
         return data.prototype().getEvents();
+    }
+
+    @Override
+    public List<Event> getAllEventsList() {
+        throw new UnsupportedOperationException("You are working with FileDataManager!");
     }
 
     @Override

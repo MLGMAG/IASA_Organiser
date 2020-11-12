@@ -1,6 +1,8 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
-public enum Priority {
+import java.io.Serializable;
+
+public enum Priority implements Serializable {
     LOW(1), MEDIUM(2), HIGH(3);
 
     private int priority;
