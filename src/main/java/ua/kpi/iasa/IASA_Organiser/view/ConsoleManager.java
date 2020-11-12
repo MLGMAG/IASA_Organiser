@@ -25,8 +25,11 @@ public class ConsoleManager implements View {
         Scanner scanner;
         System.out.println("Hello!");
         System.out.println("It's IASA Organiser");
-        System.out.println("Choose action:");
+        System.out.println("Loading....\n");
+
         while (true) {
+            pause();
+            System.out.println("\nChoose action:");
             menu();
             scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
@@ -34,8 +37,16 @@ public class ConsoleManager implements View {
         }
     }
 
+    private void pause(){
+        try{
+            Thread.sleep(1500);
+        } catch (InterruptedException exc){
+            exc.printStackTrace();
+        }
+    }
+
     private void menu() {
-        System.out.println("1. Create Event;" +
+        System.out.println("\n1. Create Event;" +
                 "\n2. GetAllEvents;" +
                 "\n3. Change event;" +
                 "\n4. Remove event;" +
@@ -54,18 +65,20 @@ public class ConsoleManager implements View {
                 controller.createNewEvent(creation());
                 break;
             case 2:
-                eventFormat(controller.getAllEvents());
+                eventFormat(controller.getAllEventsList());
                 break;
             case 3:
-                editEvent(chooseEvent(controller.getAllEvents()));
+                editEvent(chooseEvent(controller.getAllEventsList()));
                 break;
             case 4:
-                removeEvent(chooseEvent(controller.getAllEvents()));
+                removeEvent(chooseEvent(controller.getAllEventsList()));
+                break;
             case 5:
                 printCalendar(controller.getCalendar());
                 break;
             case 6:
-                showEventProperties(chooseEvent(controller.getAllEvents()));
+                showEventProperties(chooseEvent(controller.getAllEventsList()));
+                break;
         }
     }
 
@@ -128,7 +141,8 @@ public class ConsoleManager implements View {
         if(ans5.equals("Y")){
             links = inputLinks();
         }
-
+        System.out.println(time);
+        System.out.println(duration);
         switch (type){
             case 1:
                 return director.getSingleEvent(name, place, invited, date, time, priority, tags, duration, links);
@@ -145,7 +159,7 @@ public class ConsoleManager implements View {
         }
     }
 
-    private void eventFormat(Event[] events) {
+    private void eventFormat(List<Event> events) {
         int counter = 1;
         for (Event event : events) {
             if (event == null) continue;
@@ -154,7 +168,7 @@ public class ConsoleManager implements View {
         }
     }
 
-    private Event chooseEvent(Event[] events) {
+    private Event chooseEvent(List<Event> events) {
         System.out.println("Choose event:\n");
         eventFormat(events);
         System.out.println("Enter the number: ");

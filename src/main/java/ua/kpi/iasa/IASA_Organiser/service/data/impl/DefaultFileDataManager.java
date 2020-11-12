@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFileDataManager implements FileDataManager {
-
+    private static DefaultFileDataManager instance;
     private File file;
     private boolean isDataChanged;
     private List<Event> events;
@@ -126,5 +126,13 @@ public class DefaultFileDataManager implements FileDataManager {
 
     boolean isDataChanged() {
         return isDataChanged;
+    }
+
+    public static DefaultFileDataManager getInstance() {
+        if(instance == null){
+            instance = new DefaultFileDataManager();
+            instance.init("/home/andriy/IdeaProjects/IASA_Organiser/src/main/resources/data/test.txt");
+        }
+        return instance;
     }
 }

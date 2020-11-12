@@ -101,6 +101,6 @@ public class EventBuilder implements Builder {
 
     @Override
     public Event getResult() {
-        return new Event(id, name, place, invited, date, time, priority, tags, duration, links);
+        return new Event(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
     }
 }

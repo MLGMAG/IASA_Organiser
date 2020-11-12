@@ -25,7 +25,7 @@ public class Event implements Comparator<Event>, Serializable {
     private boolean deadline;
     private boolean completable;
 
-    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links) {
+    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, boolean expired, boolean single, boolean periodic, boolean deadline, boolean completable) {
         this.id = id;
         this.name = name;
         this.place = place;
@@ -36,6 +36,11 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = tags;
         this.duration = duration;
         this.links = links;
+        this.expired = expired;
+        this.single = single;
+        this.periodic = periodic;
+        this.deadline = deadline;
+        this.completable = completable;
     }
 
     private Event(Event event) {     //constructor for cloning(Prototype pattern)
