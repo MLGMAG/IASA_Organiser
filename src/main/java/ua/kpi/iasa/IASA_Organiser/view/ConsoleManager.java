@@ -11,7 +11,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static ua.kpi.iasa.IASA_Organiser.view.CreationUtility.*;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.*;
 
 public class ConsoleManager implements View {
     private Controller controller;
