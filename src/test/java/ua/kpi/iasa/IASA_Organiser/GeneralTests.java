@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ua.kpi.iasa.IASA_Organiser.model.*;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
-import ua.kpi.iasa.IASA_Organiser.service.data.impl.DefaultArrayDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultArrayDataManager;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

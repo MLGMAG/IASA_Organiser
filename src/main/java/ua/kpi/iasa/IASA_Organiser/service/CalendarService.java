@@ -2,8 +2,8 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
-import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
-import ua.kpi.iasa.IASA_Organiser.service.data.impl.DefaultArrayDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.ArrayDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultArrayDataManager;
 
 import java.util.Arrays;
 

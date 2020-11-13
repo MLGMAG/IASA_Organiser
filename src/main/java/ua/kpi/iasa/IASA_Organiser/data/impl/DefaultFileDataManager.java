@@ -1,7 +1,7 @@
-package ua.kpi.iasa.IASA_Organiser.service.data.impl;
+package ua.kpi.iasa.IASA_Organiser.data.impl;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
-import ua.kpi.iasa.IASA_Organiser.service.data.FileDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
 
 import java.io.File;
 import java.io.FileInputStream;

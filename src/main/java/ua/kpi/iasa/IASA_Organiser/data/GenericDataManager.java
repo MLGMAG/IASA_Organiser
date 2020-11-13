@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.service.data;
+package ua.kpi.iasa.IASA_Organiser.data;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import java.util.List;

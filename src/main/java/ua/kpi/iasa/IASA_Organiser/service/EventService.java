@@ -3,8 +3,8 @@ package ua.kpi.iasa.IASA_Organiser.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
-import ua.kpi.iasa.IASA_Organiser.service.data.GenericDataManager;
-import ua.kpi.iasa.IASA_Organiser.service.data.impl.DefaultFileDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultFileDataManager;
 
 import java.util.List;
 
