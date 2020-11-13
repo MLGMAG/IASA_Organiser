@@ -15,7 +15,6 @@ import java.util.List;
 public class DefaultFileDataManager implements FileDataManager {
     private static DefaultFileDataManager instance;
     private File file;
-    private boolean isDataChanged;
     private List<Event> events;
 
     public void init(String path) {
@@ -30,7 +29,6 @@ public class DefaultFileDataManager implements FileDataManager {
         } else {
             parseData();
         }
-        isDataChanged = false;
     }
 
     @Override
@@ -65,10 +63,6 @@ public class DefaultFileDataManager implements FileDataManager {
 
     @Override
     public List<Event> getAllEventsList() {
-        if (isDataChanged) {
-            events = getList();
-            parseData();
-        }
         return events;
     }
 
@@ -122,10 +116,6 @@ public class DefaultFileDataManager implements FileDataManager {
         if (!file.createNewFile()) {
             throw new IOException("Can't create new file!");
         }
-    }
-
-    boolean isDataChanged() {
-        return isDataChanged;
     }
 
     public static DefaultFileDataManager getInstance() {
