@@ -14,7 +14,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -54,7 +53,7 @@ public class DefaultFileDataManagerTest {
 
         defaultFileDataManager.init(FILE_PATH);
 
-        assertFalse(defaultFileDataManager.isDataChanged());
+        verify(defaultFileDataManager).getList();
     }
 
     @Test
@@ -70,7 +69,6 @@ public class DefaultFileDataManagerTest {
 
         verify(defaultFileDataManager, never()).initFile(file);
         verify(eventList, times(2)).add(event);
-        assertFalse(defaultFileDataManager.isDataChanged());
     }
 
     @Test
