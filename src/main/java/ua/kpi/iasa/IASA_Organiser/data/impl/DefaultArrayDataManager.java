@@ -1,12 +1,11 @@
-package ua.kpi.iasa.IASA_Organiser.service.data.impl;
+package ua.kpi.iasa.IASA_Organiser.data.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
-import ua.kpi.iasa.IASA_Organiser.service.data.ArrayDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.ArrayDataManager;
 
 import java.util.List;
-import java.util.UUID;
 
 public class DefaultArrayDataManager implements ArrayDataManager {
     private static DefaultArrayDataManager instance;
