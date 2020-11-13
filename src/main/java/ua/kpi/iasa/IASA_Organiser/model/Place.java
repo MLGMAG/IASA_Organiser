@@ -54,22 +54,27 @@ public class Place implements Serializable {
         return letter;
     }
 
+    public void setLetter(String letter) {
+        this.letter = letter;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Place place = (Place) o;
         return number == place.number &&
-                letter == place.letter &&
                 Objects.equals(country, place.country) &&
                 Objects.equals(city, place.city) &&
-                Objects.equals(street, place.street);
+                Objects.equals(street, place.street) &&
+                Objects.equals(letter, place.letter);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(country, city, street, number, letter);
     }
+
     public String toString() {
         return "Place{" +
                 "country='" + country + '\'' +
