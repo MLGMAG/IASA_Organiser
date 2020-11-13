@@ -103,4 +103,24 @@ public class EventBuilder implements Builder {
     public Event getResult() {
         return new Event(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
     }
+
+    @Override
+    public void setInitValues(Event event) {
+        this.setId(event.getId());
+        this.setName(event.getName());
+        this.setPlace(event.getPlace());
+        this.setInvited(event.getInvited());
+        this.setDate(event.getDate());
+        this.setTime(event.getTime());
+        this.setPriority(event.getPriority());
+        this.setTags(event.getTags());
+        this.setDuration(event.getDuration());
+        this.setLinks(event.getLinks());
+        this.setExpired(event.isExpired());
+        this.setSingle(event.isSingle());
+        this.setPeriodic(event.isPeriodic());
+        this.setDeadline(event.isDeadline());
+        this.setCompletable(event.isCompletable());
+    }
+
 }

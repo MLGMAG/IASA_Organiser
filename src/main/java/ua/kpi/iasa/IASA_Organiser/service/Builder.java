@@ -41,4 +41,6 @@ public interface Builder {
 
     Event getResult();
 
+    void setInitValues(Event event);
+
 }
