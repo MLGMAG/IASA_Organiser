@@ -101,6 +101,26 @@ public class Event implements Comparator<Event>, Serializable {
         return links;
     }
 
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public boolean isSingle() {
+        return single;
+    }
+
+    public boolean isPeriodic() {
+        return periodic;
+    }
+
+    public boolean isDeadline() {
+        return deadline;
+    }
+
+    public boolean isCompletable() {
+        return completable;
+    }
+
     public Event prototype() {
         return new Event(this);
     }
