@@ -189,6 +189,7 @@ public class ConsoleManager implements View {
 
     private void editEvent(Event event) {
         EventBuilder eventBuilder = new EventBuilder();
+        eventBuilder.setInitValues(event);
         Scanner scannerInt = new Scanner(System.in);
         Scanner scannerAnsw = new Scanner(System.in);
         int choice;
@@ -240,7 +241,8 @@ public class ConsoleManager implements View {
             System.out.println("\nAny others?[Y/n]: ");
             answ = scannerAnsw.next();
         }while (answ.equals("Y"));
-        controller.changeEvent(event);
+        Event newEvent = eventBuilder.getResult();
+        controller.changeEvent(newEvent);
     }
 
     private void removeEvent(Event event) {
