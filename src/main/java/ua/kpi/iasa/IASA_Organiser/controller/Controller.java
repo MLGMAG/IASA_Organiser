@@ -35,7 +35,6 @@ public class Controller {
     }
 
     public void createNewEvent(Event event) {
-        System.out.println(event);
         eventService.createEvent(event);
     }
 

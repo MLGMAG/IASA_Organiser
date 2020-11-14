@@ -141,8 +141,6 @@ public class ConsoleManager implements View {
         if(ans5.equals("Y")){
             links = inputLinks();
         }
-        System.out.println(time);
-        System.out.println(duration);
         switch (type){
             case 1:
                 return director.getSingleEvent(name, place, invited, date, time, priority, tags, duration, links);
