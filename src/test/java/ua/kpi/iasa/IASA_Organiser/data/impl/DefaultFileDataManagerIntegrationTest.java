@@ -71,6 +71,7 @@ public class DefaultFileDataManagerIntegrationTest {
         List<Event> result = defaultFileDataManager.getAllEventsList();
 
         cleanDirectory();
+        System.out.println(result);
         assertEquals(2, result.size());
         assertTrue(result.contains(event1));
         assertTrue(result.contains(event2));
