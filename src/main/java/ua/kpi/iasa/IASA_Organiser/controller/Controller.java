@@ -11,12 +11,19 @@ import ua.kpi.iasa.IASA_Organiser.view.View;
 import java.util.List;
 
 public class Controller {
-    private final EventService eventService = EventService.getInstance();
+    private EventService eventService;
+    private CalendarService calendarService;
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
-    private final CalendarService calendarService = CalendarService.getInstance();
 
-    public Controller(View view) {
+    public void init(View view) {
         logger.info("We are starting!");
+
+        EventService eventServiceInstance = EventService.getInstance();
+        setEventService(eventServiceInstance);
+
+        CalendarService calendarServiceInstance = CalendarService.getInstance();
+        setCalendarService(calendarServiceInstance);
+
         view.configController(this);
         view.startUp();
     }
@@ -55,4 +62,11 @@ public class Controller {
         eventService.removeEvent(event);
     }
 
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    public void setCalendarService(CalendarService calendarService) {
+        this.calendarService = calendarService;
+    }
 }
