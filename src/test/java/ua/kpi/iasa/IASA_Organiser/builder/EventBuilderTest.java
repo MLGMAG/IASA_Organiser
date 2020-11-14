@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.service;
+package ua.kpi.iasa.IASA_Organiser.builder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

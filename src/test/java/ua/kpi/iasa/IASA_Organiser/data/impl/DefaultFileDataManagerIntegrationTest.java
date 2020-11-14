@@ -4,12 +4,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import ua.kpi.iasa.IASA_Organiser.builder.Builder;
+import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
+import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Place;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
-import ua.kpi.iasa.IASA_Organiser.service.Builder;
-import ua.kpi.iasa.IASA_Organiser.service.BuilderDirector;
-import ua.kpi.iasa.IASA_Organiser.service.EventBuilder;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,8 +2,8 @@ package ua.kpi.iasa.IASA_Organiser.view;
 
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.*;
-import ua.kpi.iasa.IASA_Organiser.builders.BuilderDirector;
-import ua.kpi.iasa.IASA_Organiser.builders.EventBuilder;
+import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
+import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

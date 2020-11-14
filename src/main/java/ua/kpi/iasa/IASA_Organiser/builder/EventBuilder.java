@@ -1,4 +1,4 @@
-package ua.kpi.iasa.IASA_Organiser.builders;
+package ua.kpi.iasa.IASA_Organiser.builder;
 
 import ua.kpi.iasa.IASA_Organiser.model.*;
 
