@@ -11,13 +11,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,6 +41,9 @@ public class DefaultFileDataManagerTest {
 
     @Mock
     private List<Event> eventList;
+
+    @Mock
+    private List<Event> newEventList;
 
     @Spy
     private DefaultFileDataManager defaultFileDataManager;
@@ -73,28 +78,94 @@ public class DefaultFileDataManagerTest {
 
     @Test
     public void shouldSave() throws IOException {
-        setUpMocks();
-        List<Event> testData = new ArrayList<>();
-        testData.add(event);
-        testData.add(event);
-        List<Event> spyList = spy(testData);
-        doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
-        doReturn(spyList).when(defaultFileDataManager).getList();
-        when(file.exists()).thenReturn(false);
-        doNothing().when(defaultFileDataManager).initFile(file);
-        defaultFileDataManager.init(FILE_PATH);
-        doReturn(objectOutputStream).when(defaultFileDataManager).getObjectOutputStream(file);
-        doNothing().when(defaultFileDataManager).writeObjectToFile(objectOutputStream, event);
+        setUpMocks(eventList);
+        when(defaultFileDataManager.getList()).thenReturn(newEventList);
+        doNothing().when(defaultFileDataManager).saveAll(newEventList);
 
         defaultFileDataManager.save(event);
 
-        verify(spyList).add(event);
-        verify(defaultFileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
+        verify(newEventList).addAll(eventList);
+        verify(newEventList).add(event);
     }
 
-    private void setUpMocks() throws IOException {
+    @Test
+    public void shouldGetAllEventsList() throws IOException {
+        setUpMocks(eventList);
+
+        List<Event> actual = defaultFileDataManager.getAllEventsList();
+
+        assertEquals(eventList, actual);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldGetAllEvents() {
+        defaultFileDataManager.getAllEvents();
+    }
+
+    @Test
+    public void shouldNotSaveAllOnRemove() {
+        when(defaultFileDataManager.getAllEventsList()).thenReturn(eventList);
+        when(eventList.remove(event)).thenReturn(false);
+
+        defaultFileDataManager.remove(event);
+
+        verify(defaultFileDataManager, never()).saveAll(eventList);
+    }
+
+    @Test
+    public void shouldSaveAll() throws IOException {
+        List<Event> testData = asList(event, event, event);
+        setUpMocks(eventList);
+        doReturn(objectOutputStream).when(defaultFileDataManager).getObjectOutputStream(file);
+        doNothing().when(defaultFileDataManager).writeObjectToFile(objectOutputStream, event);
+
+        defaultFileDataManager.saveAll(testData);
+
+        verify(defaultFileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
+        assertEquals(defaultFileDataManager.getAllEventsList(), testData);
+    }
+
+    @Test
+    public void shouldUpdate() {
+        Event updatedEvent = mock(Event.class);
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        List<Event> testData = asList(event1, event2);
+        when(defaultFileDataManager.getAllEventsList()).thenReturn(testData);
+        when(updatedEvent.getId()).thenReturn(uuid1);
+        when(event1.getId()).thenReturn(uuid2);
+        when(event2.getId()).thenReturn(uuid1);
+        doNothing().when(defaultFileDataManager).saveAll(testData);
+
+        defaultFileDataManager.update(updatedEvent);
+
+        assertEquals(updatedEvent, testData.get(1));
+    }
+
+    @Test
+    public void shouldNotUpdate() {
+        Event updatedEvent = mock(Event.class);
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        UUID uuid3 = UUID.randomUUID();
+        List<Event> testData = asList(event1, event2);
+        when(defaultFileDataManager.getAllEventsList()).thenReturn(testData);
+        when(updatedEvent.getId()).thenReturn(uuid1);
+        when(event1.getId()).thenReturn(uuid2);
+        when(event2.getId()).thenReturn(uuid3);
+
+        defaultFileDataManager.update(updatedEvent);
+
+        verify(defaultFileDataManager, never()).saveAll(testData);
+    }
+
+    private void setUpMocks(List<Event> events) throws IOException {
         doReturn(file).when(defaultFileDataManager).getFile(FILE_PATH);
-        doReturn(eventList).when(defaultFileDataManager).getList();
+        doReturn(events).when(defaultFileDataManager).getList();
         when(file.exists()).thenReturn(false);
         doNothing().when(defaultFileDataManager).initFile(file);
 

@@ -33,8 +33,10 @@ public class DefaultFileDataManager implements FileDataManager {
 
     @Override
     public void save(Event event) {
-        events.add(event);
-        saveAll(events);
+        List<Event> newEvents = getList();
+        newEvents.addAll(events);
+        newEvents.add(event);
+        saveAll(newEvents);
     }
 
     @Override
@@ -43,9 +45,10 @@ public class DefaultFileDataManager implements FileDataManager {
         for (Event eventInList : allEventsList) {
             if (eventInList.getId().compareTo(event.getId()) == 0) {
                 allEventsList.set(allEventsList.indexOf(eventInList), event);
+                saveAll(allEventsList);
+                break;
             }
         }
-        saveAll(events);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class DefaultFileDataManager implements FileDataManager {
             for (Event event : events) {
                 writeObjectToFile(objectOutputStream, event);
             }
-            this.events = events;
+            setEvents(events);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,10 +122,14 @@ public class DefaultFileDataManager implements FileDataManager {
     }
 
     public static DefaultFileDataManager getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new DefaultFileDataManager();
             instance.init("/home/andriy/IdeaProjects/IASA_Organiser/src/main/resources/data/test.txt");
         }
         return instance;
+    }
+
+    private void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
