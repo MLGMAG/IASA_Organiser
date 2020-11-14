@@ -52,7 +52,7 @@ public class Controller {
         eventService.createEvent(event);
     }
 
-    public void changeEvent(Event event) {
+    public void updateEvent(Event event) {
         logger.debug("Method was called with {}", event);
         eventService.updateEvent(event);
     }
