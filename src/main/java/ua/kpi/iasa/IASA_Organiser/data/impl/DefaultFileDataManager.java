@@ -59,7 +59,11 @@ public class DefaultFileDataManager implements FileDataManager {
         }
     }
 
+    /**
+     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
+     */
     @Override
+    @Deprecated
     public Event[] getAllEvents() {
         throw new UnsupportedOperationException("You are working with FileDataManager!");
     }

@@ -22,6 +22,9 @@ public class DefaultArrayListDataManager implements GenericDataManager {
 
     }
 
+    /**
+     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
+     */
     @Override
     @Deprecated
     public Event[] getAllEvents() {

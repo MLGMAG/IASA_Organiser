@@ -20,6 +20,9 @@ public class EventService {
         dataManager.save(event);
     }
 
+    /**
+     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
+     */
     @Deprecated
     public Event[] getAllEvents() {
         return dataManager.getAllEvents();
