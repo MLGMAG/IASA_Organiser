@@ -17,6 +17,8 @@ public class DefaultFileDataManager implements FileDataManager {
     private File file;
     private List<Event> events;
 
+    private static final String STORAGE_PATH = "D:\\ООП\\IASA_Organiser\\src\\main\\resources\\test.txt";
+
     public void init(String path) {
         file = getFile(path);
         events = getList();
@@ -124,7 +126,7 @@ public class DefaultFileDataManager implements FileDataManager {
     public static DefaultFileDataManager getInstance() {
         if (instance == null) {
             instance = new DefaultFileDataManager();
-            instance.init("/home/andriy/IdeaProjects/IASA_Organiser/src/main/resources/data/test.txt");
+            instance.init(STORAGE_PATH);
         }
         return instance;
     }
