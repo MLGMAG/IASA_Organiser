@@ -150,21 +150,7 @@ public class Event implements Comparator<Event>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return expired == event.expired &&
-                single == event.single &&
-                periodic == event.periodic &&
-                deadline == event.deadline &&
-                completable == event.completable &&
-                Objects.equals(id, event.id) &&
-                Objects.equals(name, event.name) &&
-                Objects.equals(place, event.place) &&
-                Objects.equals(invited, event.invited) &&
-                Objects.equals(date, event.date) &&
-                Objects.equals(time, event.time) &&
-                priority == event.priority &&
-                Objects.equals(tags, event.tags) &&
-                Objects.equals(duration, event.duration) &&
-                Objects.equals(links, event.links);
+        return Objects.equals(id, event.id);
     }
 
     @Override
