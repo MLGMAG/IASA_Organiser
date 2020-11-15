@@ -240,7 +240,7 @@ public class ConsoleManager implements View {
             answ = scannerAnsw.next();
         }while (answ.equals("Y"));
         Event newEvent = eventBuilder.getResult();
-        controller.changeEvent(newEvent);
+        controller.updateEvent(newEvent);
     }
 
     private void removeEvent(Event event) {
