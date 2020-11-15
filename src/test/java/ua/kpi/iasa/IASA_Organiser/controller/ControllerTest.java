@@ -97,7 +97,7 @@ public class ControllerTest {
     public void shouldChangeEvent() {
         controller.setEventService(eventService);
 
-        controller.changeEvent(event);
+        controller.updateEvent(event);
 
         verify(eventService).updateEvent(event);
     }
