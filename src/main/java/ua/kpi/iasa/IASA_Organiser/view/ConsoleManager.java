@@ -1,5 +1,6 @@
 package ua.kpi.iasa.IASA_Organiser.view;
 
+import ua.kpi.iasa.IASA_Organiser.builder.Builder;
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.*;
 import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
@@ -186,7 +187,7 @@ public class ConsoleManager implements View {
     }
 
     private void editEvent(Event event) {
-        EventBuilder eventBuilder = new EventBuilder();
+        Builder eventBuilder = new EventBuilder();
         eventBuilder.setInitValues(event);
         Scanner scannerInt = new Scanner(System.in);
         Scanner scannerAnsw = new Scanner(System.in);
