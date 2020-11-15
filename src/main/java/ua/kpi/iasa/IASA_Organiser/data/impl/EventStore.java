@@ -2,6 +2,10 @@ package ua.kpi.iasa.IASA_Organiser.data.impl;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
+/**
+ * @deprecated It was useful at first lab, but now use JCF.
+ */
+@Deprecated
 public class EventStore {  //smth like database/it`s foundation
     private Event[] events;
     private final int INIT_SIZE = 30;
