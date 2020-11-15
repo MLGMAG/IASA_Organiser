@@ -10,10 +10,6 @@ public interface GenericDataManager {
 
     void remove(Event event);
 
-    /**
-     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
-     */
-    @Deprecated
     Event[] getAllEvents();
 
     List<Event> getAllEventsList();
