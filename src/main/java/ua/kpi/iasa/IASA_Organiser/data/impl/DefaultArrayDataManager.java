@@ -7,6 +7,10 @@ import ua.kpi.iasa.IASA_Organiser.data.ArrayDataManager;
 
 import java.util.List;
 
+/**
+ * @deprecated It was useful at first lab, but now use {@link DefaultFileDataManager} instead.
+ */
+@Deprecated
 public class DefaultArrayDataManager implements ArrayDataManager {
     private static DefaultArrayDataManager instance;
     private final EventStore data = new EventStore();
