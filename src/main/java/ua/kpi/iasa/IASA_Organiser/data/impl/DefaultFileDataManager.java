@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class DefaultFileDataManager implements FileDataManager {
     private static DefaultFileDataManager instance;
     private File file;
     private List<Event> events;
+
+    private static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "test.txt").toString();
 
     public void init(String path) {
         file = getFile(path);
@@ -128,7 +131,7 @@ public class DefaultFileDataManager implements FileDataManager {
     public static DefaultFileDataManager getInstance() {
         if (instance == null) {
             instance = new DefaultFileDataManager();
-            instance.init("/home/andriy/IdeaProjects/IASA_Organiser/src/main/resources/data/test.txt");
+            instance.init(STORAGE_PATH);
         }
         return instance;
     }

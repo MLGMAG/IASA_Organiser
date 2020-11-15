@@ -33,7 +33,13 @@ public class ConsoleManager implements View {
             System.out.println("\nChoose action:");
             menu();
             scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input!");
+                continue;
+            }
             choiceSelector(choice);
         }
     }
@@ -84,15 +90,8 @@ public class ConsoleManager implements View {
     }
 
     private Event creation() {
-        Scanner scannerType = new Scanner(System.in);
-        System.out.print("Which type of event you want to create? \n" +
-                "1. Single.\n" +
-                "2. Periodic.\n" +
-                "3. Expire.\n" +
-                "4. Completable.\n" +
-                "5. Deadline.\n\n" +
-                "Enter the number[1-5]: ");
-        int type = scannerType.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        int type;
         String name;
         LocalDate date;
         LocalTime time;
@@ -102,44 +101,55 @@ public class ConsoleManager implements View {
         List<Tag> tags = null;
         List<Link> links = null;
         Place place = null;
+
+        while (true){
+            try{
+                System.out.print("\nWhich type of event you want to create?\n" +
+                        "1. Single.\n" +
+                        "2. Periodic.\n" +
+                        "3. Expire.\n" +
+                        "4. Completable.\n" +
+                        "5. Deadline.\n\n" +
+                        "Enter the number[1-5]: ");
+                type = scanner.nextInt();
+                if (type < 1 || type > 5) throw new InputMismatchException();
+                break;
+            } catch (InputMismatchException e){
+                scanner = new Scanner(System.in);
+            }
+        }
+
         name = inputName();
         date = inputDate();
+
+        System.out.println("\nEnter the time, when event starts:");
         time = inputTime();
+
         priority = inputPriority();
 
-        System.out.print("Do you want to add duration?[Y/n]: ");
-        Scanner scanner1 = new Scanner(System.in);
-        String ans1 = scanner1.next();
-        System.out.println();
-        if(ans1.equals("Y")){
+        System.out.print("\nDo you want to add duration?[Y/n]: ");
+        String ans1 = scanner.next();
+        if(ans1.toUpperCase().equals("Y")){
             duration = inputTime();
         }
-        Scanner scanner2 = new Scanner(System.in);
-        System.out.print("Do you want to add invited people?[Y/n]: ");
-        String ans2 = scanner2.next();
-        System.out.println();
-        if(ans2.equals("Y")){
+        System.out.print("\nDo you want to add invited people?[Y/n]: ");
+        String ans2 = scanner.next();
+        if(ans2.toUpperCase().equals("Y")){
             invited = inputInvited();
         }
-        Scanner scanner3 = new Scanner(System.in);
-        System.out.print("Do you want to add place?[Y/n]: ");
-        String ans3 = scanner3.next();
-        System.out.println();
-        if(ans3.equals("Y")){
+        System.out.print("\nDo you want to add place?[Y/n]: ");
+        String ans3 = scanner.next();
+        if(ans3.toUpperCase().equals("Y")){
             place = inputPlace();
         }
-        Scanner scanner4 = new Scanner(System.in);
-        System.out.print("Do you want to add any tags?[Y/n]: ");
-        String ans4 = scanner4.next();
-        System.out.println();
-        if(ans4.equals("Y")){
+        System.out.print("\nDo you want to add any tags?[Y/n]: ");
+        String ans4 = scanner.next();
+        if(ans4.toUpperCase().equals("Y")){
             tags = inputTags();
         }
-        Scanner scanner5 = new Scanner(System.in);
-        System.out.print("Do you want to add any links?[Y/n]: ");
-        String ans5 = scanner5.next();
-        System.out.println();
-        if(ans5.equals("Y")){
+        System.out.print("\nDo you want to add any links?[Y/n]: ");
+        String ans5 = scanner.next();
+        if(ans5.toUpperCase().equals("Y")){
             links = inputLinks();
         }
         switch (type){
@@ -168,29 +178,34 @@ public class ConsoleManager implements View {
     }
 
     private Event chooseEvent(List<Event> events) {
+        if(events.size() == 0){
+            System.out.println("There is no events!");
+            return null;
+        }
+
         System.out.println("Choose event:\n");
         eventFormat(events);
         System.out.println("Enter the number: ");
         Scanner scanner = new Scanner(System.in);
-        int num = scanner.nextInt();
-
-        for (Event event : events) {
-            if (event != null) {
-                if (num == 1) {
-                    return event;
-                }
-                num--;
+        int num;
+        while (true) {
+            try {
+                num = scanner.nextInt();
+                if (num < 1 || num > events.size()) throw new InputMismatchException();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong input!");
             }
         }
 
-        throw new InputMismatchException("Wrong number!");
+        return events.get(num - 1);
+
     }
 
     private void editEvent(Event event) {
         Builder eventBuilder = new EventBuilder();
         eventBuilder.setInitValues(event);
-        Scanner scannerInt = new Scanner(System.in);
-        Scanner scannerAnsw = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         int choice;
         String answ;
         System.out.println();
@@ -203,9 +218,18 @@ public class ConsoleManager implements View {
                                 "6. Priority.\n" +
                                 "7. Tags.\n" +
                                 "8. Duration.\n" +
-                                "9. Links.\n");
-            System.out.print("\nEnter the field, that should be changed[1-9]: ");
-            choice = scannerInt.nextInt();
+                                "9. Links.");
+            while (true) {
+                System.out.print("\nChoose the field, that should be changed[1-9]: ");
+                try {
+                    choice = scanner.nextInt();
+                    if (choice < 1 || choice > 9) throw new InputMismatchException();
+                    break;
+                } catch (InputMismatchException e){
+                    scanner = new Scanner(System.in);
+                }
+            }
+
             switch (choice){
                 case 1:
                     eventBuilder.setName(inputName());
@@ -234,12 +258,10 @@ public class ConsoleManager implements View {
                 case 9:
                     eventBuilder.setLinks(inputLinks());
                     break;
-                default:
-                    throw new InputMismatchException("Wrong number of changing field!");
             }
             System.out.println("\nAny others?[Y/n]: ");
-            answ = scannerAnsw.next();
-        }while (answ.equals("Y"));
+            answ = scanner.next();
+        }while (answ.toUpperCase().equals("Y"));
         Event newEvent = eventBuilder.getResult();
         controller.updateEvent(newEvent);
     }
@@ -267,4 +289,5 @@ public class ConsoleManager implements View {
     public void showEventProperties(Event event){
         System.out.println(event);
     }
+
 }

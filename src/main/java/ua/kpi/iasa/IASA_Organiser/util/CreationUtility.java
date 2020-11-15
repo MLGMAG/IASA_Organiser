@@ -2,6 +2,7 @@ package ua.kpi.iasa.IASA_Organiser.util;
 
 import ua.kpi.iasa.IASA_Organiser.model.*;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,46 +14,69 @@ public class CreationUtility {
     private CreationUtility(){}
 
     public static String inputName(){
-        Scanner scannerName = new Scanner(System.in);
-        System.out.print("Enter name of event:");
-        return scannerName.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.print("Enter name of event:");
+                return scanner.nextLine();
+            } catch (InputMismatchException e){
+                scanner = new Scanner(System.in);
+            }
+        }
     }
 
     public static LocalDate inputDate(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the date of event:\n");
-        System.out.print("Enter the day: ");
-        int day = scanner.nextInt();
-        System.out.print("Enter the month: ");
-        int month = scanner.nextInt();
-        System.out.print("Enter the year: ");
-        int year = scanner.nextInt();
-        return LocalDate.of(year, month, day);
+        while (true) {
+            try {
+                System.out.println("\nEnter the date of event:");
+                System.out.print("Enter the day: ");
+                int day = scanner.nextInt();
+                System.out.print("Enter the month: ");
+                int month = scanner.nextInt();
+                System.out.print("Enter the year: ");
+                int year = scanner.nextInt();
+                return LocalDate.of(year, month, day);
+            } catch (DateTimeException e){
+                scanner = new Scanner(System.in);
+            }
+        }
     }
 
     public static LocalTime inputTime(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the time, when event starts:\n");
-        System.out.print("Enter the hours: ");
-        int hours = scanner.nextInt();
-        System.out.print("Enter the minutes: ");
-        int minutes = scanner.nextInt();
-        return LocalTime.of(hours, minutes);
+        while (true) {
+            try {
+                System.out.print("Enter the hours: ");
+                int hours = scanner.nextInt();
+                System.out.print("Enter the minutes: ");
+                int minutes = scanner.nextInt();
+                return LocalTime.of(hours, minutes);
+            } catch (InputMismatchException e){
+                scanner = new Scanner(System.in);
+            }
+        }
     }
 
     public static Priority inputPriority(){
-        System.out.println("Enter the priority of this event[1, 2 or 3]: ");
-        Scanner scannerPriority = new Scanner(System.in);
-        int priorityLevel = scannerPriority.nextInt();
-        switch (priorityLevel){
-            case 1:
-                return Priority.LOW;
-            case 2:
-                return Priority.MEDIUM;
-            case 3:
-                return Priority.HIGH;
-            default:
-                throw new InputMismatchException("Wrong priority level!");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.println("Enter the priority of this event[1, 2 or 3]: ");
+                int priorityLevel = scanner.nextInt();
+                switch (priorityLevel){
+                    case 1:
+                        return Priority.LOW;
+                    case 2:
+                        return Priority.MEDIUM;
+                    case 3:
+                        return Priority.HIGH;
+                    default:
+                        throw new InputMismatchException("Wrong priority level!");
+                }
+            } catch (InputMismatchException e){
+                scanner = new Scanner(System.in);
+            }
         }
     }
 
@@ -61,11 +85,15 @@ public class CreationUtility {
         List<Human> invited = new ArrayList<>();
         String answer;
         do{
-            Human human = inputHuman();
-            invited.add(human);
+            try {
+                Human human = inputHuman();
+                invited.add(human);
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input!\n");
+            }
             System.out.print("Any others?[Y/n]: ");
             answer = scanner.next();
-        }while (answer.equals("Y"));
+        }while (answer.toUpperCase().equals("Y"));
         return invited;
     }
 
@@ -75,7 +103,7 @@ public class CreationUtility {
         String firstName = scanner.next();
         System.out.print("Enter the last name: ");
         String lastName = scanner.next();
-        System.out.print("Enter the phone number: ");
+        System.out.print("Enter the phone number: ");   //TODO add validation
         String phoneNumber = scanner.next();
         System.out.print("Enter the email: ");
         String email = scanner.next();
@@ -84,17 +112,24 @@ public class CreationUtility {
 
     public static Place inputPlace(){
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the country: ");
-        String country = scanner.next();
-        System.out.print("Enter the city: ");
-        String city = scanner.next();
-        System.out.print("Enter the street: ");
-        String street = scanner.next();
-        System.out.print("Enter the house number: ");
-        int number = scanner.nextInt();
-        System.out.print("Enter the house` letter: ");
-        String letter = scanner.next();
-        return new Place(country, city, street, number, letter);
+        while (true) {
+            try {
+                System.out.print("Enter the country: ");
+                String country = scanner.next();
+                System.out.print("Enter the city: ");
+                String city = scanner.next();
+                System.out.print("Enter the street: ");
+                String street = scanner.next();
+                System.out.print("Enter the house number: ");
+                int number = scanner.nextInt();
+                System.out.print("Enter the house` letter: ");
+                String letter = scanner.next();
+                return new Place(country, city, street, number, letter);
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input!\n");
+                scanner = new Scanner(System.in);
+            }
+        }
     }
 
     public static List<Tag> inputTags(){
@@ -102,11 +137,15 @@ public class CreationUtility {
         List<Tag> tags = new ArrayList<>();
         String answer;
         do{
-            Tag tag = inputOneTag();
-            tags.add(tag);
+            try {
+                Tag tag = inputOneTag();
+                tags.add(tag);
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong input!\n");
+            }
             System.out.print("Any others?[Y/n]: ");
             answer = scanner.next();
-        }while (answer.equals("Y"));
+        }while (answer.toUpperCase().equals("Y"));
         return tags;
     }
 
@@ -122,11 +161,15 @@ public class CreationUtility {
         List<Link> links = new ArrayList<>();
         String answer;
         do{
-            Link link = inputOneLink();
-            links.add(link);
+            try {
+                Link link = inputOneLink();
+                links.add(link);
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong input!\n");
+            }
             System.out.print("Any others?[Y/n]: ");
             answer = scanner.next();
-        }while (answer.equals("Y"));
+        }while (answer.toUpperCase().equals("Y"));
         return links;
     }
 
