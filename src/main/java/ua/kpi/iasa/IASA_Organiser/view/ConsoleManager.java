@@ -32,7 +32,13 @@ public class ConsoleManager implements View {
             System.out.println("\nChoose action:");
             menu();
             scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input!");
+                continue;
+            }
             choiceSelector(choice);
         }
     }
