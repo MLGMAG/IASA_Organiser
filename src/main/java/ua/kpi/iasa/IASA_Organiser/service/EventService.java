@@ -10,10 +10,11 @@ import java.util.List;
 
 public class EventService {
     private static EventService instance;
-    private final GenericDataManager dataManager = DefaultFileDataManager.getInstance();
-    private final static Logger logger = LoggerFactory.getLogger(EventService.class);
+    private GenericDataManager dataManager;
+    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
-    private EventService() {
+    public void init() {
+        setDataManager(DefaultFileDataManager.getInstance());
     }
 
     public void createEvent(Event event) {
@@ -40,10 +41,15 @@ public class EventService {
         dataManager.remove(event);
     }
 
+    public void setDataManager(GenericDataManager dataManager) {
+        this.dataManager = dataManager;
+    }
+
     public static EventService getInstance() {
         if (instance == null) {
             logger.debug("Creating instance of {}", EventService.class.getSimpleName());
             instance = new EventService();
+            instance.init();
         }
         logger.debug("Returning instance");
         return instance;
