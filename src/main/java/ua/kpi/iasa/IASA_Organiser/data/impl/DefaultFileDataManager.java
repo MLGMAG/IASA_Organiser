@@ -17,8 +17,8 @@ public class DefaultFileDataManager implements FileDataManager {
     private static DefaultFileDataManager instance;
     private File file;
     private List<Event> events;
-
-    private static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "test.txt").toString();
+    private static final String FILE_NAME = "test.txt";
+    private static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "data", FILE_NAME).toString();
 
     public void init(String path) {
         file = getFile(path);
