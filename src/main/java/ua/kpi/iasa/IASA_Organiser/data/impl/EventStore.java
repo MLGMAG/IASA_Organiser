@@ -2,7 +2,12 @@ package ua.kpi.iasa.IASA_Organiser.data.impl;
 
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
-public class EventStore {  //smth like database/it`s foundation
+/**
+ * Class was used by {@link DefaultArrayDataManager},
+ * but not that DataManager is deprecated and you don't need to use {@link EventStore} class
+ */
+@Deprecated
+public class EventStore {
     private Event[] events;
     private final int INIT_SIZE = 30;
     private int size;
@@ -15,7 +20,7 @@ public class EventStore {  //smth like database/it`s foundation
         maxSize = INIT_SIZE;
     }
 
-    private EventStore(EventStore eventStore) {   //constructor for cloning(Prototype pattern)
+    private EventStore(EventStore eventStore) {
         this.size = eventStore.size;
         this.maxSize = eventStore.maxSize;
         this.events = new Event[eventStore.events.length];

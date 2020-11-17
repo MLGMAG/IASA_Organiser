@@ -42,7 +42,10 @@ public class DefaultArrayDataManager implements ArrayDataManager {
     public void backUpChangeFlag() {
         data.setChanged(false);
     }
-
+    /**
+     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
+     */
+    @Deprecated
     @Override
     public Event[] getAllEvents() {
         logger.debug("Returning events from array");
