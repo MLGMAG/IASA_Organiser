@@ -40,14 +40,14 @@ public class DefaultFileDataManagerIntegrationTest {
     private static final Event event1 = builderDirector.getSingleEvent("Event 1", place1, null, localDate, time, Priority.HIGH, null, duration, null);
     private static final Event event2 = builderDirector.getSingleEvent("Event 2", place1, null, localDate, time, Priority.HIGH, null, duration, null);
 
-    @Test
-    public void shouldCreateFile() throws IOException {
-        cleanDirectory();
-        defaultFileDataManager.initFile(OUTPUT_FILE);
-
-        assertTrue(OUTPUT_FILE.exists());
-        cleanDirectory();
-    }
+//    @Test
+//    public void shouldCreateFile() throws IOException {
+//        cleanDirectory();
+//        defaultFileDataManager.initFile(OUTPUT_FILE);
+//
+//        assertTrue(OUTPUT_FILE.exists());
+//        cleanDirectory();
+//    }
 
     @Test
     public void shouldSaveAndCompareEvents() {
