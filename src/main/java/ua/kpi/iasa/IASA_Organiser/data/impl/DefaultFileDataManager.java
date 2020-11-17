@@ -4,14 +4,11 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.*;
 
 public class DefaultFileDataManager implements FileDataManager {
     private static DefaultFileDataManager instance;
@@ -22,7 +19,7 @@ public class DefaultFileDataManager implements FileDataManager {
 
     public void init(String path) {
         file = getFile(path);
-        events = getList();
+        events = createNewEventList();
         if (!file.exists()) {
             try {
                 initFile(file);
@@ -30,13 +27,13 @@ public class DefaultFileDataManager implements FileDataManager {
                 e.printStackTrace();
             }
         } else {
-            parseData();
+            parseData(file, events);
         }
     }
 
     @Override
     public void save(Event event) {
-        List<Event> newEvents = getList();
+        List<Event> newEvents = createNewEventList();
         newEvents.addAll(events);
         newEvents.add(event);
         saveAll(newEvents);
@@ -76,56 +73,14 @@ public class DefaultFileDataManager implements FileDataManager {
         return events;
     }
 
-    private void parseData() {
-        try (ObjectInputStream objectInputStream = getObjectInputStream(file)) {
-            while (objectInputStream.available() != -1) {
-                events.add((Event) readObjectFromObjectInputStream(objectInputStream));
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.getCause(); //TODO: Handle These exception
-        }
-    }
-
     @Override
     public void saveAll(List<Event> events) {
-        try (ObjectOutputStream objectOutputStream = getObjectOutputStream(file)) {
-            for (Event event : events) {
-                writeObjectToFile(objectOutputStream, event);
-            }
-            setEvents(events);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Event> result = saveListToFile(file, events);
+        setEvents(result);
     }
 
-    Object readObjectFromObjectInputStream(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        return objectInputStream.readObject();
-    }
-
-    void writeObjectToFile(ObjectOutputStream objectOutputStream, Event event) throws IOException {
-        objectOutputStream.writeObject(event);
-    }
-
-    List<Event> getList() {
+    List<Event> createNewEventList() {
         return new ArrayList<>();
-    }
-
-    ObjectOutputStream getObjectOutputStream(File file) throws IOException {
-        return new ObjectOutputStream(new FileOutputStream(file));
-    }
-
-    ObjectInputStream getObjectInputStream(File file) throws IOException {
-        return new ObjectInputStream(new FileInputStream(file));
-    }
-
-    File getFile(String path) {
-        return new File(path);
-    }
-
-    void initFile(File file) throws IOException {
-        if (!file.createNewFile()) {
-            throw new IOException("Can't create new file!");
-        }
     }
 
     public static DefaultFileDataManager getInstance() {
