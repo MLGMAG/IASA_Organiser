@@ -9,8 +9,6 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.util.FileUtility;
 
 import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +16,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,12 +26,6 @@ public class DefaultFileDataManagerTest {
 
     @Mock
     private Event event;
-
-    @Mock
-    private ObjectInputStream objectInputStream;
-
-    @Mock
-    private ObjectOutputStream objectOutputStream;
 
     @Mock
     private File file;
@@ -52,103 +42,134 @@ public class DefaultFileDataManagerTest {
     @Mock
     private DefaultFileDataManager defaultFileDataManager;
 
-    private static final String FILE_PATH = "test_path";
+
+    @Test
+    public void shouldInitState() {
+        fileUtilityMock.when(() -> FileUtility.getNewFile(DefaultFileDataManager.STORAGE_PATH)).thenReturn(file);
+        when(defaultFileDataManager.createNewEventList()).thenReturn(eventList);
+        doCallRealMethod().when(defaultFileDataManager).initState();
+
+        defaultFileDataManager.initState();
+
+        verify(defaultFileDataManager).setFile(file);
+        verify(defaultFileDataManager).setEvents(eventList);
+    }
+
+    @Test
+    public void shouldInitStorageOnNotExistingFile() {
+        when(defaultFileDataManager.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(false);
+        doCallRealMethod().when(defaultFileDataManager).initStorage();
+
+        defaultFileDataManager.initStorage();
+
+        fileUtilityMock.verify(() -> FileUtility.initFile(file));
+    }
+
+    @Test
+    public void shouldInitStorageOnExistingFile() {
+        when(defaultFileDataManager.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
+        doCallRealMethod().when(defaultFileDataManager).initStorage();
+
+        defaultFileDataManager.initStorage();
+
+        fileUtilityMock.verify(() -> FileUtility.parseData(file, eventList));
+    }
 
 //    @Test
-//    public void shouldInitNotExistingFile() {
-//        fileUtilityMock.when(() -> FileUtility.getNewFile(FILE_PATH)).thenReturn(file);
+//    public void shouldNotInitOnException() {
+//        when(defaultFileDataManager.getFile()).thenReturn(file);
 //        when(file.exists()).thenReturn(false);
-//        doCallRealMethod().when(defaultFileDataManager).initStorage(FILE_PATH);
+//        fileUtilityMock.when(() -> FileUtility.initFile(file)).thenThrow(IOException.class);
+//        doCallRealMethod().when(defaultFileDataManager).initStorage();
 //
-//        defaultFileDataManager.initStorage(FILE_PATH);
-//
-//        fileUtilityMock.verify(() -> {
-//            FileUtility.initFile(file);
-//        });
+//        defaultFileDataManager.initStorage();
 //    }
 
-//    @Test
-//    public void shouldInitOnExistingFile() {
-//        fileUtilityMock.when(() -> FileUtility.getNewFile(FILE_PATH)).thenReturn(file);
-//        when(file.exists()).thenReturn(true);
-//        doReturn(eventList).when(defaultFileDataManager).createNewEventList();
-//        doCallRealMethod().when(defaultFileDataManager).initStorage(FILE_PATH);
-//
-//        defaultFileDataManager.initStorage(FILE_PATH);
-//
-//        fileUtilityMock.verify((() -> FileUtility.getNewFile(FILE_PATH)));
-//        fileUtilityMock.verify(() -> {
-//            FileUtility.parseData(file, eventList);
-//        });
-//    }
+    @Test
+    public void shouldSave() {
+        when(defaultFileDataManager.createNewEventList()).thenReturn(newEventList);
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
+        doNothing().when(defaultFileDataManager).saveAll(newEventList);
+        doCallRealMethod().when(defaultFileDataManager).save(event);
 
-//    @Test
-//    public void shouldSave() {
-//        setUpEvents(eventList);
-//        doReturn(newEventList).when(defaultFileDataManager).createNewEventList();
-//        doNothing().when(defaultFileDataManager).saveAll(newEventList);
-//
-//        defaultFileDataManager.save(event);
-//
-//        verify(newEventList).addAll(eventList);
-//        verify(newEventList).add(event);
-//    }
+        defaultFileDataManager.save(event);
 
-//    @Test
-//    public void shouldGetAllEventsList() throws IOException {
-//        setUpMocks(eventList);
-//
-//        List<Event> actual = defaultFileDataManager.getAllEventsList();
-//
-//        assertEquals(eventList, actual);
-//    }
+        verify(newEventList).addAll(eventList);
+        verify(newEventList).add(event);
+    }
+
+    @Test
+    public void shouldGetAllEventsList() {
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
+        when(defaultFileDataManager.getAllEventsList()).thenCallRealMethod();
+
+        List<Event> actual = defaultFileDataManager.getAllEventsList();
+
+        assertEquals(eventList, actual);
+    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldGetAllEvents() {
+        doCallRealMethod().when(defaultFileDataManager).getAllEvents();
+
         defaultFileDataManager.getAllEvents();
     }
 
     @Test
+    public void shouldSaveAllOnRemove() {
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
+        when(eventList.remove(event)).thenReturn(true);
+        doCallRealMethod().when(defaultFileDataManager).remove(event);
+
+        defaultFileDataManager.remove(event);
+
+        verify(defaultFileDataManager).saveAll(eventList);
+    }
+
+    @Test
     public void shouldNotSaveAllOnRemove() {
-        when(defaultFileDataManager.getAllEventsList()).thenReturn(eventList);
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
         when(eventList.remove(event)).thenReturn(false);
+        doCallRealMethod().when(defaultFileDataManager).remove(event);
 
         defaultFileDataManager.remove(event);
 
         verify(defaultFileDataManager, never()).saveAll(eventList);
     }
 
-//    @Test
-//    public void shouldSaveAll() throws IOException {
-//        List<Event> testData = asList(event, event, event);
-//        setUpMocks(eventList);
-//        doReturn(objectOutputStream).when(defaultFileDataManager).getObjectOutputStream(file);
-//        doNothing().when(defaultFileDataManager).writeObjectToFile(objectOutputStream, event);
-//
-//        defaultFileDataManager.saveAll(testData);
-//
-//        verify(defaultFileDataManager, times(3)).writeObjectToFile(objectOutputStream, event);
-//        assertEquals(defaultFileDataManager.getAllEventsList(), testData);
-//    }
+    @Test
+    public void shouldSaveAll() {
+        when(defaultFileDataManager.getFile()).thenReturn(file);
+        fileUtilityMock.when(() -> FileUtility.saveListToFile(file, eventList)).thenReturn(newEventList);
+        doCallRealMethod().when(defaultFileDataManager).saveAll(eventList);
 
-//    @Test
-//    public void shouldUpdate() {
-//        Event updatedEvent = mock(Event.class);
-//        Event event1 = mock(Event.class);
-//        Event event2 = mock(Event.class);
-//        UUID uuid1 = UUID.randomUUID();
-//        UUID uuid2 = UUID.randomUUID();
-//        List<Event> testData = asList(event1, event2);
-//        when(defaultFileDataManager.getAllEventsList()).thenReturn(testData);
-//        when(updatedEvent.getId()).thenReturn(uuid1);
-//        when(event1.getId()).thenReturn(uuid2);
-//        when(event2.getId()).thenReturn(uuid1);
-//        doNothing().when(defaultFileDataManager).saveAll(testData);
-//
-//        defaultFileDataManager.update(updatedEvent);
-//
-//        assertEquals(updatedEvent, testData.get(1));
-//    }
+        defaultFileDataManager.saveAll(eventList);
+
+        verify(defaultFileDataManager).setEvents(newEventList);
+    }
+
+    @Test
+    public void shouldUpdate() {
+        Event updatedEvent = mock(Event.class);
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        List<Event> testData = asList(event1, event2);
+        when(defaultFileDataManager.getEvents()).thenReturn(testData);
+        when(updatedEvent.getId()).thenReturn(uuid1);
+        when(event1.getId()).thenReturn(uuid2);
+        when(event2.getId()).thenReturn(uuid1);
+        doCallRealMethod().when(defaultFileDataManager).update(updatedEvent);
+
+        defaultFileDataManager.update(updatedEvent);
+
+        verify(defaultFileDataManager).saveAll(testData);
+        assertEquals(updatedEvent, testData.get(1));
+    }
 
     @Test
     public void shouldNotUpdate() {
@@ -159,20 +180,15 @@ public class DefaultFileDataManagerTest {
         UUID uuid2 = UUID.randomUUID();
         UUID uuid3 = UUID.randomUUID();
         List<Event> testData = asList(event1, event2);
-        when(defaultFileDataManager.getAllEventsList()).thenReturn(testData);
+        when(defaultFileDataManager.getEvents()).thenReturn(testData);
         when(updatedEvent.getId()).thenReturn(uuid1);
         when(event1.getId()).thenReturn(uuid2);
         when(event2.getId()).thenReturn(uuid3);
+        doCallRealMethod().when(defaultFileDataManager).update(updatedEvent);
 
         defaultFileDataManager.update(updatedEvent);
 
         verify(defaultFileDataManager, never()).saveAll(testData);
     }
 
-//    private void setUpEvents(List<Event> events) {
-//        fileUtilityMock.when(() -> FileUtility.getNewFile(FILE_PATH)).thenReturn(file);
-//        doReturn(events).when(defaultFileDataManager).createNewEventList();
-//        when(file.exists()).thenReturn(false);
-//        defaultFileDataManager.initStorage(FILE_PATH);
-//    }
 }
