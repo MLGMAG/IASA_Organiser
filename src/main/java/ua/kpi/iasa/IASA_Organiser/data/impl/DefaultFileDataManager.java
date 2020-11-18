@@ -6,9 +6,14 @@ import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.*;
+import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.getNewFile;
+import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.initFile;
+import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.parseData;
+import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.saveListToFile;
+
 
 public class DefaultFileDataManager implements FileDataManager {
     private static DefaultFileDataManager instance;
@@ -17,24 +22,35 @@ public class DefaultFileDataManager implements FileDataManager {
     private static final String FILE_NAME = "test.txt";
     private static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "data", FILE_NAME).toString();
 
-    public void init(String path) {
-        file = getFile(path);
-        events = createNewEventList();
-        if (!file.exists()) {
+    private void initState() {
+        final File storage = getNewFile(DefaultFileDataManager.STORAGE_PATH);
+        setFile(storage);
+
+        final List<Event> newEventList = createNewEventList();
+        setEvents(newEventList);
+    }
+
+    public void initStorage() {
+        if (!getFile().exists()) {
             try {
-                initFile(file);
+                final File storage = getFile();
+                initFile(storage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            parseData(file, events);
+            final List<Event> storage = getAllEventsList();
+            final File parseFile = getFile();
+            parseData(parseFile, storage);
         }
     }
 
     @Override
     public void save(Event event) {
         List<Event> newEvents = createNewEventList();
-        newEvents.addAll(events);
+        final List<Event> currentEvents = getAllEventsList();
+
+        newEvents.addAll(currentEvents);
         newEvents.add(event);
         saveAll(newEvents);
     }
@@ -70,12 +86,13 @@ public class DefaultFileDataManager implements FileDataManager {
 
     @Override
     public List<Event> getAllEventsList() {
-        return events;
+        return getEvents();
     }
 
     @Override
     public void saveAll(List<Event> events) {
-        List<Event> result = saveListToFile(file, events);
+        final File storage = getFile();
+        List<Event> result = saveListToFile(storage, events);
         setEvents(result);
     }
 
@@ -86,9 +103,22 @@ public class DefaultFileDataManager implements FileDataManager {
     public static DefaultFileDataManager getInstance() {
         if (instance == null) {
             instance = new DefaultFileDataManager();
-            instance.init(STORAGE_PATH);
+            instance.initState();
+            instance.initStorage();
         }
         return instance;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    private void setFile(File file) {
+        this.file = file;
+    }
+
+    public List<Event> getEvents() {
+        return events;
     }
 
     private void setEvents(List<Event> events) {
