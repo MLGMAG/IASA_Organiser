@@ -36,7 +36,7 @@ public class ConsoleManager implements View {
             int choice;
             try {
                 choice = scanner.nextInt();
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Wrong input!");
                 continue;
             }
@@ -44,10 +44,10 @@ public class ConsoleManager implements View {
         }
     }
 
-    private void pause(){
-        try{
+    private void pause() {
+        try {
             Thread.sleep(1500);
-        } catch (InterruptedException exc){
+        } catch (InterruptedException exc) {
             exc.printStackTrace();
         }
     }
@@ -102,8 +102,8 @@ public class ConsoleManager implements View {
         List<Link> links = null;
         Place place = null;
 
-        while (true){
-            try{
+        while (true) {
+            try {
                 System.out.print("\nWhich type of event you want to create?\n" +
                         "1. Single.\n" +
                         "2. Periodic.\n" +
@@ -114,7 +114,7 @@ public class ConsoleManager implements View {
                 type = scanner.nextInt();
                 if (type < 1 || type > 5) throw new InputMismatchException();
                 break;
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 scanner = new Scanner(System.in);
             }
         }
@@ -129,30 +129,30 @@ public class ConsoleManager implements View {
 
         System.out.print("\nDo you want to add duration?[Y/n]: ");
         String ans1 = scanner.next();
-        if(ans1.toUpperCase().equals("Y")){
+        if (ans1.toUpperCase().equals("Y")) {
             duration = inputTime();
         }
         System.out.print("\nDo you want to add invited people?[Y/n]: ");
         String ans2 = scanner.next();
-        if(ans2.toUpperCase().equals("Y")){
+        if (ans2.toUpperCase().equals("Y")) {
             invited = inputInvited();
         }
         System.out.print("\nDo you want to add place?[Y/n]: ");
         String ans3 = scanner.next();
-        if(ans3.toUpperCase().equals("Y")){
+        if (ans3.toUpperCase().equals("Y")) {
             place = inputPlace();
         }
         System.out.print("\nDo you want to add any tags?[Y/n]: ");
         String ans4 = scanner.next();
-        if(ans4.toUpperCase().equals("Y")){
+        if (ans4.toUpperCase().equals("Y")) {
             tags = inputTags();
         }
         System.out.print("\nDo you want to add any links?[Y/n]: ");
         String ans5 = scanner.next();
-        if(ans5.toUpperCase().equals("Y")){
+        if (ans5.toUpperCase().equals("Y")) {
             links = inputLinks();
         }
-        switch (type){
+        switch (type) {
             case 1:
                 return director.getSingleEvent(name, place, invited, date, time, priority, tags, duration, links);
             case 2:
@@ -178,7 +178,7 @@ public class ConsoleManager implements View {
     }
 
     private Event chooseEvent(List<Event> events) {
-        if(events.size() == 0){
+        if (events.size() == 0) {
             System.out.println("There is no events!");
             return null;
         }
@@ -209,28 +209,28 @@ public class ConsoleManager implements View {
         int choice;
         String answ;
         System.out.println();
-        do{
-            System.out.println( "1. Name.\n" +
-                                "2. Place.\n" +
-                                "3. Invited.\n" +
-                                "4. Date.\n" +
-                                "5. Time.\n" +
-                                "6. Priority.\n" +
-                                "7. Tags.\n" +
-                                "8. Duration.\n" +
-                                "9. Links.");
+        do {
+            System.out.println("1. Name.\n" +
+                    "2. Place.\n" +
+                    "3. Invited.\n" +
+                    "4. Date.\n" +
+                    "5. Time.\n" +
+                    "6. Priority.\n" +
+                    "7. Tags.\n" +
+                    "8. Duration.\n" +
+                    "9. Links.");
             while (true) {
                 System.out.print("\nChoose the field, that should be changed[1-9]: ");
                 try {
                     choice = scanner.nextInt();
                     if (choice < 1 || choice > 9) throw new InputMismatchException();
                     break;
-                } catch (InputMismatchException e){
+                } catch (InputMismatchException e) {
                     scanner = new Scanner(System.in);
                 }
             }
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     eventBuilder.setName(inputName());
                     break;
@@ -261,7 +261,7 @@ public class ConsoleManager implements View {
             }
             System.out.println("\nAny others?[Y/n]: ");
             answ = scanner.next();
-        }while (answ.toUpperCase().equals("Y"));
+        } while (answ.toUpperCase().equals("Y"));
         Event newEvent = eventBuilder.getResult();
         controller.updateEvent(newEvent);
     }
@@ -286,7 +286,7 @@ public class ConsoleManager implements View {
         }
     }
 
-    public void showEventProperties(Event event){
+    public void showEventProperties(Event event) {
         System.out.println(event);
     }
 
