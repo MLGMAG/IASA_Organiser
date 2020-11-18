@@ -38,7 +38,7 @@ public class FileUtility {
         }
     }
 
-    public static File getFile(String path) {
+    public static File getNewFile(String path) {
         return new File(path);
     }
 
