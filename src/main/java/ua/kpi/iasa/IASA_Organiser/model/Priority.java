@@ -21,4 +21,8 @@ public enum Priority implements Serializable {
                 "priority=" + priority +
                 '}';
     }
+
+    public boolean equals(Priority p) {
+        return this.getPriority() == p.getPriority();
+    }
 }

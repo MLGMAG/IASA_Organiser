@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Priority;
+import ua.kpi.iasa.IASA_Organiser.model.Tag;
 import ua.kpi.iasa.IASA_Organiser.service.CalendarService;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
 import ua.kpi.iasa.IASA_Organiser.view.View;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Controller {
@@ -60,6 +63,26 @@ public class Controller {
     public void removeEvent(Event event) {
         logger.debug("Method was called with {}", event);
         eventService.removeEvent(event);
+    }
+
+    public List<Event> findEventsByDate(LocalDate searchDate) {
+        logger.debug("Method was called with {}", searchDate);
+        return calendarService.findEventsByDate(searchDate);
+    }
+
+    public List<Event> findEventByTag(Tag searchTag) {
+        logger.debug("Method was called with {}", searchTag);
+        return calendarService.findEventByTag(searchTag);
+    }
+
+    public List<Event> findeventByPriority(Priority searchPriority) {
+        logger.debug("Method was called with {}", searchPriority);
+        return calendarService.findEventByPriority(searchPriority);
+    }
+
+    public List<Event> sortEventsByPriority() {
+        logger.debug("Method was called...");
+        return calendarService.sortEventsByPriority();
     }
 
     public void setEventService(EventService eventService) {

@@ -1,17 +1,61 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
-import ua.kpi.iasa.IASA_Organiser.model.Calendar;
-import ua.kpi.iasa.IASA_Organiser.model.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ua.kpi.iasa.IASA_Organiser.controller.Controller;
+import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
+import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultFileDataManager;
+import ua.kpi.iasa.IASA_Organiser.model.*;
 import ua.kpi.iasa.IASA_Organiser.data.ArrayDataManager;
 import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultArrayDataManager;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CalendarService {
     private static CalendarService instance;
-    private ArrayDataManager arrayDataManager = DefaultArrayDataManager.getInstance();
+    private GenericDataManager dataManager = DefaultFileDataManager.getInstance();
+    private static final Logger logger = LoggerFactory.getLogger(CalendarService.class);
 
     private CalendarService() {
+    }
+
+    public Calendar getCalendar() {
+        logger.debug("Method was called...");
+        throw new UnsupportedOperationException("You refer to unsupported method");
+    }
+
+    public List<Event> findEventsByDate(LocalDate searchDate) {
+        logger.debug("Method was called with {}", searchDate);
+        return dataManager.getAllEventsList().stream()
+                .filter(event -> event.getDate().equals(searchDate))
+                .collect(Collectors.toList());
+    }
+
+    public List<Event> findEventByTag(Tag searchTag) {
+        logger.debug("Method was called with {}", searchTag);
+        return dataManager.getAllEventsList().stream()
+                .filter(event -> event.getTags().stream().anyMatch(tag -> tag.equals(searchTag)))
+                .collect(Collectors.toList());
+    }
+
+    public List<Event> findEventByPriority(Priority searchPriority) {
+        logger.debug("Method was called with {}", searchPriority);
+        return dataManager.getAllEventsList().stream()
+                .filter(event -> event.getPriority().equals(searchPriority))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Event> sortEventsByPriority() {
+        logger.debug("Method was called...");
+        List<Event> allEventsList = dataManager.getAllEventsList();
+        allEventsList.sort(Comparator.comparingInt(event -> event.getPriority().getPriority()));
+        return allEventsList;
     }
 
     public static CalendarService getInstance() {
@@ -19,41 +63,5 @@ public class CalendarService {
             instance = new CalendarService();
         }
         return instance;
-    }
-
-    public void updateCalendar() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setEvents(arrayDataManager.getAllEvents());
-    }
-
-    public Calendar getCalendar() {
-        Calendar calendar = Calendar.getInstance();
-        if (arrayDataManager.checkChanges()) {
-            updateCalendar();
-            arrayDataManager.backUpChangeFlag();
-        }
-        return calendar;
-    }
-
-    public Event[] getRecordingsBeforeDate(int year, int month, int day) {    //TODO finish for next ver
-        Event[] events = Calendar.getInstance().getEvents();
-        Arrays.sort(events);
-        int length = 0;
-        int evYear = (events[length]).getDate().getYear();
-        int evMonth = (events[length]).getDate().getMonthValue();
-        int evDay = (events[length]).getDate().getDayOfMonth();
-        while ((evYear <= year) && (evMonth <= month) && (evDay <= day)) {
-            evYear = (events[length]).getDate().getYear();
-            evMonth = (events[length]).getDate().getMonthValue();
-            evDay = (events[length]).getDate().getDayOfMonth();
-            length++; // count amount all recordings, which are going to happen before some date
-        }
-
-        Event[] eventsForCopy = new Event[length];
-        for (int i = 0; i < length; i++) {
-            eventsForCopy[i] = events[i]; // write all recordings to array
-        }
-//        Arrays.copyOf()
-        return eventsForCopy;
     }
 }
