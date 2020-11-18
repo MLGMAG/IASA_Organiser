@@ -14,10 +14,12 @@ public class EventService {
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
     public void init() {
+        logger.debug("Initializing eventService...");
         setDataManager(DefaultFileDataManager.getInstance());
     }
 
     public void createEvent(Event event) {
+        logger.debug("Method was called with {}", event);
         dataManager.save(event);
     }
 
@@ -26,26 +28,32 @@ public class EventService {
      */
     @Deprecated
     public Event[] getAllEvents() {
+        logger.debug("Method was called...");
         return dataManager.getAllEvents();
     }
 
     public List<Event> getAllEventsList() {
+        logger.debug("Method was called...");
         return dataManager.getAllEventsList();
     }
 
     public void updateEvent(Event event) {
+        logger.debug("Method was called with {}", event);
         dataManager.update(event);
     }
 
     public void removeEvent(Event event) {
+        logger.debug("Method was called with {}", event);
         dataManager.remove(event);
     }
 
     public void setDataManager(GenericDataManager dataManager) {
+        logger.debug("Setting DataManager {}", dataManager.getClass().getSimpleName());
         this.dataManager = dataManager;
     }
 
     public static EventService getInstance() {
+        logger.debug("Method was called...");
         if (instance == null) {
             logger.debug("Creating instance of {}", EventService.class.getSimpleName());
             instance = new EventService();
