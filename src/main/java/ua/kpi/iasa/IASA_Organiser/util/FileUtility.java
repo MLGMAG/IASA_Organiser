@@ -31,7 +31,6 @@ public class FileUtility {
             }
         } catch (IOException | ClassNotFoundException e) {
             logger.debug("{} on reading, read {} objects", e.getClass().getSimpleName(), objectsCount);
-            e.printStackTrace();
         }
     }
 
