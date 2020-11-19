@@ -2,4 +2,4 @@
 out
 *.iml
 target
-src/main/resources/data/test.txt
+src/main/resources/data/*
