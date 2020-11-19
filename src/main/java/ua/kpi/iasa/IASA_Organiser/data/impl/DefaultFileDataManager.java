@@ -20,9 +20,9 @@ public class DefaultFileDataManager implements FileDataManager {
     private File file;
     private List<Event> events;
     private static final String FILE_NAME = "test.txt";
-    private static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "data", FILE_NAME).toString();
+    public static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "data", FILE_NAME).toString();
 
-    private void initState() {
+    public void initState() {
         final File storage = getNewFile(DefaultFileDataManager.STORAGE_PATH);
         setFile(storage);
 
@@ -31,24 +31,23 @@ public class DefaultFileDataManager implements FileDataManager {
     }
 
     public void initStorage() {
-        if (!getFile().exists()) {
+        final File currentFile = getFile();
+        if (!currentFile.exists()) {
             try {
-                final File storage = getFile();
-                initFile(storage);
+                initFile(currentFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            final List<Event> storage = getAllEventsList();
-            final File parseFile = getFile();
-            parseData(parseFile, storage);
+            final List<Event> storage = getEvents();
+            parseData(currentFile, storage);
         }
     }
 
     @Override
     public void save(Event event) {
         List<Event> newEvents = createNewEventList();
-        final List<Event> currentEvents = getAllEventsList();
+        final List<Event> currentEvents = getEvents();
 
         newEvents.addAll(currentEvents);
         newEvents.add(event);
@@ -57,7 +56,7 @@ public class DefaultFileDataManager implements FileDataManager {
 
     @Override
     public void update(Event event) {
-        List<Event> allEventsList = getAllEventsList();
+        List<Event> allEventsList = getEvents();
         for (Event eventInList : allEventsList) {
             if (eventInList.getId().compareTo(event.getId()) == 0) {
                 allEventsList.set(allEventsList.indexOf(eventInList), event);
@@ -69,7 +68,7 @@ public class DefaultFileDataManager implements FileDataManager {
 
     @Override
     public void remove(Event event) {
-        List<Event> currentEvents = getAllEventsList();
+        List<Event> currentEvents = getEvents();
         if (currentEvents.remove(event)) {
             saveAll(currentEvents);
         }
@@ -113,7 +112,7 @@ public class DefaultFileDataManager implements FileDataManager {
         return file;
     }
 
-    private void setFile(File file) {
+    public void setFile(File file) {
         this.file = file;
     }
 
@@ -121,7 +120,7 @@ public class DefaultFileDataManager implements FileDataManager {
         return events;
     }
 
-    private void setEvents(List<Event> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }
