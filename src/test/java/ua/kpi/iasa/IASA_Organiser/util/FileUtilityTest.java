@@ -9,6 +9,7 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,14 +37,21 @@ public class FileUtilityTest {
     private ObjectOutputStream objectOutputStream;
 
     @Mock
+    private ObjectInputStream objectInputStream;
+
+    @Mock
     private MockedStatic<FileUtility> fileUtilityMocked;
 
-//    @Test
-//    public void shouldParseData() {
-//        fileUtilityMocked.when(() -> FileUtility.saveListToFile(file, eventList)).thenCallRealMethod();
-//
-//        FileUtility.parseData(file, eventList);
-//    }
+    @Test
+    public void shouldParseData() {
+        fileUtilityMocked.when(() -> FileUtility.getObjectInputStream(file)).thenReturn(objectInputStream);
+        fileUtilityMocked.when(() -> FileUtility.readObjectFromObjectInputStream(objectInputStream)).thenReturn(event, event, null);
+        fileUtilityMocked.when(() -> FileUtility.parseData(file, eventList)).thenCallRealMethod();
+
+        FileUtility.parseData(file, eventList);
+
+        verify(eventList, times(2)).add(event);
+    }
 
     @Test
     public void shouldSaveListToFile() {
