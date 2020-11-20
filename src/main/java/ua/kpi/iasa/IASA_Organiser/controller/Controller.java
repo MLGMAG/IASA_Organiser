@@ -72,12 +72,12 @@ public class Controller {
 
     public List<Event> findEventByTag(Tag searchTag) {
         logger.debug("Method was called with {}", searchTag);
-        return calendarService.findEventByTag(searchTag);
+        return calendarService.findEventsByTag(searchTag);
     }
 
     public List<Event> findEventByPriority(Priority searchPriority) {
         logger.debug("Method was called with {}", searchPriority);
-        return calendarService.findEventByPriority(searchPriority);
+        return calendarService.findEventsByPriority(searchPriority);
     }
 
     public List<Event> sortEventsByPriority() {
