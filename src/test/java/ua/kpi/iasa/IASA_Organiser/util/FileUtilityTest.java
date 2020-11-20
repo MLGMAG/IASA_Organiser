@@ -11,11 +11,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -59,10 +61,11 @@ public class FileUtilityTest {
         fileUtilityMocked.when(() -> FileUtility.getObjectOutputStream(file)).thenReturn(objectOutputStream);
         fileUtilityMocked.when(() -> FileUtility.saveListToFile(file, testList)).thenCallRealMethod();
 
-        List<Event> actual = FileUtility.saveListToFile(file, testList);
+        Optional<List<Event>> actual = FileUtility.saveListToFile(file, testList);
 
         fileUtilityMocked.verify(times(3), () -> FileUtility.writeObjectToFile(objectOutputStream, event));
-        assertEquals(testList, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(testList, actual.get());
     }
 
     @Test
@@ -72,9 +75,9 @@ public class FileUtilityTest {
         fileUtilityMocked.when(() -> FileUtility.writeObjectToFile(objectOutputStream, event)).thenThrow(IOException.class);
         fileUtilityMocked.when(() -> FileUtility.saveListToFile(file, testList)).thenCallRealMethod();
 
-        List<Event> actual = FileUtility.saveListToFile(file, testList);
+        Optional<List<Event>> actual = FileUtility.saveListToFile(file, testList);
 
-        assertEquals(Collections.emptyList(), actual);
+        assertFalse(actual.isPresent());
     }
 
     @Test

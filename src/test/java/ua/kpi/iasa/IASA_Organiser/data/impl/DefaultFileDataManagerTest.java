@@ -10,6 +10,7 @@ import ua.kpi.iasa.IASA_Organiser.util.FileUtility;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
@@ -143,7 +144,7 @@ public class DefaultFileDataManagerTest {
     @Test
     public void shouldSaveAll() {
         when(defaultFileDataManager.getFile()).thenReturn(file);
-        fileUtilityMock.when(() -> FileUtility.saveListToFile(file, eventList)).thenReturn(newEventList);
+        fileUtilityMock.when(() -> FileUtility.saveListToFile(file, eventList)).thenReturn(Optional.of(newEventList));
         doCallRealMethod().when(defaultFileDataManager).saveAll(eventList);
 
         defaultFileDataManager.saveAll(eventList);
