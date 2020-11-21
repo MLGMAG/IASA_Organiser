@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceTest {
+public class EventServiceTest {
 
     @Mock
     private GenericDataManager genericDataManager;
