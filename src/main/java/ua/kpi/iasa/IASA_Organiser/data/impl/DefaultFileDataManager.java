@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.getNewFile;
 import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.initFile;
@@ -103,8 +104,8 @@ public class DefaultFileDataManager implements FileDataManager {
     public void saveAll(List<Event> events) {
         logger.debug("Method was called with {}", events);
         final File storage = getFile();
-        List<Event> result = saveListToFile(storage, events);
-        setEvents(result);
+        Optional<List<Event>> result = saveListToFile(storage, events);
+        result.ifPresent(this::setEvents);
     }
 
     public static DefaultFileDataManager getInstance() {

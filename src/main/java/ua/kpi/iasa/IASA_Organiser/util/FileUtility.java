@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class FileUtility {
 
@@ -34,19 +35,19 @@ public class FileUtility {
         }
     }
 
-    public static List<Event> saveListToFile(File file, List<Event> events) {
+    public static Optional<List<Event>> saveListToFile(File file, List<Event> events) {
         logger.debug("Method was called with file:{} and events:{}", file, events);
         try (ObjectOutputStream objectOutputStream = getObjectOutputStream(file)) {
             for (Event event : events) {
                 writeObjectToFile(objectOutputStream, event);
             }
             logger.debug("All events was saved");
-            return events;
+            return Optional.of(events);
         } catch (IOException e) {
             logger.debug("{} on saving", e.getClass().getSimpleName());
             e.printStackTrace();
         }
-        return Collections.emptyList();
+        return Optional.empty();
     }
 
     public static void initFile(File file) throws IOException {
