@@ -107,4 +107,5 @@ public class CalendarService {
         logger.debug("Returning instance");
         return instance;
     }
+
 }
