@@ -92,6 +92,18 @@ public class Controller {
         return eventService;
     }
 
+    public List<Event> sortEventsByDate(List<Event> sortedList) {
+        logger.debug("Method was called with {}", sortedList);
+        final CalendarService currentCalendarService = getCalendarService();
+        return currentCalendarService.sortEventsByDate(sortedList);
+    }
+
+    public List<Event> getEventsBeforeDate(LocalDate date) {
+        logger.debug("Method was called with {}", date);
+        final CalendarService currentCalendarService = getCalendarService();
+        return currentCalendarService.getEventsBeforeDate(date);
+    }
+
     CalendarService getCalendarService() {
         logger.debug("Method was called...");
         return calendarService;
