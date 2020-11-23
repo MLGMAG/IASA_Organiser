@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import ua.kpi.iasa.IASA_Organiser.builder.Builder;
 import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
@@ -32,7 +31,7 @@ public class DefaultFileDataManagerIntegrationTest {
     private DefaultFileDataManager defaultFileDataManager;
 
     private static final BuilderDirector builderDirector = new BuilderDirector();
-    private static final Builder eventBuilder = new EventBuilder();
+    private static final EventBuilder eventBuilder = new EventBuilder();
 
     private static final Place place1 = new Place("Ukraine", "Kiev", "Metalistiv", 3, "ab");
     private static final LocalDate localDate = LocalDate.of(2020, 9, 29);

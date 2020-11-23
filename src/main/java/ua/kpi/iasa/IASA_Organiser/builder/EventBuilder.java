@@ -1,13 +1,18 @@
 package ua.kpi.iasa.IASA_Organiser.builder;
 
-import ua.kpi.iasa.IASA_Organiser.model.*;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Human;
+import ua.kpi.iasa.IASA_Organiser.model.Link;
+import ua.kpi.iasa.IASA_Organiser.model.Place;
+import ua.kpi.iasa.IASA_Organiser.model.Priority;
+import ua.kpi.iasa.IASA_Organiser.model.Tag;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-public class EventBuilder implements Builder {
+public class EventBuilder {
     private UUID id;
     private String name;
     private Place place;
@@ -24,87 +29,85 @@ public class EventBuilder implements Builder {
     private boolean deadline;
     private boolean completable;
 
-    @Override
-    public void setId(UUID id) {
+    public EventBuilder setId(UUID id) {
         this.id = id;
+        return this;
     }
 
-    @Override
-    public void setName(String name) {
+    public EventBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 
-    @Override
-    public void setPlace(Place place) {
+    public EventBuilder setPlace(Place place) {
         this.place = place;
+        return this;
     }
 
-    @Override
-    public void setInvited(List<Human> invited) {
+    public EventBuilder setInvited(List<Human> invited) {
         this.invited = invited;
+        return this;
     }
 
-    @Override
-    public void setDate(LocalDate date) {
+    public EventBuilder setDate(LocalDate date) {
         this.date = date;
+        return this;
     }
 
-    @Override
-    public void setTime(LocalTime time) {
+    public EventBuilder setTime(LocalTime time) {
         this.time = time;
+        return this;
     }
 
-    @Override
-    public void setPriority(Priority priority) {
+    public EventBuilder setPriority(Priority priority) {
         this.priority = priority;
+        return this;
     }
 
-    @Override
-    public void setTags(List<Tag> tags) {
+    public EventBuilder setTags(List<Tag> tags) {
         this.tags = tags;
+        return this;
     }
 
-    @Override
-    public void setDuration(LocalTime duration) {
+    public EventBuilder setDuration(LocalTime duration) {
         this.duration = duration;
+        return this;
     }
 
-    @Override
-    public void setLinks(List<Link> links) {
+    public EventBuilder setLinks(List<Link> links) {
         this.links = links;
+        return this;
     }
 
-    @Override
-    public void setExpired(boolean expired) {
+    public EventBuilder setExpired(boolean expired) {
         this.expired = expired;
+        return this;
     }
 
-    @Override
-    public void setSingle(boolean single) {
+    public EventBuilder setSingle(boolean single) {
         this.single = single;
+        return this;
     }
 
-    @Override
-    public void setPeriodic(boolean periodic) {
+    public EventBuilder setPeriodic(boolean periodic) {
         this.periodic = periodic;
+        return this;
     }
 
-    @Override
-    public void setDeadline(boolean deadline) {
+    public EventBuilder setDeadline(boolean deadline) {
         this.deadline = deadline;
+        return this;
     }
 
-    @Override
-    public void setCompletable(boolean completable) {
+    public EventBuilder setCompletable(boolean completable) {
         this.completable = completable;
+        return this;
     }
 
-    @Override
-    public Event getResult() {
+    public Event build() {
         return new Event(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
     }
 
-    @Override
     public void setInitValues(Event event) {
         this.setId(event.getId());
         this.setName(event.getName());

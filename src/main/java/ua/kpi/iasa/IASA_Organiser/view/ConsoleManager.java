@@ -1,10 +1,15 @@
 package ua.kpi.iasa.IASA_Organiser.view;
 
-import ua.kpi.iasa.IASA_Organiser.builder.Builder;
-import ua.kpi.iasa.IASA_Organiser.controller.Controller;
-import ua.kpi.iasa.IASA_Organiser.model.*;
 import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
+import ua.kpi.iasa.IASA_Organiser.controller.Controller;
+import ua.kpi.iasa.IASA_Organiser.model.Calendar;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Human;
+import ua.kpi.iasa.IASA_Organiser.model.Link;
+import ua.kpi.iasa.IASA_Organiser.model.Place;
+import ua.kpi.iasa.IASA_Organiser.model.Priority;
+import ua.kpi.iasa.IASA_Organiser.model.Tag;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,7 +17,14 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.*;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputDate;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputInvited;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputLinks;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputName;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputPlace;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputPriority;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTags;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTime;
 
 public class ConsoleManager implements View {
     private Controller controller;
@@ -203,7 +215,7 @@ public class ConsoleManager implements View {
     }
 
     private void editEvent(Event event) {
-        Builder eventBuilder = new EventBuilder();
+        EventBuilder eventBuilder = new EventBuilder();
         eventBuilder.setInitValues(event);
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -262,7 +274,7 @@ public class ConsoleManager implements View {
             System.out.println("\nAny others?[Y/n]: ");
             answ = scanner.next();
         } while (answ.toUpperCase().equals("Y"));
-        Event newEvent = eventBuilder.getResult();
+        Event newEvent = eventBuilder.build();
         controller.updateEvent(newEvent);
     }
 
