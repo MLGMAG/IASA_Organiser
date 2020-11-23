@@ -10,6 +10,7 @@ import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +58,31 @@ public class CalendarService {
         final List<Event> allEventsList = getDataManager().getAllEventsList();
         allEventsList.sort(Comparator.comparingInt(event -> event.getPriority().getPriority()));
         return allEventsList;
+    }
+
+    public List<Event> sortEventsByDate(List<Event> sortedList) {
+        sortedList.sort((ev1, ev2) -> {
+            int yearDif = ev1.getDate().getYear() - ev2.getDate().getYear();
+            int dayDif = ev1.getDate().getDayOfYear() - ev2.getDate().getDayOfYear();
+            if (yearDif != 0) {
+                return yearDif;
+            } else {
+                return dayDif;
+            }
+        });
+
+        return sortedList;
+    }
+
+    public List<Event> getEventsBeforeDate(LocalDate date) {
+        int year = date.getYear();
+        int day = date.getDayOfYear();
+        final List<Event> allEventsList = getDataManager().getAllEventsList();
+        List<Event> beforeDateList = allEventsList.stream()
+                .filter(event -> event.getDate().getYear() <= year && event.getDate().getDayOfYear() <= day)
+                .collect(Collectors.toList());
+
+        return sortEventsByDate(beforeDateList);
     }
 
     public GenericDataManager getDataManager() {
