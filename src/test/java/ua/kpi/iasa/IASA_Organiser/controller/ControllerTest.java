@@ -3,19 +3,17 @@ package ua.kpi.iasa.IASA_Organiser.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Priority;
+import ua.kpi.iasa.IASA_Organiser.model.Tag;
 import ua.kpi.iasa.IASA_Organiser.service.CalendarService;
 import ua.kpi.iasa.IASA_Organiser.service.EventService;
 import ua.kpi.iasa.IASA_Organiser.view.View;
 
-import java.util.List;
+import java.time.LocalDate;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,70 +21,53 @@ import static org.mockito.Mockito.when;
 public class ControllerTest {
 
     @Mock
-    private View view;
+    private Controller controller;
 
     @Mock
     private EventService eventService;
 
     @Mock
-    private List<Event> eventList;
+    private Event event;
 
     @Mock
-    private Calendar calendar;
+    private View view;
 
     @Mock
     private CalendarService calendarService;
 
     @Mock
-    private Event event;
+    private Tag tag;
 
-    @Spy
-    private final Controller controller = new Controller();
+    @Mock
+    private LocalDate date;
+
+    @Mock
+    private Priority priority;
 
     @Test
     public void shouldInit() {
+        doCallRealMethod().when(controller).init(view);
+
         controller.init(view);
 
-        verify(controller).setEventService(any(EventService.class));
-        verify(controller).setCalendarService(any(CalendarService.class));
         verify(view).configController(controller);
         verify(view).startUp();
     }
 
     @Test
-    public void shouldGetAllEvents() {
-        controller.setEventService(eventService);
-        Event[] events = new Event[0];
-        when(eventService.getAllEvents()).thenReturn(events);
-
-        Event[] actual = controller.getAllEvents();
-
-        assertArrayEquals(events, actual);
-    }
-
-    @Test
     public void shouldGetAllEventsList() {
-        controller.setEventService(eventService);
-        when(eventService.getAllEventsList()).thenReturn(eventList);
+        when(controller.getEventService()).thenReturn(eventService);
+        when(controller.getAllEventsList()).thenCallRealMethod();
 
-        List<Event> actual = controller.getAllEventsList();
+        controller.getAllEventsList();
 
-        assertEquals(eventList, actual);
-    }
-
-    @Test
-    public void shouldGetCalendar() {
-        controller.setCalendarService(calendarService);
-        when(calendarService.getCalendar()).thenReturn(calendar);
-
-        Calendar actual = controller.getCalendar();
-
-        assertEquals(calendar, actual);
+        verify(eventService).getAllEventsList();
     }
 
     @Test
     public void shouldCreateNewEvent() {
-        controller.setEventService(eventService);
+        when(controller.getEventService()).thenReturn(eventService);
+        doCallRealMethod().when(controller).createNewEvent(event);
 
         controller.createNewEvent(event);
 
@@ -94,8 +75,9 @@ public class ControllerTest {
     }
 
     @Test
-    public void shouldChangeEvent() {
-        controller.setEventService(eventService);
+    public void shouldUpdateEvent() {
+        when(controller.getEventService()).thenReturn(eventService);
+        doCallRealMethod().when(controller).updateEvent(event);
 
         controller.updateEvent(event);
 
@@ -104,11 +86,51 @@ public class ControllerTest {
 
     @Test
     public void shouldRemoveEvent() {
-        controller.setEventService(eventService);
+        when(controller.getEventService()).thenReturn(eventService);
+        doCallRealMethod().when(controller).removeEvent(event);
 
         controller.removeEvent(event);
 
         verify(eventService).removeEvent(event);
     }
 
+    @Test
+    public void shouldFindEventsByDate() {
+        when(controller.getCalendarService()).thenReturn(calendarService);
+        doCallRealMethod().when(controller).findEventsByDate(date);
+
+        controller.findEventsByDate(date);
+
+        verify(calendarService).findEventsByDate(date);
+    }
+
+    @Test
+    public void shouldFindEventByTag() {
+        when(controller.getCalendarService()).thenReturn(calendarService);
+        doCallRealMethod().when(controller).findEventByTag(tag);
+
+        controller.findEventByTag(tag);
+
+        verify(calendarService).findEventsByTag(tag);
+    }
+
+    @Test
+    public void shouldFindEventByPriority() {
+        when(controller.getCalendarService()).thenReturn(calendarService);
+        doCallRealMethod().when(controller).findEventByPriority(priority);
+
+        controller.findEventByPriority(priority);
+
+        verify(calendarService).findEventsByPriority(priority);
+    }
+
+    @Test
+    public void shouldSortEventsByPriority() {
+        when(controller.getCalendarService()).thenReturn(calendarService);
+        when(controller.sortEventsByPriority()).thenCallRealMethod();
+
+        controller.sortEventsByPriority();
+
+        verify(calendarService).sortEventsByPriority();
+    }
 }
