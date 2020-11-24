@@ -10,7 +10,7 @@ import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,6 +83,54 @@ public class CalendarService {
                 .collect(Collectors.toList());
 
         return sortEventsByDate(beforeDateList);
+    }
+
+    /**
+     * Find all event, that were expired and not marked as {@link Event#isExpired()}.
+     *
+     * @param events - input events
+     * @return expired events
+     * @author Andrij Makrushin
+     * @author Mahomed Akhmedov
+     */
+    public List<Event> getExpiredEvents(List<Event> events) {
+        logger.debug("Method was called with {}", events);
+        LocalDate currentDate = getCurrentDate();
+        LocalTime currentTime = getCurrentTime();
+        return events.stream()
+                .filter(event -> !event.isExpired()).filter(event -> {
+                    if (event.getDate().isBefore(currentDate)) {
+                        return true;
+                    } else return event.getTime().isBefore(currentTime) && event.getDate() == currentDate;
+                }).collect(Collectors.toList());
+    }
+
+    List<Event> filterByExpired(List<Event> events) {
+        return events.stream()
+                .filter(event -> !event.isExpired())
+                .collect(Collectors.toList());
+    }
+
+    List<Event> filterByDate(List<Event> events, LocalDate currentDate) {
+        return events.stream()
+                .filter(event -> event.getDate().isBefore(currentDate))
+                .collect(Collectors.toList());
+    }
+
+    List<Event> filterByTime(List<Event> events, LocalTime currentTime) {
+        return events.stream()
+                .filter(event -> event.getTime().isBefore(currentTime))
+                .collect(Collectors.toList());
+    }
+
+    LocalDate getCurrentDate() {
+        logger.debug("Method was called...");
+        return LocalDate.now();
+    }
+
+    LocalTime getCurrentTime() {
+        logger.debug("Method was called...");
+        return LocalTime.now();
     }
 
     public GenericDataManager getDataManager() {

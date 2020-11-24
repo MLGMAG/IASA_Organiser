@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.getNewFile;
 import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.initFile;
@@ -83,6 +84,30 @@ public class DefaultFileDataManager implements FileDataManager {
         if (currentEvents.remove(event)) {
             saveAll(currentEvents);
         }
+    }
+
+    /**
+     * Should remove all input events from {@link DefaultFileDataManager#events}
+     * and call {@link DefaultFileDataManager#saveAll(List)} of the remaining {@link Event}.
+     *
+     * @param events - events that need to be removed.
+     * @author Andrij Makrushin
+     * @author Mahomed Akhmedov
+     * @see DefaultFileDataManager#saveAll(List)
+     */
+    @Override
+    public void remove(List<Event> events) {
+        logger.debug("Method was called with {}", events);
+        List<Event> currentEvents = getEvents();
+        List<Event> result = filterEvents(currentEvents, events);
+        saveAll(result);
+    }
+
+    List<Event> filterEvents(List<Event> allEvents, List<Event> excludeEvents) {
+        logger.debug("Method was called with all events:{}, excludeEvents:{}", allEvents, excludeEvents);
+        return allEvents.stream()
+                .filter(e -> !(excludeEvents.contains(e)))
+                .collect(Collectors.toList());
     }
 
     /**
