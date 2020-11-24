@@ -1,5 +1,10 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+/**
+ * @deprecated Class was used by {@link ua.kpi.iasa.IASA_Organiser.service.CalendarService}
+ * but now lost relevance, because of intermediate using data managers
+ */
+@Deprecated
 public class Calendar {
     private Event[] events;
     private static Calendar instance;

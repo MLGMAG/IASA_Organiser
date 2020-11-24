@@ -70,7 +70,6 @@ public class ConsoleManager implements View {
                 "\n3. Change event;" +
                 "\n4. Remove event;" +
                 "\n5. View calendar;" +
-                "\n6. Check event;" +
                 "\n\n0. Exit;");
     }
 
@@ -93,9 +92,6 @@ public class ConsoleManager implements View {
                 removeEvent(chooseEvent(controller.getAllEventsList()));
                 break;
             case 5:
-                printCalendar(controller.getCalendar());
-                break;
-            case 6:
                 showEventProperties(chooseEvent(controller.getAllEventsList()));
                 break;
         }
@@ -287,6 +283,10 @@ public class ConsoleManager implements View {
         this.controller = controller;
     }
 
+    /**
+     * @deprecated uses deprecated class
+     */
+    @Deprecated
     private void printCalendar(Calendar calendar) {  //TODO: rewrite in next version!
         Event[] events = calendar.getEvents();
         for (int i = 0; i < events.length; i++) {
