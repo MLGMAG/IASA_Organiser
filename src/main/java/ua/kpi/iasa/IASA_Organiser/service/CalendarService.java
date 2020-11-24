@@ -23,6 +23,10 @@ public class CalendarService {
     private CalendarService() {
     }
 
+    /**
+     * @deprecated uses deprecated class
+     */
+    @Deprecated
     public Calendar getCalendar() {
         logger.debug("Method was called...");
         throw new UnsupportedOperationException("You refer to unsupported method");

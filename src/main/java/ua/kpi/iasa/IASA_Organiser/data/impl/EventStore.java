@@ -3,7 +3,7 @@ package ua.kpi.iasa.IASA_Organiser.data.impl;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 /**
- * Class was used by {@link DefaultArrayDataManager},
+ * @deprecated Class was used by {@link DefaultArrayDataManager},
  * but not that DataManager is deprecated and you don't need to use {@link EventStore} class
  */
 @Deprecated
