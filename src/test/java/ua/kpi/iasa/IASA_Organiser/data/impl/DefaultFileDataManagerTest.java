@@ -9,18 +9,14 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.util.FileUtility;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultFileDataManagerTest {
@@ -38,11 +34,13 @@ public class DefaultFileDataManagerTest {
     private List<Event> newEventList;
 
     @Mock
+    private List<Event> expiredEventList;
+
+    @Mock
     private MockedStatic<FileUtility> fileUtilityMock;
 
     @Mock
     private DefaultFileDataManager defaultFileDataManager;
-
 
     @Test
     public void shouldInitState() {
@@ -190,6 +188,81 @@ public class DefaultFileDataManagerTest {
         defaultFileDataManager.update(updatedEvent);
 
         verify(defaultFileDataManager, never()).saveAll(testData);
+    }
+
+    @Test
+    public void shouldRemove() {
+        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
+        doReturn(newEventList).when(defaultFileDataManager).filterEvents(eventList, expiredEventList);
+        doCallRealMethod().when(defaultFileDataManager).remove(expiredEventList);
+
+        defaultFileDataManager.remove(expiredEventList);
+
+        verify(defaultFileDataManager).filterEvents(eventList, expiredEventList);
+        verify(defaultFileDataManager).saveAll(newEventList);
+    }
+
+    @Test
+    public void shouldFilterAll() {
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        Event event3 = mock(Event.class);
+        List<Event> currentData = asList(event1, event2, event3);
+        List<Event> dataToRemove = asList(event1, event2, event3);
+        doCallRealMethod().when(defaultFileDataManager).filterEvents(currentData, dataToRemove);
+
+        List<Event> result = defaultFileDataManager.filterEvents(currentData, dataToRemove);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void shouldFilterTwo() {
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        Event event3 = mock(Event.class);
+        List<Event> currentData = asList(event1, event2, event3);
+        List<Event> dataToRemove = asList(event1, event2);
+        doCallRealMethod().when(defaultFileDataManager).filterEvents(currentData, dataToRemove);
+
+        List<Event> result = defaultFileDataManager.filterEvents(currentData, dataToRemove);
+
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertTrue(result.contains(event3));
+    }
+
+    @Test
+    public void shouldFilterNothingOnEmptyExcludeList() {
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        Event event3 = mock(Event.class);
+        List<Event> currentData = asList(event1, event2, event3);
+        List<Event> dataToRemove = Collections.emptyList();
+        doCallRealMethod().when(defaultFileDataManager).filterEvents(currentData, dataToRemove);
+
+        List<Event> result = defaultFileDataManager.filterEvents(currentData, dataToRemove);
+
+        assertFalse(result.isEmpty());
+        assertEquals(3, result.size());
+        assertTrue(result.containsAll(currentData));
+    }
+
+    @Test
+    public void shouldFilterNothingOnFullExcludeList() {
+        Event event1 = mock(Event.class);
+        Event event2 = mock(Event.class);
+        Event event3 = mock(Event.class);
+        Event event4 = mock(Event.class);
+        List<Event> currentData = asList(event1, event2, event3);
+        List<Event> dataToRemove = Collections.singletonList(event4);
+        doCallRealMethod().when(defaultFileDataManager).filterEvents(currentData, dataToRemove);
+
+        List<Event> result = defaultFileDataManager.filterEvents(currentData, dataToRemove);
+
+        assertFalse(result.isEmpty());
+        assertEquals(3, result.size());
+        assertTrue(result.containsAll(currentData));
     }
 
 }
