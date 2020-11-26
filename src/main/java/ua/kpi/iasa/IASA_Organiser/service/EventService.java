@@ -20,7 +20,8 @@ public class EventService {
 
     public void createEvent(Event event) {
         logger.debug("Method was called with {}", event);
-        dataManager.save(event);
+        final FileDataManager currentDataManager = getDataManager();
+        currentDataManager.save(event);
     }
 
     /**
@@ -29,22 +30,26 @@ public class EventService {
     @Deprecated
     public Event[] getAllEvents() {
         logger.debug("Method was called...");
-        return dataManager.getAllEvents();
+        final FileDataManager currentDataManager = getDataManager();
+        return currentDataManager.getAllEvents();
     }
 
     public List<Event> getAllEventsList() {
         logger.debug("Method was called...");
-        return dataManager.getAllEventsList();
+        final FileDataManager currentDataManager = getDataManager();
+        return currentDataManager.getAllEventsList();
     }
 
     public void updateEvent(Event event) {
         logger.debug("Method was called with {}", event);
-        dataManager.update(event);
+        final FileDataManager currentDataManager = getDataManager();
+        currentDataManager.update(event);
     }
 
     public void removeEvent(Event event) {
         logger.debug("Method was called with {}", event);
-        dataManager.remove(event);
+        final FileDataManager currentDataManager = getDataManager();
+        currentDataManager.remove(event);
     }
 
     /**

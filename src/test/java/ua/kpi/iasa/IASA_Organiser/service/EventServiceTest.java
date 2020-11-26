@@ -5,10 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
-import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
-import ua.kpi.iasa.IASA_Organiser.service.CalendarService;
-import ua.kpi.iasa.IASA_Organiser.service.EventService;
 
 import java.util.List;
 
@@ -16,9 +13,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventServiceTest {
-
-    @Mock
-    private GenericDataManager genericDataManager;
 
     @Mock
     private FileDataManager fileDataManager;
@@ -38,48 +32,56 @@ public class EventServiceTest {
     @Mock
     private CalendarService calendarService;
 
-//    @Test
-//    public void shouldInit() {
-//        eventService.init();
-//
-//        verify(eventService).setDataManager(any(GenericDataManager.class));
-//    }
-//
-//    @Test
-//    public void shouldCreateEvent() {
-//        eventService.setDataManager(genericDataManager);
-//
-//        eventService.createEvent(event);
-//
-//        verify(genericDataManager).save(event);
-//    }
-//
-//    @Test
-//    public void shouldGetAllEvents() {
-//        eventService.setDataManager(genericDataManager);
-//
-//        eventService.getAllEvents();
-//
-//        verify(genericDataManager).getAllEvents();
-//    }
-//
-//    @Test
-//    public void shouldUpdateEvent() {
-//        eventService.setDataManager(genericDataManager);
-//
-//        eventService.updateEvent(event);
-//
-//        verify(genericDataManager).update(event);
-//    }
-//
-//    @Test
-//    public void shouldRemoveEvent() {
-//        eventService.setDataManager(genericDataManager);
-//
-//        eventService.removeEvent(event);
-//
-//        verify(genericDataManager).remove(event);
-//    }
+    @Test
+    public void shouldCreateEvent() {
+        when(eventService.getDataManager()).thenReturn(fileDataManager);
+        doCallRealMethod().when(eventService).createEvent(event);
+
+        eventService.createEvent(event);
+
+        verify(fileDataManager).save(event);
+    }
+
+    @Test
+    public void shouldGetAllEvents() {
+        when(eventService.getDataManager()).thenReturn(fileDataManager);
+        doCallRealMethod().when(eventService).getAllEvents();
+
+        eventService.getAllEvents();
+
+        verify(fileDataManager).getAllEvents();
+    }
+
+    @Test
+    public void shouldGetAllEventsList() {
+        when(eventService.getDataManager()).thenReturn(fileDataManager);
+        doCallRealMethod().when(eventService).getAllEventsList();
+
+        eventService.getAllEventsList();
+
+        verify(fileDataManager).getAllEventsList();
+
+    }
+
+    @Test
+    public void shouldUpdateEvent() {
+        when(eventService.getDataManager()).thenReturn(fileDataManager);
+        doCallRealMethod().when(eventService).updateEvent(event);
+
+        eventService.updateEvent(event);
+
+        verify(fileDataManager).update(event);
+    }
+
+    @Test
+    public void shouldRemoveEvent() {
+        when(eventService.getDataManager()).thenReturn(fileDataManager);
+        doCallRealMethod().when(eventService).removeEvent(event);
+
+        eventService.removeEvent(event);
+
+        verify(fileDataManager).remove(event);
+    }
 
     @Test
     public void shouldFilterExpiredEvents() {

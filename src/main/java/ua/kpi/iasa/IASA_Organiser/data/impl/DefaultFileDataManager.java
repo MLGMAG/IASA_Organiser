@@ -26,6 +26,9 @@ public class DefaultFileDataManager implements FileDataManager {
     public static final String STORAGE_PATH = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "data", FILE_NAME).toString();
     private static final Logger logger = LoggerFactory.getLogger(DefaultFileDataManager.class);
 
+    private DefaultFileDataManager() {
+    }
+
     public void initState() {
         logger.debug("Initializing state of defaultFileDataManager...");
         final File storage = getNewFile(DefaultFileDataManager.STORAGE_PATH);
