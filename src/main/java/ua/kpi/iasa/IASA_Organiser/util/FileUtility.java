@@ -10,12 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class FileUtility {
-
     private static final Logger logger = LoggerFactory.getLogger(FileUtility.class);
 
     private FileUtility() {
