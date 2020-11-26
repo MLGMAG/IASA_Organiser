@@ -31,6 +31,7 @@ public class Link implements Serializable {
         return Objects.hash(url);
     }
 
+    @Override
     public String toString() {
         return "Link{" +
                 "url='" + url + '\'' +

@@ -64,12 +64,13 @@ public class Human implements Serializable {
         return Objects.hash(firstName, lastName, phoneNumber, email);
     }
 
+    @Override
     public String toString() {
         return "Human{" +
                 "firstName='" + firstName + '\'' +
-                "\n lastName='" + lastName + '\'' +
-                "\n phoneNumber='" + phoneNumber + '\'' +
-                "\n email='" + email + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

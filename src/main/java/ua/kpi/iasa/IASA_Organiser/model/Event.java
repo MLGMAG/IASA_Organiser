@@ -162,20 +162,20 @@ public class Event implements Comparator<Event>, Serializable {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                "\n name='" + name + '\'' +
-                "\n place=" + place +
-                "\n invited=" + invited +
-                "\n date=" + date +
-                "\n time=" + time +
-                "\n priority=" + priority +
-                "\n tags=" + tags +
-                "\n duration=" + duration +
-                "\n links=" + links +
-                "\n expired=" + expired +
-                "\n single=" + single +
-                "\n periodic=" + periodic +
-                "\n deadline=" + deadline +
-                "\n completable=" + completable +
+                ", name='" + name + '\'' +
+                ", place=" + place +
+                ", invited=" + invited +
+                ", date=" + date +
+                ", time=" + time +
+                ", priority=" + priority +
+                ", tags=" + tags +
+                ", duration=" + duration +
+                ", links=" + links +
+                ", expired=" + expired +
+                ", single=" + single +
+                ", periodic=" + periodic +
+                ", deadline=" + deadline +
+                ", completable=" + completable +
                 '}';
     }
 }

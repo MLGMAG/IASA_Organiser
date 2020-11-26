@@ -75,6 +75,7 @@ public class Place implements Serializable {
         return Objects.hash(country, city, street, number, letter);
     }
 
+    @Override
     public String toString() {
         return "Place{" +
                 "country='" + country + '\'' +
