@@ -3,7 +3,6 @@ package ua.kpi.iasa.IASA_Organiser.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
 import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
@@ -13,7 +12,6 @@ import ua.kpi.iasa.IASA_Organiser.service.EventService;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
