@@ -69,7 +69,7 @@ public class ConsoleManager implements View {
                 "\n2. GetAllEvents;" +
                 "\n3. Change event;" +
                 "\n4. Remove event;" +
-                "\n5. View calendar;" +
+                "\n5. Check events properties;" +
                 "\n\n0. Exit;");
     }
 
