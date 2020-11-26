@@ -109,24 +109,6 @@ public class CalendarService {
                 }).collect(Collectors.toList());
     }
 
-    List<Event> filterByExpired(List<Event> events) {
-        return events.stream()
-                .filter(event -> !event.isExpired())
-                .collect(Collectors.toList());
-    }
-
-    List<Event> filterByDate(List<Event> events, LocalDate currentDate) {
-        return events.stream()
-                .filter(event -> event.getDate().isBefore(currentDate))
-                .collect(Collectors.toList());
-    }
-
-    List<Event> filterByTime(List<Event> events, LocalTime currentTime) {
-        return events.stream()
-                .filter(event -> event.getTime().isBefore(currentTime))
-                .collect(Collectors.toList());
-    }
-
     LocalDate getCurrentDate() {
         logger.debug("Method was called...");
         return LocalDate.now();
