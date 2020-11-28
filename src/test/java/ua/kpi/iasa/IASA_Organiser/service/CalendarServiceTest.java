@@ -8,15 +8,20 @@ import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
+import ua.kpi.iasa.IASA_Organiser.model.Type;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
@@ -264,10 +269,10 @@ public class CalendarServiceTest {
         LocalDate date = LocalDate.of(2020, 11, 22);
         LocalTime time = LocalTime.of(22, 22);
         when(calendarService.getCurrentDate()).thenReturn(LocalDate.of(2999, 1, 1));
-        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0,30));
-        when(event1.isExpired()).thenReturn(true);
-        when(event2.isExpired()).thenReturn(true);
-        when(event3.isExpired()).thenReturn(true);
+        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0, 30));
+        when(event1.getTypes()).thenReturn(Set.of(Type.EXPIRED));
+        when(event2.getTypes()).thenReturn(Set.of(Type.EXPIRED));
+        when(event3.getTypes()).thenReturn(Set.of(Type.EXPIRED));
         List<Event> dataList = asList(event1, event2, event3);
         doCallRealMethod().when(calendarService).getExpiredEvents(dataList);
 
@@ -279,12 +284,12 @@ public class CalendarServiceTest {
     @Test
     public void shouldGetResultOnEventsNotMarkedAsExpired() {
         LocalDate date = LocalDate.of(2020, 11, 22);
-        LocalTime time = LocalTime.of(0,30);
+        LocalTime time = LocalTime.of(0, 30);
         when(calendarService.getCurrentDate()).thenReturn(LocalDate.of(2999, 1, 1));
         when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(22, 22));
-        when(event1.isExpired()).thenReturn(false);
-        when(event2.isExpired()).thenReturn(false);
-        when(event3.isExpired()).thenReturn(false);
+        when(event1.getTypes()).thenReturn(emptySet());
+        when(event2.getTypes()).thenReturn(emptySet());
+        when(event3.getTypes()).thenReturn(emptySet());
         when(event1.getDate()).thenReturn(date);
         when(event2.getDate()).thenReturn(date);
         when(event3.getDate()).thenReturn(date);
@@ -303,10 +308,10 @@ public class CalendarServiceTest {
         LocalDate date = LocalDate.of(2020, 11, 22);
         LocalTime time = LocalTime.of(0, 12);
         when(calendarService.getCurrentDate()).thenReturn(LocalDate.of(2999, 1, 1));
-        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0,25));
-        when(event1.isExpired()).thenReturn(true);
-        when(event2.isExpired()).thenReturn(false);
-        when(event3.isExpired()).thenReturn(false);
+        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0, 25));
+        when(event1.getTypes()).thenReturn(Set.of(Type.EXPIRED));
+        when(event2.getTypes()).thenReturn(emptySet());
+        when(event3.getTypes()).thenReturn(emptySet());
         when(event2.getDate()).thenReturn(date);
         when(event3.getDate()).thenReturn(date);
         List<Event> dataList = asList(event1, event2, event3);
@@ -323,7 +328,7 @@ public class CalendarServiceTest {
     @Test
     public void shouldGetResultOnEmptyEvents() {
         when(calendarService.getCurrentDate()).thenReturn(LocalDate.of(2999, 1, 1));
-        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0,30));
+        when(calendarService.getCurrentTime()).thenReturn(LocalTime.of(0, 30));
         List<Event> dataList = Collections.emptyList();
         doCallRealMethod().when(calendarService).getExpiredEvents(dataList);
 

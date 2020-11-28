@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class Event implements Comparator<Event>, Serializable {
@@ -19,13 +20,9 @@ public class Event implements Comparator<Event>, Serializable {
     private List<Tag> tags;
     private LocalTime duration;
     private List<Link> links;
-    private boolean expired;
-    private boolean single;
-    private boolean periodic;
-    private boolean deadline;
-    private boolean completable;
+    private Set<Type> types;
 
-    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, boolean expired, boolean single, boolean periodic, boolean deadline, boolean completable) {
+    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
         this.id = id;
         this.name = name;
         this.place = place;
@@ -36,14 +33,10 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = tags;
         this.duration = duration;
         this.links = links;
-        this.expired = expired;
-        this.single = single;
-        this.periodic = periodic;
-        this.deadline = deadline;
-        this.completable = completable;
+        this.types = types;
     }
 
-    private Event(Event event) {     //constructor for cloning(Prototype pattern)
+    private Event(Event event) {
         this.id = event.id;
         this.name = event.name;
         this.place = event.place;
@@ -54,11 +47,7 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = event.tags;
         this.duration = event.duration;
         this.links = event.links;
-        this.periodic = event.periodic;
-        this.completable = event.completable;
-        this.deadline = event.deadline;
-        this.expired = event.expired;
-        this.single = event.single;
+        this.types = event.types;
     }
 
     public UUID getId() {
@@ -101,29 +90,14 @@ public class Event implements Comparator<Event>, Serializable {
         return links;
     }
 
-    public boolean isExpired() {
-        return expired;
-    }
-
-    public boolean isSingle() {
-        return single;
-    }
-
-    public boolean isPeriodic() {
-        return periodic;
-    }
-
-    public boolean isDeadline() {
-        return deadline;
-    }
-
-    public boolean isCompletable() {
-        return completable;
+    public Set<Type> getTypes() {
+        return types;
     }
 
     public Event prototype() {
         return new Event(this);
     }
+
 
     @Override
     public int compare(Event event1, Event event2) {
@@ -155,7 +129,7 @@ public class Event implements Comparator<Event>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
+        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, types);
     }
 
     @Override
@@ -171,11 +145,7 @@ public class Event implements Comparator<Event>, Serializable {
                 ", tags=" + tags +
                 ", duration=" + duration +
                 ", links=" + links +
-                ", expired=" + expired +
-                ", single=" + single +
-                ", periodic=" + periodic +
-                ", deadline=" + deadline +
-                ", completable=" + completable +
+                ", types=" + types +
                 '}';
     }
 }

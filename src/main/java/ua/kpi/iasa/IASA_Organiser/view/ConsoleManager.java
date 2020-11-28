@@ -1,6 +1,5 @@
 package ua.kpi.iasa.IASA_Organiser.view;
 
-import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
@@ -10,12 +9,15 @@ import ua.kpi.iasa.IASA_Organiser.model.Link;
 import ua.kpi.iasa.IASA_Organiser.model.Place;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
+import ua.kpi.iasa.IASA_Organiser.model.Type;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.UUID;
 
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputDate;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputInvited;
@@ -25,10 +27,11 @@ import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputPlace;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputPriority;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTags;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTime;
+import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTypes;
+
 
 public class ConsoleManager implements View {
     private Controller controller;
-    private BuilderDirector director = new BuilderDirector();
 
     public ConsoleManager() {
     }
@@ -99,81 +102,61 @@ public class ConsoleManager implements View {
 
     private Event creation() {
         Scanner scanner = new Scanner(System.in);
-        int type;
-        String name;
-        LocalDate date;
-        LocalTime time;
-        LocalTime duration = null;
-        Priority priority;
-        List<Human> invited = null;
-        List<Tag> tags = null;
-        List<Link> links = null;
-        Place place = null;
+        EventBuilder eventBuilder = new EventBuilder();
+        eventBuilder.setId(UUID.randomUUID());
 
-        while (true) {
-            try {
-                System.out.print("\nWhich type of event you want to create?\n" +
-                        "1. Single.\n" +
-                        "2. Periodic.\n" +
-                        "3. Expire.\n" +
-                        "4. Completable.\n" +
-                        "5. Deadline.\n\n" +
-                        "Enter the number[1-5]: ");
-                type = scanner.nextInt();
-                if (type < 1 || type > 5) throw new InputMismatchException();
-                break;
-            } catch (InputMismatchException e) {
-                scanner = new Scanner(System.in);
-            }
-        }
+        Set<Type> types = inputTypes();
+        eventBuilder.setTypes(types);
 
-        name = inputName();
-        date = inputDate();
+        String name = inputName();
+        eventBuilder.setName(name);
+
+        LocalDate date = inputDate();
+        eventBuilder.setDate(date);
 
         System.out.println("\nEnter the time, when event starts:");
-        time = inputTime();
+        LocalTime time = inputTime();
+        eventBuilder.setTime(time);
 
-        priority = inputPriority();
+        Priority priority = inputPriority();
+        eventBuilder.setPriority(priority);
 
         System.out.print("\nDo you want to add duration?[Y/n]: ");
         String ans1 = scanner.next();
         if (ans1.toUpperCase().equals("Y")) {
-            duration = inputTime();
+            LocalTime duration = inputTime();
+            eventBuilder.setDuration(duration);
         }
+
         System.out.print("\nDo you want to add invited people?[Y/n]: ");
         String ans2 = scanner.next();
         if (ans2.toUpperCase().equals("Y")) {
-            invited = inputInvited();
+            List<Human> invited = inputInvited();
+            eventBuilder.setInvited(invited);
         }
+
         System.out.print("\nDo you want to add place?[Y/n]: ");
         String ans3 = scanner.next();
         if (ans3.toUpperCase().equals("Y")) {
-            place = inputPlace();
+            Place place = inputPlace();
+            eventBuilder.setPlace(place);
         }
+
         System.out.print("\nDo you want to add any tags?[Y/n]: ");
         String ans4 = scanner.next();
         if (ans4.toUpperCase().equals("Y")) {
-            tags = inputTags();
+            List<Tag> tags = inputTags();
+            eventBuilder.setTags(tags);
         }
+
         System.out.print("\nDo you want to add any links?[Y/n]: ");
         String ans5 = scanner.next();
         if (ans5.toUpperCase().equals("Y")) {
-            links = inputLinks();
+            List<Link> links = inputLinks();
+            eventBuilder.setLinks(links);
         }
-        switch (type) {
-            case 1:
-                return director.getSingleEvent(name, place, invited, date, time, priority, tags, duration, links);
-            case 2:
-                return director.getPeriodicEvent(name, place, invited, date, time, priority, tags, duration, links);
-            case 3:
-                return director.getExpiredEvent(name, place, invited, date, time, priority, tags, duration, links);
-            case 4:
-                return director.getCompletableEvent(name, place, invited, date, time, priority, tags, duration, links);
-            case 5:
-                return director.getDeadlineEvent(name, place, invited, date, time, priority, tags, duration, links);
-            default:
-                throw new InputMismatchException("Wrong number of event type!");
-        }
+
+        return eventBuilder.build();
     }
 
     private void eventFormat(List<Event> events) {
@@ -226,7 +209,8 @@ public class ConsoleManager implements View {
                     "6. Priority.\n" +
                     "7. Tags.\n" +
                     "8. Duration.\n" +
-                    "9. Links.");
+                    "9. Links.\n" +
+                    "10. Type.");
             while (true) {
                 System.out.print("\nChoose the field, that should be changed[1-9]: ");
                 try {
@@ -266,6 +250,8 @@ public class ConsoleManager implements View {
                 case 9:
                     eventBuilder.setLinks(inputLinks());
                     break;
+                case 10:
+                    eventBuilder.setTypes(inputTypes());
             }
             System.out.println("\nAny others?[Y/n]: ");
             answ = scanner.next();
@@ -287,7 +273,7 @@ public class ConsoleManager implements View {
      * @deprecated uses deprecated class
      */
     @Deprecated
-    private void printCalendar(Calendar calendar) {  //TODO: rewrite in next version!
+    private void printCalendar(Calendar calendar) {
         Event[] events = calendar.getEvents();
         for (int i = 0; i < events.length; i++) {
             if (events[i] == null) {
