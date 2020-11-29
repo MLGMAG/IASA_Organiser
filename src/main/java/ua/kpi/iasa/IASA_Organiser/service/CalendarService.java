@@ -8,6 +8,7 @@ import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
+import ua.kpi.iasa.IASA_Organiser.model.Type;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -90,7 +91,7 @@ public class CalendarService {
     }
 
     /**
-     * Find all event, that were expired and not marked as {@link Event#isExpired()}.
+     * Find all event, that were expired and not marked as {@link Type#EXPIRED}.
      *
      * @param events - input events
      * @return expired events
@@ -102,7 +103,7 @@ public class CalendarService {
         LocalDate currentDate = getCurrentDate();
         LocalTime currentTime = getCurrentTime();
         return events.stream()
-                .filter(event -> !event.isExpired()).filter(event -> {
+                .filter(event -> !event.getTypes().contains(Type.EXPIRED)).filter(event -> {
                     if (event.getDate().isBefore(currentDate)) {
                         return true;
                     } else return event.getTime().isBefore(currentTime) && event.getDate() == currentDate;

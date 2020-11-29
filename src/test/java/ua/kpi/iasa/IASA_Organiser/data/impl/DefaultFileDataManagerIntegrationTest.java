@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import ua.kpi.iasa.IASA_Organiser.builder.BuilderDirector;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Place;
@@ -19,6 +18,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,15 +30,31 @@ public class DefaultFileDataManagerIntegrationTest {
     @Spy
     private DefaultFileDataManager defaultFileDataManager;
 
-    private static final BuilderDirector builderDirector = new BuilderDirector();
     private static final EventBuilder eventBuilder = new EventBuilder();
 
     private static final Place place1 = new Place("Ukraine", "Kiev", "Metalistiv", 3, "ab");
     private static final LocalDate localDate = LocalDate.of(2020, 9, 29);
     private static final LocalTime time = LocalTime.of(22, 13);
     private static final LocalTime duration = LocalTime.of(2, 30);
-    private static final Event event1 = builderDirector.getSingleEvent("Event 1", place1, null, localDate, time, Priority.HIGH, null, duration, null);
-    private static final Event event2 = builderDirector.getSingleEvent("Event 2", place1, null, localDate, time, Priority.HIGH, null, duration, null);
+    private static final Event event1 = new EventBuilder()
+            .setId(UUID.randomUUID())
+            .setName("Event 1")
+            .setPlace(place1)
+            .setDate(localDate)
+            .setTime(time)
+            .setPriority(Priority.HIGH)
+            .setDuration(duration)
+            .build();
+
+    private static final Event event2 = new EventBuilder()
+            .setId(UUID.randomUUID())
+            .setName("Event 2")
+            .setPlace(place1)
+            .setDate(localDate)
+            .setTime(time)
+            .setPriority(Priority.LOW)
+            .setDuration(duration)
+            .build();
 
     @Before
     public void setUp() throws Exception {
