@@ -2,20 +2,27 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
-import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
-import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultFileDataManager;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
 
 import java.util.List;
 
+@Service
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.data.impl"})
 public class EventService {
-    private final CalendarService calendarService = CalendarService.getInstance();
-    private static EventService instance;
-    private final FileDataManager dataManager = DefaultFileDataManager.getInstance();
+
+    private final CalendarService calendarService;
+
+    private final FileDataManager dataManager;
+
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
-    private EventService() {
+    public EventService(CalendarService calendarService, FileDataManager dataManager) {
+        this.calendarService = calendarService;
+        this.dataManager = dataManager;
     }
 
     public void createEvent(Event event) {
@@ -69,16 +76,6 @@ public class EventService {
         final CalendarService currentCalendarService = getCalendarService();
         final List<Event> expiredEvents = currentCalendarService.getExpiredEvents(currentEvents);
         currentFileDataManager.remove(expiredEvents);
-    }
-
-    public static EventService getInstance() {
-        logger.debug("Method was called...");
-        if (instance == null) {
-            logger.debug("Creating instance of {}", EventService.class.getSimpleName());
-            instance = new EventService();
-        }
-        logger.debug("Returning instance");
-        return instance;
     }
 
     CalendarService getCalendarService() {

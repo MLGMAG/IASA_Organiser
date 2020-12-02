@@ -1,5 +1,6 @@
 package ua.kpi.iasa.IASA_Organiser.view;
 
+import org.springframework.stereotype.Component;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
@@ -29,12 +30,10 @@ import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTags;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTime;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputTypes;
 
-
+@Component
 public class ConsoleManager implements View {
-    private Controller controller;
 
-    public ConsoleManager() {
-    }
+    private Controller controller;
 
     @Override
     public void startUp() {
