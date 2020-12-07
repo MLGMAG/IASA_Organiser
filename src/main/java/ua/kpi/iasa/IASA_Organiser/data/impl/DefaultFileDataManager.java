@@ -2,10 +2,12 @@ package ua.kpi.iasa.IASA_Organiser.data.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import ua.kpi.iasa.IASA_Organiser.data.FileDataManager;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.util.FileUtility;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -36,9 +38,8 @@ import static ua.kpi.iasa.IASA_Organiser.util.FileUtility.saveListToFile;
  * @author Andrij Makrushin
  * @see FileUtility
  */
+@Repository
 public class DefaultFileDataManager implements FileDataManager {
-    private static DefaultFileDataManager instance;
-
     /**
      * Instance of file, which identify destination of file, that stores all data.
      */
@@ -61,9 +62,6 @@ public class DefaultFileDataManager implements FileDataManager {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultFileDataManager.class);
 
-    private DefaultFileDataManager() {
-    }
-
     /**
      * First init stage. Initialize state of this class.
      * <p>
@@ -75,6 +73,13 @@ public class DefaultFileDataManager implements FileDataManager {
      *
      * @see FileUtility
      */
+    @PostConstruct
+    public void init() {
+        logger.debug("Method was called...");
+        initState();
+        initStorage();
+    }
+
     public void initState() {
         logger.debug("Initializing state of defaultFileDataManager...");
         final File storage = getNewFile(DefaultFileDataManager.STORAGE_PATH);
@@ -235,18 +240,6 @@ public class DefaultFileDataManager implements FileDataManager {
         final File storage = getFile();
         Optional<List<Event>> result = saveListToFile(storage, events);
         result.ifPresent(this::setEvents);
-    }
-
-    public static DefaultFileDataManager getInstance() {
-        logger.debug("Method was called...");
-        if (instance == null) {
-            logger.debug("Creating instance of {}", DefaultFileDataManager.class.getSimpleName());
-            instance = new DefaultFileDataManager();
-            instance.initState();
-            instance.initStorage();
-        }
-        logger.debug("Returning instance");
-        return instance;
     }
 
     public File getFile() {

@@ -30,6 +30,17 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <sourceDirectory>src/main/java</sourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources/spring-config</directory>
+            </resource>
+        </resources>
     </build>
 
     <properties>
@@ -40,10 +51,11 @@
         <junit-version>4.12</junit-version>
         <logback-version>1.2.3</logback-version>
         <mockit-version>3.6.0</mockit-version>
+        <spring-version>5.2.11.RELEASE</spring-version>
+        <javax-annotation-api>1.3.2</javax-annotation-api>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -64,6 +76,17 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax-annotation-api}</version>
+        </dependency>
     </dependencies>
 
 </project>

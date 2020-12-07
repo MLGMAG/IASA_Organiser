@@ -2,8 +2,9 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
-import ua.kpi.iasa.IASA_Organiser.data.impl.DefaultFileDataManager;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
@@ -16,12 +17,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.data.impl"})
 public class CalendarService {
-    private static CalendarService instance;
-    private final GenericDataManager dataManager = DefaultFileDataManager.getInstance();
+
+    private final GenericDataManager dataManager;
+
     private static final Logger logger = LoggerFactory.getLogger(CalendarService.class);
 
-    private CalendarService() {
+    public CalendarService(GenericDataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
     /**
@@ -123,15 +128,5 @@ public class CalendarService {
     public GenericDataManager getDataManager() {
         logger.debug("Method was called...");
         return dataManager;
-    }
-
-    public static CalendarService getInstance() {
-        logger.debug("Method was called...");
-        if (instance == null) {
-            logger.debug("Creating instance of {}", CalendarService.class.getSimpleName());
-            instance = new CalendarService();
-        }
-        logger.debug("Returning instance");
-        return instance;
     }
 }

@@ -2,6 +2,7 @@ package ua.kpi.iasa.IASA_Organiser.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
@@ -13,10 +14,20 @@ import ua.kpi.iasa.IASA_Organiser.view.View;
 import java.time.LocalDate;
 import java.util.List;
 
+@org.springframework.stereotype.Controller
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.service"})
 public class Controller {
-    private final EventService eventService = EventService.getInstance();
-    private final CalendarService calendarService = CalendarService.getInstance();
+
+    private final EventService eventService;
+
+    private final CalendarService calendarService;
+
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+
+    public Controller(EventService eventService, CalendarService calendarService) {
+        this.eventService = eventService;
+        this.calendarService = calendarService;
+    }
 
     public void init(View view) {
         logger.info("We are starting!");
