@@ -3,7 +3,6 @@ package ua.kpi.iasa.IASA_Organiser.view;
 import org.springframework.stereotype.Component;
 import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.controller.Controller;
-import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
 import ua.kpi.iasa.IASA_Organiser.model.Link;
@@ -18,7 +17,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.UUID;
 
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputDate;
 import static ua.kpi.iasa.IASA_Organiser.util.CreationUtility.inputInvited;
@@ -102,7 +100,6 @@ public class ConsoleManager implements View {
     private Event creation() {
         Scanner scanner = new Scanner(System.in);
         EventBuilder eventBuilder = new EventBuilder();
-        eventBuilder.setId(UUID.randomUUID());
 
         Set<Type> types = inputTypes();
         eventBuilder.setTypes(types);
@@ -266,21 +263,6 @@ public class ConsoleManager implements View {
     @Override
     public void configController(Controller controller) {
         this.controller = controller;
-    }
-
-    /**
-     * @deprecated uses deprecated class
-     */
-    @Deprecated
-    private void printCalendar(Calendar calendar) {
-        Event[] events = calendar.getEvents();
-        for (int i = 0; i < events.length; i++) {
-            if (events[i] == null) {
-                System.out.println((i + 1) + ". No events.");
-                continue;
-            }
-            System.out.println((i + 1) + ". " + events[i]);
-        }
     }
 
     public void showEventProperties(Event event) {
