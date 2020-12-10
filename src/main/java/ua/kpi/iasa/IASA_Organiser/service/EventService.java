@@ -31,6 +31,7 @@ public class EventService {
 
     public List<Event> getAllEventsList() {
         logger.debug("Method was called...");
+//        filterExpiredEvents();
         return eventRepository.findAll();
     }
 
