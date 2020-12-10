@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * EventBuilder is a class, which realized a Builder pattern GoF,
@@ -22,10 +21,6 @@ import java.util.UUID;
  * @author Andrij Makrushin
  */
 public class EventBuilder {
-    /**
-     * id, that allows to identify Event in Database.
-     */
-    private UUID id;
 
     /**
      * Event name.
@@ -76,18 +71,6 @@ public class EventBuilder {
      * Set of event types.
      */
     private Set<Type> types;
-
-    /**
-     * Method sets id {@link EventBuilder#id} and returns
-     * current EventBuilder object.
-     *
-     * @param id - id field
-     * @return this object
-     */
-    public EventBuilder setId(UUID id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Method sets name {@link EventBuilder#name} and returns
@@ -216,7 +199,7 @@ public class EventBuilder {
      * @see Event
      */
     public Event build() {
-        return new Event(id, name, place, invited, date, time, priority, tags, duration, links, types);
+        return new Event(name, place, invited, date, time, priority, tags, duration, links, types);
     }
 
     /**
@@ -226,7 +209,6 @@ public class EventBuilder {
      * @see Event
      */
     public void setInitValues(Event event) {
-        this.setId(event.getId());
         this.setName(event.getName());
         this.setPlace(event.getPlace());
         this.setInvited(event.getInvited());

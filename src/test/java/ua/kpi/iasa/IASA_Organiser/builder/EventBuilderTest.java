@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import static java.util.Collections.emptySet;
 import static org.mockito.Mockito.verify;
@@ -44,7 +43,6 @@ public class EventBuilderTest {
     @Spy
     private EventBuilder eventBuilder;
 
-    private final UUID uuid = UUID.randomUUID();
     private static final String TEST_STRING = "test";
     private final LocalTime localTime = LocalTime.MAX;
     private final LocalDate localDate = LocalDate.MAX;
@@ -54,7 +52,6 @@ public class EventBuilderTest {
 
     @Test
     public void shouldSetInitValues() {
-        when(event.getId()).thenReturn(uuid);
         when(event.getName()).thenReturn(TEST_STRING);
         when(event.getPlace()).thenReturn(place);
         when(event.getInvited()).thenReturn(humanList);
@@ -69,7 +66,6 @@ public class EventBuilderTest {
 
         eventBuilder.setInitValues(event);
 
-        verify(eventBuilder).setId(uuid);
         verify(eventBuilder).setName(TEST_STRING);
         verify(eventBuilder).setPlace(place);
         verify(eventBuilder).setInvited(humanList);

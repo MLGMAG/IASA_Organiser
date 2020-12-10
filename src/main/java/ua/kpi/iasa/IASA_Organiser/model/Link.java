@@ -1,10 +1,30 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
+@Table(name = "link")
+@Entity(name = "link")
 public class Link implements Serializable {
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "link_id", updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "link_url")
     private String url;
+
+    public Link() {
+    }
 
     public Link(String url) {
         this.url = url;

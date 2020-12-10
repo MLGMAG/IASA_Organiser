@@ -4,12 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
-import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
-import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
 import ua.kpi.iasa.IASA_Organiser.model.Type;
+import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,29 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.data.impl"})
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.repository"})
 public class CalendarService {
 
-    private final GenericDataManager dataManager;
+    private final EventRepository eventRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(CalendarService.class);
 
-    public CalendarService(GenericDataManager dataManager) {
-        this.dataManager = dataManager;
-    }
-
-    /**
-     * @deprecated uses deprecated class
-     */
-    @Deprecated
-    public Calendar getCalendar() {
-        logger.debug("Method was called...");
-        throw new UnsupportedOperationException("You refer to unsupported method");
+    public CalendarService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     public List<Event> findEventsByDate(LocalDate searchDate) {
         logger.debug("Method was called with {}", searchDate);
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         return events.stream()
                 .filter(event -> event.getDate().equals(searchDate))
                 .collect(Collectors.toList());
@@ -48,7 +38,7 @@ public class CalendarService {
 
     public List<Event> findEventsByTag(Tag searchTag) {
         logger.debug("Method was called with {}", searchTag);
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         return events.stream()
                 .filter(event -> event.getTags().stream().anyMatch(tag -> tag.equals(searchTag)))
                 .collect(Collectors.toList());
@@ -56,16 +46,15 @@ public class CalendarService {
 
     public List<Event> findEventsByPriority(Priority searchPriority) {
         logger.debug("Method was called with {}", searchPriority);
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         return events.stream()
                 .filter(event -> event.getPriority().equals(searchPriority))
                 .collect(Collectors.toList());
     }
 
-
     public List<Event> sortEventsByPriority() {
         logger.debug("Method was called...");
-        final List<Event> allEventsList = getDataManager().getAllEventsList();
+        final List<Event> allEventsList = eventRepository.findAll();
         allEventsList.sort(Comparator.comparingInt(event -> event.getPriority().getPriority()));
         return allEventsList;
     }
@@ -87,7 +76,8 @@ public class CalendarService {
     public List<Event> getEventsBeforeDate(LocalDate date) {
         int year = date.getYear();
         int day = date.getDayOfYear();
-        final List<Event> allEventsList = getDataManager().getAllEventsList();
+        final List<Event> allEventsList = eventRepository.findAll();
+
         List<Event> beforeDateList = allEventsList.stream()
                 .filter(event -> event.getDate().getYear() <= year && event.getDate().getDayOfYear() <= day)
                 .collect(Collectors.toList());
@@ -123,10 +113,5 @@ public class CalendarService {
     LocalTime getCurrentTime() {
         logger.debug("Method was called...");
         return LocalTime.now();
-    }
-
-    public GenericDataManager getDataManager() {
-        logger.debug("Method was called...");
-        return dataManager;
     }
 }

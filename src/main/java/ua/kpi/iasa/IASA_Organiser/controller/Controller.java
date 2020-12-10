@@ -3,7 +3,6 @@ package ua.kpi.iasa.IASA_Organiser.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
-import ua.kpi.iasa.IASA_Organiser.model.Calendar;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
@@ -36,25 +35,11 @@ public class Controller {
         view.startUp();
     }
 
-    /**
-     * @deprecated It was useful at first lab, but now use {@link #getAllEventsList()} instead.
-     */
-    @Deprecated
-    public Event[] getAllEvents() {
-        logger.debug("Method was called...");
-        return eventService.getAllEvents();
-    }
-
     public List<Event> getAllEventsList() {
         logger.debug("Method was called...");
         final EventService currentEventService = getEventService();
-        currentEventService.filterExpiredEvents();
+//        currentEventService.filterExpiredEvents();
         return currentEventService.getAllEventsList();
-    }
-
-    public Calendar getCalendar() {
-        logger.debug("Method was called...");
-        return calendarService.getCalendar();
     }
 
     public void createNewEvent(Event event) {

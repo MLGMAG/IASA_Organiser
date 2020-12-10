@@ -92,8 +92,10 @@ public class CreationUtility {
                 switch (priorityLevel) {
                     case 1:
                         priority = Priority.LOW;
+                        break;
                     case 2:
                         priority = Priority.MEDIUM;
+                        break;
                     case 3:
                         priority = Priority.HIGH;
                         break;

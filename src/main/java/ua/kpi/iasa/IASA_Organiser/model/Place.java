@@ -1,14 +1,37 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
+@Table(name = "place")
+@Entity(name = "place")
 public class Place implements Serializable {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "place_id", updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "place_country")
     private String country;
+    @Column(name = "place_city")
     private String city;
+    @Column(name = "place_street")
     private String street;
+    @Column(name = "place_number")
     private int number;
+    @Column(name = "place_letter")
     private String letter;
+
+    public Place() {
+    }
 
     public Place(String country, String city, String street, int number, String letter) {
         this.country = country;
