@@ -1,32 +1,89 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
+@Table(name = "event")
+@Entity(name = "event")
 public class Event implements Comparator<Event>, Serializable {
-    private UUID id;
-    private String name;
-    private Place place;
-    private List<Human> invited;
-    private LocalDate date;
-    private LocalTime time;
-    private Priority priority;
-    private List<Tag> tags;
-    private LocalTime duration;
-    private List<Link> links;
-    private boolean expired;
-    private boolean single;
-    private boolean periodic;
-    private boolean deadline;
-    private boolean completable;
 
-    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, boolean expired, boolean single, boolean periodic, boolean deadline, boolean completable) {
-        this.id = id;
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "event_id", updatable = false, nullable = false, unique = true)
+    private UUID id;
+
+    @Column(name = "event_name")
+    private String name;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "event_place",
+            joinColumns =
+                    {@JoinColumn(name = "event_id", referencedColumnName = "event_id")},
+            inverseJoinColumns =
+                    {@JoinColumn(name = "place_id", referencedColumnName = "place_id")})
+    private Place place;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "event_human", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"))
+    private List<Human> invited;
+
+    @Column(name = "event_date")
+    private LocalDate date;
+
+    @Column(name = "event_time")
+    private LocalTime time;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "event_tag", joinColumns = @JoinColumn(name = "event_id"))
+    private List<Tag> tags;
+
+    @Column(name = "event_duration")
+    private LocalTime duration;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "event_link", joinColumns = @JoinColumn(name = "event_id"))
+    private List<Link> links;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Type.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "event_type", joinColumns = @JoinColumn(name = "event_id"))
+    private Set<Type> types;
+
+    public Event() {
+    }
+
+    public Event(String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
         this.name = name;
         this.place = place;
         this.invited = invited;
@@ -36,14 +93,10 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = tags;
         this.duration = duration;
         this.links = links;
-        this.expired = expired;
-        this.single = single;
-        this.periodic = periodic;
-        this.deadline = deadline;
-        this.completable = completable;
+        this.types = types;
     }
 
-    private Event(Event event) {     //constructor for cloning(Prototype pattern)
+    private Event(Event event) {
         this.id = event.id;
         this.name = event.name;
         this.place = event.place;
@@ -54,75 +107,95 @@ public class Event implements Comparator<Event>, Serializable {
         this.tags = event.tags;
         this.duration = event.duration;
         this.links = event.links;
-        this.periodic = event.periodic;
-        this.completable = event.completable;
-        this.deadline = event.deadline;
-        this.expired = event.expired;
-        this.single = event.single;
+        this.types = event.types;
     }
 
     public UUID getId() {
         return id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Place getPlace() {
         return place;
     }
 
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
     public List<Human> getInvited() {
         return invited;
+    }
+
+    public void setInvited(List<Human> invited) {
+        this.invited = invited;
     }
 
     public LocalDate getDate() {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public LocalTime getTime() {
         return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Priority getPriority() {
         return priority;
     }
 
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     public List<Tag> getTags() {
         return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public LocalTime getDuration() {
         return duration;
     }
 
+    public void setDuration(LocalTime duration) {
+        this.duration = duration;
+    }
+
     public List<Link> getLinks() {
         return links;
     }
 
-    public boolean isExpired() {
-        return expired;
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
-    public boolean isSingle() {
-        return single;
+    public Set<Type> getTypes() {
+        return types;
     }
 
-    public boolean isPeriodic() {
-        return periodic;
-    }
-
-    public boolean isDeadline() {
-        return deadline;
-    }
-
-    public boolean isCompletable() {
-        return completable;
-    }
-
-    public Event prototype() {
-        return new Event(this);
+    public void setTypes(Set<Type> types) {
+        this.types = types;
     }
 
     @Override
@@ -155,7 +228,7 @@ public class Event implements Comparator<Event>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, expired, single, periodic, deadline, completable);
+        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, types);
     }
 
     @Override
@@ -171,11 +244,7 @@ public class Event implements Comparator<Event>, Serializable {
                 ", tags=" + tags +
                 ", duration=" + duration +
                 ", links=" + links +
-                ", expired=" + expired +
-                ", single=" + single +
-                ", periodic=" + periodic +
-                ", deadline=" + deadline +
-                ", completable=" + completable +
+                ", types=" + types +
                 '}';
     }
 }

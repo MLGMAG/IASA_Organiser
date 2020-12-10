@@ -11,12 +11,14 @@ import ua.kpi.iasa.IASA_Organiser.model.Link;
 import ua.kpi.iasa.IASA_Organiser.model.Place;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
 import ua.kpi.iasa.IASA_Organiser.model.Tag;
+import ua.kpi.iasa.IASA_Organiser.model.Type;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
+import static java.util.Collections.emptySet;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,21 +43,15 @@ public class EventBuilderTest {
     @Spy
     private EventBuilder eventBuilder;
 
-    private final UUID uuid = UUID.randomUUID();
     private static final String TEST_STRING = "test";
-    private static final boolean expired = true;
-    private static final boolean single = true;
-    private static final boolean periodic = true;
-    private static final boolean deadline = true;
-    private static final boolean completable = true;
     private final LocalTime localTime = LocalTime.MAX;
     private final LocalDate localDate = LocalDate.MAX;
     private final Priority priority = Priority.HIGH;
     private final LocalTime duration = LocalTime.MAX;
+    private final Set<Type> types = emptySet();
 
     @Test
     public void shouldSetInitValues() {
-        when(event.getId()).thenReturn(uuid);
         when(event.getName()).thenReturn(TEST_STRING);
         when(event.getPlace()).thenReturn(place);
         when(event.getInvited()).thenReturn(humanList);
@@ -66,15 +62,10 @@ public class EventBuilderTest {
         when(event.getDuration()).thenReturn(localTime);
         when(event.getDuration()).thenReturn(duration);
         when(event.getLinks()).thenReturn(linkList);
-        when(event.isExpired()).thenReturn(expired);
-        when(event.isSingle()).thenReturn(single);
-        when(event.isPeriodic()).thenReturn(periodic);
-        when(event.isDeadline()).thenReturn(deadline);
-        when(event.isCompletable()).thenReturn(completable);
+        when(event.getTypes()).thenReturn(types);
 
         eventBuilder.setInitValues(event);
 
-        verify(eventBuilder).setId(uuid);
         verify(eventBuilder).setName(TEST_STRING);
         verify(eventBuilder).setPlace(place);
         verify(eventBuilder).setInvited(humanList);
@@ -84,10 +75,6 @@ public class EventBuilderTest {
         verify(eventBuilder).setTags(tagList);
         verify(eventBuilder).setDuration(duration);
         verify(eventBuilder).setLinks(linkList);
-        verify(eventBuilder).setExpired(expired);
-        verify(eventBuilder).setSingle(single);
-        verify(eventBuilder).setPeriodic(periodic);
-        verify(eventBuilder).setDeadline(deadline);
-        verify(eventBuilder).setCompletable(completable);
+        verify(eventBuilder).setTypes(types);
     }
 }

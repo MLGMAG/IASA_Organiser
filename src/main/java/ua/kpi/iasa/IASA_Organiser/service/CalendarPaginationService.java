@@ -2,25 +2,33 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.kpi.iasa.IASA_Organiser.data.GenericDataManager;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.service", "ua.kpi.iasa.IASA_Organiser.repository"})
 public class CalendarPaginationService {
 
-    private static CalendarPaginationService instance;
-    private final CalendarService calendarService = CalendarService.getInstance();
-    private static final Logger logger = LoggerFactory.getLogger(CalendarService.class);
+    private final EventRepository eventRepository;
 
-    private CalendarPaginationService() {
+    private final CalendarService calendarService;
+
+    private static final Logger logger = LoggerFactory.getLogger(CalendarPaginationService.class);
+
+    public CalendarPaginationService(EventRepository eventRepository, CalendarService calendarService) {
+        this.eventRepository = eventRepository;
+        this.calendarService = calendarService;
     }
 
     public List<Event> getCurrentDay() {
         LocalDate currentDate = getCurrentDate();
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         int curYear = currentDate.getYear();
         int curDay = currentDate.getDayOfYear();
         return events.stream()
@@ -31,7 +39,7 @@ public class CalendarPaginationService {
 
     public List<Event> getCurrentWeek() {
         LocalDate currentDate = getCurrentDate();
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         int curYear = currentDate.getYear();
         int curDay = currentDate.getDayOfYear();
         int curDayOfWeek = currentDate.getDayOfWeek().getValue();
@@ -46,7 +54,7 @@ public class CalendarPaginationService {
 
     public List<Event> getCurrentMonth() {
         LocalDate currentDate = getCurrentDate();
-        final List<Event> events = getDataManager().getAllEventsList();
+        final List<Event> events = eventRepository.findAll();
         int curYear = currentDate.getYear();
         int curMonth = currentDate.getMonthValue();
         return events.stream()
@@ -59,22 +67,7 @@ public class CalendarPaginationService {
         return calendarService;
     }
 
-    public GenericDataManager getDataManager() {
-        logger.debug("Method was called...");
-        return calendarService.getDataManager();
-    }
-
     LocalDate getCurrentDate() {
         return LocalDate.now();
-    }
-
-    public static CalendarPaginationService getInstance() {
-        logger.debug("Method was called...");
-        if (instance == null) {
-            logger.debug("Creating instance of {}", CalendarPaginationService.class.getSimpleName());
-            instance = new CalendarPaginationService();
-        }
-        logger.debug("Returning instance");
-        return instance;
     }
 }
