@@ -83,7 +83,8 @@ public class Event implements Comparator<Event>, Serializable {
     public Event() {
     }
 
-    public Event(String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
+    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
+        this.id = id;
         this.name = name;
         this.place = place;
         this.invited = invited;
@@ -94,20 +95,6 @@ public class Event implements Comparator<Event>, Serializable {
         this.duration = duration;
         this.links = links;
         this.types = types;
-    }
-
-    private Event(Event event) {
-        this.id = event.id;
-        this.name = event.name;
-        this.place = event.place;
-        this.invited = event.invited;
-        this.date = event.date;
-        this.time = event.time;
-        this.priority = event.priority;
-        this.tags = event.tags;
-        this.duration = event.duration;
-        this.links = event.links;
-        this.types = event.types;
     }
 
     public UUID getId() {
