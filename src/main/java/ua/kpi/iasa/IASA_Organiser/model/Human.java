@@ -31,11 +31,20 @@ public class Human implements Serializable {
     public Human() {
     }
 
-    public Human(String firstName, String lastName, String phoneNumber, String email) {
+    public Human(UUID id, String firstName, String lastName, String phoneNumber, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFirstName() {

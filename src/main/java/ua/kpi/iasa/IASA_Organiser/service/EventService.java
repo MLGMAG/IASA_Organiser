@@ -10,7 +10,6 @@ import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import java.util.List;
 
 @Service
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.repository"})
 public class EventService {
 
     private final CalendarService calendarService;

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.repository"})
 public class CalendarService {
 
     private final EventRepository eventRepository;
@@ -90,8 +89,6 @@ public class CalendarService {
      *
      * @param events - input events
      * @return expired events
-     * @author Andrij Makrushin
-     * @author Mahomed Akhmedov
      */
     public List<Event> getExpiredEvents(List<Event> events) {
         logger.debug("Method was called with {}", events);
