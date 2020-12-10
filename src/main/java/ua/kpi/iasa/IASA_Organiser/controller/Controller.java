@@ -38,7 +38,7 @@ public class Controller {
     public List<Event> getAllEventsList() {
         logger.debug("Method was called...");
         final EventService currentEventService = getEventService();
-        currentEventService.filterExpiredEvents();
+//        currentEventService.filterExpiredEvents();
         return currentEventService.getAllEventsList();
     }
 
