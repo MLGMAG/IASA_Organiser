@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/humans")
+@RequestMapping("/rest/humans")
 @ComponentScan(basePackages = "ua.kpi.iasa.IASA_Organiser.service")
 public class HumanRestController {
 
