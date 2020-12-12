@@ -25,8 +25,17 @@ public class Tag implements Serializable {
     public Tag() {
     }
 
-    public Tag(String name) {
+    public Tag(UUID id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -33,12 +33,21 @@ public class Place implements Serializable {
     public Place() {
     }
 
-    public Place(String country, String city, String street, int number, String letter) {
+    public Place(UUID id, String country, String city, String street, int number, String letter) {
+        this.id = id;
         this.country = country;
         this.city = city;
         this.street = street;
         this.number = number;
         this.letter = letter;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getCountry() {
