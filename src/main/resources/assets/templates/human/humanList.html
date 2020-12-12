@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <th:block th:replace="fragments/templates :: header"/>
 
@@ -10,7 +11,7 @@
         <h1 class="text-center">Humans</h1>
         <div th:if="${humanList.isEmpty()} == false">
             <div class="d-flex justify-content-end mb-4 mt-4">
-                <a th:href="@{/}" class="btn btn-success">Add</a>
+                <a th:href="@{/humans/add}" class="btn btn-success">Add</a>
             </div>
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead>
@@ -30,7 +31,8 @@
                     <td class="data" th:text="${human.email}"></td>
                     <td class="data" th:text="${human.phoneNumber}"></td>
                     <td>
-                        <a th:href="@{/}" class="btn btn-primary me-1">EDIT</a>
+                        <a th:href="@{'/humans/' + ${human.id}}" style="color: #FFF;" class="btn btn-info me-1">VIEW</a>
+                        <a th:href="@{'/humans/update/' + ${human.id}}" class="btn btn-primary ms-1 me-1">EDIT</a>
                         <button type="button" class="btn btn-danger ms-1" data-toggle="modal"
                                 th:data-target="'#deleteModal_id=' + ${human.id}">DELETE
                         </button>
@@ -51,7 +53,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <a th:href="@{/}" class="btn btn-danger">Delete</a>
+                                <a th:href="@{'/humans/delete/' + ${human.id}}" class="btn btn-danger">Delete</a>
                             </div>
                         </div>
                     </div>

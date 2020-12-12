@@ -1,0 +1,8 @@
+.row {
+    margin-bottom: 30px;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
