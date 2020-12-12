@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<main class="container">
+    <th:block th:replace="fragments/templates :: navbar"/>
+
+    <div class="d-flex flex-column mt-5 me-5 ms-5"
+         th:if="${human} != null"
+         th:object="${human}">
+
+        <h1 class="text-center" th:text="*{firstName} + ' ' + *{lastName}"></h1>
+
+        <div class="mt-5 mb-5">
+
+            <div class="row">
+                <h4 class="text-center"><strong>Id</strong></h4>
+                <h5 class="text-center" th:text="*{id}"></h5>
+            </div>
+
+            <div class="row">
+                <h4 class="text-center"><strong>Name</strong></h4>
+                <h5 class="text-center" th:text="*{firstName} + ' ' + *{lastName}"></h5>
+            </div>
+
+            <div class="row">
+                <h4 class="text-center"><strong>Email</strong></h4>
+                <h5 class="text-center" th:text="*{email}"></h5>
+            </div>
+
+            <div class="row">
+                <h4 class="text-center"><strong>Phone number</strong></h4>
+                <h5 class="text-center" th:text="*{phoneNumber}"></h5>
+            </div>
+
+            <div th:if="${events.isEmpty()} == false">
+                <h4 class="text-center mb-4"><strong>Forthcoming events</strong></h4>
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead>
+                    <tr class="active">
+                        <th>Event Name</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+
+                    <tbody th:each="event : ${events}">
+                    <tr>
+                        <td class="data" th:text="${event.name}"></td>
+                        <td class="data" th:text="${event.date}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${events.isEmpty()}" class="text-center">
+                <h5 class="mb-4 mt-4">No events for that human ☹️</h5>
+            </div>
+
+
+        </div>
+        <h2 class="text-center">
+            <a th:href="@{/humans/}" class="btn btn-success" role="button">Back</a>
+        </h2>
+    </div>
+
+    <div class="mt-5" th:if="${human} == null">
+        <h4 class="text-center">Object not found</h4>
+    </div>
+</main>
+</body>
+</html>

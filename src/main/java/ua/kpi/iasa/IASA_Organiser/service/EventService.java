@@ -2,12 +2,13 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class EventService {
@@ -51,4 +52,14 @@ public class EventService {
         List<Event> expiredEvents = calendarService.getExpiredEvents(currentEvents);
         eventRepository.deleteAll(expiredEvents);
     }
+
+    public Optional<Event> getEventById(UUID id) {
+        return eventRepository.findById(id);
+    }
+
+    public void removeEventById(UUID id) {
+        Event event = eventRepository.getOne(id);
+        eventRepository.delete(event);
+    }
+
 }
