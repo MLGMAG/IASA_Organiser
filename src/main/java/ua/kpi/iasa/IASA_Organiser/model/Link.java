@@ -26,8 +26,17 @@ public class Link implements Serializable {
     public Link() {
     }
 
-    public Link(String url) {
+    public Link(UUID id, String url) {
+        this.id = id;
         this.url = url;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUrl() {
