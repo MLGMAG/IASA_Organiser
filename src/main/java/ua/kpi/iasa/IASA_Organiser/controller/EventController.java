@@ -23,7 +23,7 @@ public class EventController {
 
     public List<Event> getAllEventsList() {
         logger.debug("Method was called...");
-        return eventService.getAllEventsList();
+        return eventService.getAllEvents();
     }
 
     public void createNewEvent(Event event) {
