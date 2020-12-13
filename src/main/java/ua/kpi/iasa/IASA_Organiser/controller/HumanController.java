@@ -34,7 +34,6 @@ public class HumanController {
     public String getHuman(@PathVariable UUID id, Model model) {
         Human human = humanService.getHumanById(id);
         model.addAttribute("human", human);
-        model.addAttribute("events", humanService.findHumanEvents(human));
         return "human/humanView";
     }
 

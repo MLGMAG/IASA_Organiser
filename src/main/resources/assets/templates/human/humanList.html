@@ -25,11 +25,11 @@
                 </thead>
 
                 <tbody th:each="human : ${humanList}">
-                <tr>
-                    <td class="data" th:text="${human.firstName}"></td>
-                    <td class="data" th:text="${human.lastName}"></td>
-                    <td class="data" th:text="${human.email}"></td>
-                    <td class="data" th:text="${human.phoneNumber}"></td>
+                <tr th:object="${human}">
+                    <td class="data" th:text="*{firstName}"></td>
+                    <td class="data" th:text="*{lastName}"></td>
+                    <td class="data" th:text="*{email}"></td>
+                    <td class="data" th:text="*{phoneNumber}"></td>
                     <td>
                         <a th:href="@{'/humans/' + ${human.id}}" style="color: #FFF;" class="btn btn-info me-1">VIEW</a>
                         <a th:href="@{'/humans/update/' + ${human.id}}" class="btn btn-primary ms-1 me-1">EDIT</a>

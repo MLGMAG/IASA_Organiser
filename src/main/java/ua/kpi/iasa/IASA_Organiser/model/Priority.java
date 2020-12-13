@@ -3,26 +3,29 @@ package ua.kpi.iasa.IASA_Organiser.model;
 import java.io.Serializable;
 
 public enum Priority implements Serializable {
-    LOW(1), MEDIUM(2), HIGH(3);
+    LOW(1, "Low"), MEDIUM(2, "Medium"), HIGH(3, "High");
 
-    private int priority;
+    private final int priorityNum;
+    private final String name;
 
-    Priority(int priority) {
-        this.priority = priority;
+    Priority(int priority, String name) {
+        this.priorityNum = priority;
+        this.name = name;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getPriorityNum() {
+        return priorityNum;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
         return "Priority{" +
-                "priority=" + priority +
+                "priority=" + priorityNum +
+                ", name='" + name + '\'' +
                 '}';
-    }
-
-    public boolean equals(Priority p) {
-        return this.getPriority() == p.getPriority();
     }
 }

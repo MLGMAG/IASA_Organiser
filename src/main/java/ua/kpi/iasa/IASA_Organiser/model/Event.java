@@ -1,5 +1,6 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -48,10 +50,11 @@ public class Event implements Comparator<Event>, Serializable {
                     {@JoinColumn(name = "place_id", referencedColumnName = "place_id")})
     private Place place;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "event_human", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"))
-    private List<Human> invited;
+    @ManyToMany
+    @JoinTable(name = "event_human",
+            joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "human_id", referencedColumnName = "human_id"))
+    private Set<Human> invited = new HashSet<>();
 
     @Column(name = "event_date")
     private LocalDate date;
@@ -83,7 +86,7 @@ public class Event implements Comparator<Event>, Serializable {
     public Event() {
     }
 
-    public Event(UUID id, String name, Place place, List<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
+    public Event(UUID id, String name, Place place, Set<Human> invited, LocalDate date, LocalTime time, Priority priority, List<Tag> tags, LocalTime duration, List<Link> links, Set<Type> types) {
         this.id = id;
         this.name = name;
         this.place = place;
@@ -121,11 +124,12 @@ public class Event implements Comparator<Event>, Serializable {
         this.place = place;
     }
 
-    public List<Human> getInvited() {
+    @JsonIgnore
+    public Set<Human> getInvited() {
         return invited;
     }
 
-    public void setInvited(List<Human> invited) {
+    public void setInvited(Set<Human> invited) {
         this.invited = invited;
     }
 
