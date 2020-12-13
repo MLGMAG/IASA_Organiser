@@ -7,7 +7,6 @@ import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,9 +28,8 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<Event> getAllEventsList() {
+    public List<Event> getAllEvents() {
         logger.debug("Method was called...");
-//        filterExpiredEvents();
         return eventRepository.findAll();
     }
 
@@ -53,13 +51,28 @@ public class EventService {
         eventRepository.deleteAll(expiredEvents);
     }
 
-    public Optional<Event> getEventById(UUID id) {
-        return eventRepository.findById(id);
+    public Event getEventById(UUID id) {
+        return eventRepository.findById(id).orElse(null);
     }
 
-    public void removeEventById(UUID id) {
-        Event event = eventRepository.getOne(id);
-        eventRepository.delete(event);
+    public void createListEvents(List<Event> events) {
+        eventRepository.saveAll(events);
+    }
+
+    public void deleteById(UUID id) {
+        eventRepository.deleteById(id);
+    }
+
+    public void deleteListEvent(List<Event> events) {
+        eventRepository.deleteAll(events);
+    }
+
+    public void updateEvent(UUID id, Event event) {
+        if (getEventById(id) == null) {
+            return;
+        }
+        event.setId(id);
+        eventRepository.save(event);
     }
 
 }

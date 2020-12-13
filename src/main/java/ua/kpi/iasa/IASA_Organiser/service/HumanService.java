@@ -42,7 +42,7 @@ public class HumanService {
             return;
         }
         Human human = humanById.get();
-        List<Event> allEvents = eventService.getAllEventsList();
+        List<Event> allEvents = eventService.getAllEvents();
         allEvents.stream().filter(event -> event.getInvited().contains(human)).forEach(event -> {
             event.getInvited().remove(human);
             eventService.createEvent(event);
@@ -74,7 +74,7 @@ public class HumanService {
     }
 
     public List<Event> findHumanEvents(Human human) {
-        return eventService.getAllEventsList().stream()
+        return eventService.getAllEvents().stream()
                 .filter(event -> event.getInvited().contains(human))
                 .collect(Collectors.toList());
     }
