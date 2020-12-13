@@ -1,14 +1,18 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "human")
@@ -27,16 +31,19 @@ public class Human implements Serializable {
     private String phoneNumber;
     @Column(name = "human_email")
     private String email;
+    @ManyToMany(mappedBy = "invited")
+    private Set<Event> events = new HashSet<>();
 
     public Human() {
     }
 
-    public Human(UUID id, String firstName, String lastName, String phoneNumber, String email) {
+    public Human(UUID id, String firstName, String lastName, String phoneNumber, String email, Set<Event> events) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.events = events;
     }
 
     public UUID getId() {
@@ -77,6 +84,15 @@ public class Human implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     @Override

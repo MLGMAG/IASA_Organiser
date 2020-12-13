@@ -35,7 +35,7 @@
                 <h5 class="text-center" th:text="*{phoneNumber}"></h5>
             </div>
 
-            <div th:if="${events.isEmpty()} == false">
+            <div th:if="*{events.isEmpty()  == false}">
                 <h4 class="text-center mb-4"><strong>Forthcoming events</strong></h4>
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead>
@@ -45,7 +45,7 @@
                     </tr>
                     </thead>
 
-                    <tbody th:each="event : ${events}">
+                    <tbody th:each="event : *{events}">
                     <tr>
                         <td class="data" th:text="${event.name}"></td>
                         <td class="data" th:text="${event.date}"></td>
@@ -54,11 +54,9 @@
                 </table>
             </div>
 
-            <div th:if="${events.isEmpty()}" class="text-center">
+            <div th:if="*{events.isEmpty()}" class="text-center">
                 <h5 class="mb-4 mt-4">No events for that human ☹️</h5>
             </div>
-
-
         </div>
         <h2 class="text-center">
             <a th:href="@{/humans/}" class="btn btn-success" role="button">Back</a>
