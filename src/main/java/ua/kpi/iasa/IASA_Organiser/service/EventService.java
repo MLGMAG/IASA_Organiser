@@ -4,10 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
+import ua.kpi.iasa.IASA_Organiser.model.Tag;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -30,12 +36,12 @@ public class EventService {
 
     public List<Event> getAllEvents() {
         logger.debug("Method was called...");
-        return eventRepository.findAll();
+        List<Event> events = eventRepository.findAll();
+        return sortEventsByPriority(events);
     }
 
-    public void updateEvent(Event event) {
-        logger.debug("Method was called with {}", event);
-        eventRepository.deleteById(event.getId());
+    public void updateEvent(UUID id, Event event) {
+        event.setId(id);
         eventRepository.save(event);
     }
 
@@ -52,27 +58,37 @@ public class EventService {
     }
 
     public Event getEventById(UUID id) {
-        return eventRepository.findById(id).orElse(null);
-    }
-
-    public void createListEvents(List<Event> events) {
-        eventRepository.saveAll(events);
+        Optional<Event> optEvent = eventRepository.findById(id);
+        if (optEvent.isEmpty()) {
+            return null;
+        }
+        return optEvent.get();
     }
 
     public void deleteById(UUID id) {
         eventRepository.deleteById(id);
     }
 
+    List<Event> sortEventsByPriority(List<Event> events) {
+        return events.stream()
+                .sorted(Comparator.comparing(Event::getPriority).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public void createListEvents(List<Event> events) {
+        eventRepository.saveAll(events);
+    }
+
     public void deleteListEvent(List<Event> events) {
         eventRepository.deleteAll(events);
     }
 
-    public void updateEvent(UUID id, Event event) {
-        if (getEventById(id) == null) {
-            return;
+    public Set<Tag> getEventTags(UUID eventId) {
+        Set<Tag> eventTags = eventRepository.findById(eventId).get().getTags();
+        if (eventTags == null) {
+            return Collections.emptySet();
         }
-        event.setId(id);
-        eventRepository.save(event);
+        return eventTags;
     }
 
 }
