@@ -69,7 +69,7 @@ public class EventController {
 
     @PostMapping("/update")
     public String updateEvent(@ModelAttribute("event") Event event) {
-        eventService.createEvent(event);
+        eventService.updateEvent(event.getId(), event);
         return "redirect:/events/";
     }
 

@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
+import ua.kpi.iasa.IASA_Organiser.service.EventService;
 import ua.kpi.iasa.IASA_Organiser.service.HumanService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -20,8 +23,11 @@ public class HumanController {
 
     private final HumanService humanService;
 
-    public HumanController(HumanService humanService) {
+    private final EventService eventService;
+
+    public HumanController(HumanService humanService, EventService eventService) {
         this.humanService = humanService;
+        this.eventService = eventService;
     }
 
     @GetMapping("/")
@@ -33,7 +39,10 @@ public class HumanController {
     @GetMapping("/{id}")
     public String getHuman(@PathVariable UUID id, Model model) {
         Human human = humanService.getHumanById(id);
+        List<Event> allEvents = eventService.getAllEvents();
+        allEvents.removeAll(human.getEvents());
         model.addAttribute("human", human);
+        model.addAttribute("allEvents", allEvents);
         return "human/humanView";
     }
 
@@ -65,6 +74,12 @@ public class HumanController {
     public String updateHuman(@ModelAttribute("human") Human human) {
         humanService.createHuman(human);
         return "redirect:/humans/";
+    }
+
+    @GetMapping("/{humanId}/join/{eventId}")
+    public String joinEvent(@PathVariable(name = "humanId") UUID humanId, @PathVariable(name = "eventId") UUID eventId) {
+        humanService.joinEvent(humanId, eventId);
+        return "redirect:/humans/" + humanId;
     }
 
 }

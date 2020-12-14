@@ -1,10 +1,11 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.springframework.stereotype.Service;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
+import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +17,11 @@ public class HumanService {
 
     private final HumanRepository humanRepository;
 
-    public HumanService(HumanRepository humanRepository, EventService eventService) {
+    private final EventRepository eventRepository;
+
+    public HumanService(HumanRepository humanRepository, EventRepository eventRepository) {
         this.humanRepository = humanRepository;
+        this.eventRepository = eventRepository;
     }
 
     public List<Human> getAllHumans() {
@@ -26,17 +30,7 @@ public class HumanService {
     }
 
     public Human getHumanById(UUID id) {
-        Optional<Human> optHuman = humanRepository.findById(id);
-        if (optHuman.isEmpty()) {
-            return null;
-        }
-        Human human = optHuman.get();
-        Human humanAndEventsById = humanRepository.getHumanAndEventsById(id);
-        if (humanAndEventsById == null) {
-            human.setEvents(Collections.emptySet());
-            return human;
-        }
-        return humanAndEventsById;
+        return humanRepository.findById(id).orElse(null);
     }
 
     public void createHuman(Human human) {
@@ -44,6 +38,20 @@ public class HumanService {
     }
 
     public void deleteById(UUID id) {
+        Optional<Human> optHuman = humanRepository.findById(id);
+        if (optHuman.isEmpty()) {
+            return;
+        }
+        Human human = optHuman.get();
+        if (human.getEvents().isEmpty()) {
+            humanRepository.deleteById(id);
+            return;
+        }
+        List<Event> allEvents = eventRepository.findAllById(human.getEvents().stream().map(Event::getId).collect(Collectors.toSet()));
+        allEvents.forEach(event -> {
+            event.getInvited().remove(human);
+            eventRepository.save(event);
+        });
         humanRepository.deleteById(id);
     }
 
@@ -76,4 +84,20 @@ public class HumanService {
                 .collect(Collectors.toList());
     }
 
+    public void joinEvent(UUID humanId, UUID eventId) {
+        Optional<Human> optHuman = humanRepository.findById(humanId);
+        if (optHuman.isEmpty()) {
+            return;
+        }
+        Optional<Event> optEvent = eventRepository.findById(eventId);
+        if (optEvent.isEmpty()) {
+            return;
+        }
+        Human human = optHuman.get();
+        Event event = optEvent.get();
+        event.getInvited().add(human);
+//        human.getEvents().add(event);
+//        humanRepository.save(human);
+        eventRepository.save(event);
+    }
 }
