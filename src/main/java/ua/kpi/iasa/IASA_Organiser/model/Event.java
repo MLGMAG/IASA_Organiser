@@ -48,7 +48,7 @@ public class Event implements Comparator<Event>, Serializable {
                     {@JoinColumn(name = "place_id", referencedColumnName = "place_id")})
     private Place place;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "event_human",
             joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "human_id", referencedColumnName = "human_id"))
