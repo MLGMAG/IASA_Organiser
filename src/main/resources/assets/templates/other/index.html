@@ -3,42 +3,117 @@
 <th:block th:replace="fragments/templates :: header"/>
 
 <body>
-<main class="container">
-    <th:block th:replace="fragments/templates :: navbar"/>
+<th:block th:replace="fragments/templates :: navbar"/>
 
-    <div class="content ms-5">
-        <h1 class="display-1 mt-4 mb-4">IASA Organiser</h1>
+<div class="main-content">
+    <div class="container mt-5">
+        <h1 class="display-1 text-center mb-5">IASA Organiser</h1>
 
-        <h3>Task:</h3>
-        <p>Визначити різні класи подій в органайзері: (Completed)</p>
-        <ol class="list-style">
-            <li>Поодинокі</li>
-            <li>Періодичні</li>
-            <li>Повторювані після завершення</li>
-            <li>З відміткою про результат виконання</li>
-            <li>Тривалі у часі</li>
-            <li>Дедлайни з нагадуванням</li>
-        </ol>
-        <p>Надати можливість задавати (Completed)</p>
-        <ol>
-            <li>Місце</li>
-            <li>Час</li>
-            <li>Тривалість подій</li>
-            <li>Важливість (пріоритет)</li>
-            <li>Тематичні теги</li>
-            <li>Посилання (на файли)</li>
-        </ol>
-        <p>Реалізувати автоматичне планування періодичних та повторюваних подій.</p>
-        <p>Реалізувати різні режими перегляду календаря: (Completed)</p>
-        <ol>
-            <li>День, тиждень, місяць</li>
-            <li>З фільтрацією подій по важливості</li>
-            <li>Тегам</li>
-        </ol>
-        <p>Події сортувати за хронологією та пріоритетом. (Completed)</p>
-        <p>Додати підтримку бази данних</p>
-        <p>Створити веб-додаток</p>
+        <div class="row mt-4 mb-4">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Події</h4>
+                        <p class="card-text">Визначити різні класи подій в органайзері.</p>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Поодинокі</li>
+                        <li class="list-group-item">Періодичні</li>
+                        <li class="list-group-item">Повторювані після завершення</li>
+                        <li class="list-group-item">З відміткою про результат виконання</li>
+                        <li class="list-group-item">Тривалі у часі</li>
+                        <li class="list-group-item">Дедлайни з нагадуванням</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Деталі</h4>
+                        <p class="card-text">Надати можливість задавати.</p>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Місце</li>
+                        <li class="list-group-item">Час</li>
+                        <li class="list-group-item">Тривалість подій</li>
+                        <li class="list-group-item">Важливість (пріоритет)</li>
+                        <li class="list-group-item">Тематичні теги</li>
+                        <li class="list-group-item">Посилання (на файли)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Календар</h4>
+                        <p class="card-text">Реалізувати різні режими перегляду календаря.</p>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">День, тиждень, місяць</li>
+                        <li class="list-group-item">З фільтрацією подій по важливості</li>
+                        <li class="list-group-item">Тегам</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Планування</h4>
+                        <p class="card-text">Реалізувати автоматичне планування періодичних та повторюваних подій.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Сортування</h4>
+                        <p class="card-text">Події сортувати за хронологією та пріоритетом.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">База данних</h4>
+                        <p class="card-text">Додати підтримку бази данних.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Feature</div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">Web-app</h4>
+                        <p class="card-text">Створити веб-додаток.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
+</div>
 </body>
 </html>

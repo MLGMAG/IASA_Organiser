@@ -4,9 +4,9 @@
 <th:block th:replace="fragments/templates :: header"/>
 
 <body>
-<main class="container">
-    <th:block th:replace="fragments/templates :: navbar"/>
+<th:block th:replace="fragments/templates :: navbar"/>
 
+<main class="container">
     <div class="mt-5 me-5 ms-5" th:if="${event} != null" th:object="${event}">
         <h1 th:text="*{name}"></h1>
 

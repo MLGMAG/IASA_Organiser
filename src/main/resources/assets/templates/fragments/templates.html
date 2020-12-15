@@ -10,27 +10,37 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="navbar">
-    <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">IASA Organiser</span>
+<div class="navbar-container" th:fragment="navbar">
+    <div class="bg-primary navbar-dark">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" th:href="@{/}">IASA Organiser</a>
 
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
-                </li>
+                <div class="collapse navbar-collapse justify-content-between">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Home</a>
+                        </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/events/}">Events</a>
-                </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/events/}">Events</a>
+                        </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/humans/}">Humans</a>
-                </li>
-            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/humans/}">Humans</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-flex align-items-center">
+                            <a href="https://github.com/MLGMAG/IASA_Organiser" class="btn btn-dark">Github Repo</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
     </div>
-</nav>
+</div>
 
 <div th:fragment="allJss">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
