@@ -1,28 +1,43 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
-public enum Priority implements Serializable {
-    LOW(1), MEDIUM(2), HIGH(3);
+public enum Priority implements Serializable, Comparator<Priority> {
+    LOW(1, "Low", "LOW"), MEDIUM(2, "Medium", "MEDIUM"), HIGH(3, "High", "HIGH");
 
-    private int priority;
+    private final int priorityNum;
+    private final String displayName;
+    private final String name;
 
-    Priority(int priority) {
-        this.priority = priority;
+    Priority(int priorityNum, String displayName, String name) {
+        this.priorityNum = priorityNum;
+        this.displayName = displayName;
+        this.name = name;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getPriorityNum() {
+        return priorityNum;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int compare(Priority o1, Priority o2) {
+        return o1.getPriorityNum() - o2.getPriorityNum();
     }
 
     @Override
     public String toString() {
         return "Priority{" +
-                "priority=" + priority +
+                "priority=" + priorityNum +
+                ", name='" + displayName + '\'' +
                 '}';
-    }
-
-    public boolean equals(Priority p) {
-        return this.getPriority() == p.getPriority();
     }
 }

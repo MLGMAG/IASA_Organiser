@@ -1,41 +1,65 @@
 package ua.kpi.iasa.IASA_Organiser.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "human")
 @Entity(name = "human")
 public class Human implements Serializable {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "human_id", updatable = false, nullable = false)
     private UUID id;
+
     @Column(name = "human_firstName")
     private String firstName;
+
     @Column(name = "human_lastName")
     private String lastName;
+
     @Column(name = "human_phoneNumber")
     private String phoneNumber;
+
     @Column(name = "human_email")
     private String email;
+
+    @ManyToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Event> events = new HashSet<>();
 
     public Human() {
     }
 
-    public Human(String firstName, String lastName, String phoneNumber, String email) {
+    public Human(UUID id, String firstName, String lastName, String phoneNumber, String email, Set<Event> events) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.events = events;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -68,6 +92,15 @@ public class Human implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     @Override

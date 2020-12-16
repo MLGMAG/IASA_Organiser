@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.service", "ua.kpi.iasa.IASA_Organiser.repository"})
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.service"})
 public class CalendarPaginationService {
 
     private final EventRepository eventRepository;

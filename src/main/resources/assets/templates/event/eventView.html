@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<main class="container">
+    <th:block th:replace="fragments/templates :: navbar"/>
+
+    <div class="mt-5 me-5 ms-5" th:if="${event} != null" th:object="${event}">
+        <h1 th:text="*{name}"></h1>
+
+        <div class="row mt-5 mb-2">
+            <div class="col-4">
+                <h4><strong>Info:</strong></h4>
+            </div>
+
+            <div class="col-4">
+                <h4><strong>Place:</strong></h4>
+            </div>
+
+            <div class="col-4">
+                <h4><strong>Invited:</strong></h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <p>
+                    <strong>Id:</strong>
+                    <span th:text="*{id}"></span>
+                </p>
+
+                <p>
+                    <strong>Name:</strong>
+                    <span th:text="*{name}"></span>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <span th:text="*{date != null} ? *{date} : 'No date'"></span>
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    <span th:text="*{time != null} ? *{time} : 'No time'"></span>
+                </p>
+
+                <p>
+                    <strong>Duration:</strong>
+                    <span th:text="*{duration != null} ? *{duration} : 'No duration'"></span>
+                </p>
+
+                <p>
+                    <strong>Priority:</strong>
+                    <span th:text="*{priority.displayName}"></span>
+                </p>
+            </div>
+
+            <div class="col-4">
+                <div class="row" th:if="*{place != null}">
+                    <p>
+                        <strong>Country:</strong>
+                        <span th:text="*{place.country}"></span>
+                    </p>
+
+                    <p>
+                        <strong>City:</strong>
+                        <span th:text="*{place.city}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Street:</strong>
+                        <span th:text="*{place.street} + ' ' + *{place.number} + *{place.letter}"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div th:if="*{invited.isEmpty() == false}">
+                    <table class="table table-bordered table-hover text-center align-middle">
+                        <thead>
+                        <tr class="active">
+                            <th>Human name</th>
+                        </tr>
+                        </thead>
+
+                        <tbody th:each="human : *{invited}">
+                        <tr>
+                            <td class="data" th:text="${human.firstName} + ' ' + ${human.lastName}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="*{invited.isEmpty()}">
+                    <h5>No invited humans ☹️</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-2">
+            <div class="col-4">
+                <h4><strong>Tags:</strong></h4>
+            </div>
+
+            <div class="col-4">
+                <h4><strong>Links:</strong></h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div th:if="${!tags.isEmpty()}">
+                    <table class="table table-bordered table-hover text-center align-middle">
+                        <thead>
+                        <tr class="active">
+                            <th>Tag</th>
+                        </tr>
+                        </thead>
+
+                        <tbody th:each="tagItem : *{tags}">
+                        <tr>
+                            <td class="data" th:text="${tagItem.name}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mb-3" th:if="${tags.isEmpty()}">
+                    <h5>No tags ☹️</h5>
+                </div>
+
+                <form th:action="@{'/tags/'+ *{id} + '/add'}" method="post">
+                    <label class="form-label h5" th:for="name">Tag name:</label>
+                    <input class="form-control mt-2 mb-3" type="text" placeholder="Tag name" th:field="${tag.name}"
+                           required>
+                    <input class="btn btn-success" type="submit" value="Add tag">
+                </form>
+            </div>
+
+            <div class="col-4">
+                <div th:if="${!links.isEmpty()}">
+                    <table class="table table-bordered table-hover text-center align-middle">
+                        <thead>
+                        <tr class="active">
+                            <th>Link</th>
+                        </tr>
+                        </thead>
+
+                        <tbody th:each="linkItem : *{links}">
+                        <tr>
+                            <td class="data" th:text="${linkItem.url}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mb-3" th:if="${links.isEmpty()}">
+                    <h5>No links ☹️</h5>
+                </div>
+
+                <form th:action="@{'/links/'+ *{id} + '/add'}" method="post">
+                    <label class="form-label h5" th:for="name">Link url:</label>
+                    <input class="form-control mt-2 mb-3" type="text" placeholder="Link url" th:field="${link.url}"
+                           required>
+                    <input class="btn btn-success" type="submit" value="Add link">
+                </form>
+
+            </div>
+        </div>
+
+        <h2 class="text-center mt-5">
+            <a th:href="@{/events/}" class="btn btn-success" role="button">Back</a>
+        </h2>
+    </div>
+
+    <div class="mt-5" th:if="${event} == null">
+        <h4 class="text-center">Object not found</h4>
+    </div>
+</main>
+</body>
+</html>

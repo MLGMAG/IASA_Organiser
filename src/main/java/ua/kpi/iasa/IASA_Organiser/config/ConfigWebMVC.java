@@ -18,7 +18,7 @@ import java.util.List;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.controller"})
+@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.controller", "ua.kpi.iasa.IASA_Organiser.rest"})
 public class ConfigWebMVC implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
 
@@ -28,8 +28,8 @@ public class ConfigWebMVC implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/assets/static/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/assets/static/css/");
     }
 
     @Override

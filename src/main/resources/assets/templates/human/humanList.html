@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<main class="container">
+    <th:block th:replace="fragments/templates :: navbar"/>
+
+    <div class="content mt-5 ms-5 me-5">
+        <h1 class="text-center">Humans</h1>
+        <div th:if="${humanList.isEmpty()} == false">
+            <div class="d-flex justify-content-end mb-4 mt-4">
+                <a th:href="@{/humans/add}" class="btn btn-success">Add</a>
+            </div>
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead>
+                <tr class="active">
+                    <th>First name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody th:each="human : ${humanList}">
+                <tr th:object="${human}">
+                    <td class="data" th:text="*{firstName}"></td>
+                    <td class="data" th:text="*{lastName}"></td>
+                    <td class="data" th:text="*{email}"></td>
+                    <td class="data" th:text="*{phoneNumber}"></td>
+                    <td>
+                        <a th:href="@{'/humans/' + ${human.id}}" style="color: #FFF;" class="btn btn-info me-1">VIEW</a>
+                        <a th:href="@{'/humans/update/' + ${human.id}}" class="btn btn-primary ms-1 me-1">EDIT</a>
+                        <button type="button" class="btn btn-danger ms-1" data-toggle="modal"
+                                th:data-target="'#deleteModal_id=' + ${human.id}">DELETE
+                        </button>
+                    </td>
+                </tr>
+
+                <div th:id="'deleteModal_id=' + ${human.id}" class="modal fade in">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">Are you sure?</h2>
+                                <button type="button" class="btn-close me-1" data-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="mb-0">Do you really want to delete these records?</p>
+                                <p><strong>This process cannot be undone.</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <a th:href="@{'/humans/delete/' + ${human.id}}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${humanList.isEmpty()}" class="text-center">
+            <h5 class="mb-4 mt-4">There are no humans ☹️</h5>
+            <a th:href="@{/humans/add}" class="btn btn-success mt-2">Add new Human!</a>
+        </div>
+    </div>
+</main>
+<th:block th:include="fragments/templates :: allJss"></th:block>
+</body>
+</html>

@@ -2,7 +2,6 @@ package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Priority;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@ComponentScan(basePackages = {"ua.kpi.iasa.IASA_Organiser.repository"})
 public class CalendarService {
 
     private final EventRepository eventRepository;
@@ -55,7 +53,7 @@ public class CalendarService {
     public List<Event> sortEventsByPriority() {
         logger.debug("Method was called...");
         final List<Event> allEventsList = eventRepository.findAll();
-        allEventsList.sort(Comparator.comparingInt(event -> event.getPriority().getPriority()));
+        allEventsList.sort(Comparator.comparingInt(event -> event.getPriority().getPriorityNum()));
         return allEventsList;
     }
 
@@ -90,8 +88,6 @@ public class CalendarService {
      *
      * @param events - input events
      * @return expired events
-     * @author Andrij Makrushin
-     * @author Mahomed Akhmedov
      */
     public List<Event> getExpiredEvents(List<Event> events) {
         logger.debug("Method was called with {}", events);
