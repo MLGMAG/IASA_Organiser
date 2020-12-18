@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
+import ua.kpi.iasa.IASA_Organiser.model.Place;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 
@@ -35,6 +36,9 @@ public class EventService {
 
     public void createEvent(Event event) {
         logger.debug("Method was called with {}", event);
+        if (event.getPlace().getCountry().equals("")) {
+            event.setPlace(null);
+        }
         eventRepository.save(event);
     }
 

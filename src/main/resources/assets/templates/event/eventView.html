@@ -15,7 +15,7 @@
                 <h4><strong>Info:</strong></h4>
             </div>
 
-            <div class="col-4">
+            <div class="col-4" th:if="*{place != null}">
                 <h4><strong>Place:</strong></h4>
             </div>
 
@@ -57,8 +57,8 @@
                 </p>
             </div>
 
-            <div class="col-4">
-                <div class="row" th:if="*{place != null}">
+            <div class="col-4" th:if="*{place != null}">
+                <div class="row">
                     <p>
                         <strong>Country:</strong>
                         <span th:text="*{place.country}"></span>

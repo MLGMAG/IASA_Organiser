@@ -6,22 +6,13 @@
 <body>
 <th:block th:replace="fragments/templates :: navbar"/>
 
-<main class="container">
-    <div class="content mt-5 ms-5 me-5">
-        <h1 class="text-center">Add event</h1>
+<div class="content mt-5 ms-5 me-5">
+    <h1 class="text-center">Add event</h1>
 
-        <div class="row mt-5 mb-4">
-            <div class="col-6">
-                <h4><strong>Info:</strong></h4>
-            </div>
-
-            <div class="col-6">
-                <h4><strong>Place:</strong></h4>
-            </div>
-        </div>
-
+    <div class="container mt-5">
         <form class="row" th:object="${event}" th:action="@{/events/add}" method="post">
-            <div class="col-6">
+            <section class="info col-5">
+                <h4 class="mb-4"><strong>Info:</strong></h4>
                 <div class="mb-4">
                     <label class="form-label h5" th:for="name">Name</label>
                     <input class="form-control" type="text" placeholder="Name" th:field="*{name}"
@@ -52,43 +43,53 @@
                                 th:value="${priority.name}" th:text="${priority.displayName}"></option>
                     </select>
                 </div>
-            </div>
 
-            <div class="col-6">
-                <div class="mb-4">
-                    <label class="form-label h5" th:for="country">Country</label>
-                    <input class="form-control" type="text" placeholder="Country" th:field="*{place.country}"
-                           required>
+                <input class="btn btn-success text-center" type="submit" value="Add event">
+            </section>
+
+            <section class="place col-5 offset-2">
+                <div class="enable-form" id="addFormButton">
+                    <button type="button" class="btn btn-success" onclick="openPlaceForm()">Add place</button>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label h5" th:for="city">City</label>
-                    <input class="form-control" type="text" placeholder="City" th:field="*{place.city}"
-                           required>
+                <h4 class="mb-4" id="placeTitle" hidden><strong>Place:</strong></h4>
+
+                <div class="place-form" id="placeForm" hidden>
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="country">Country</label>
+                        <input class="form-control" type="text" placeholder="Country" th:field="*{place.country}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="city">City</label>
+                        <input class="form-control" type="text" placeholder="City" th:field="*{place.city}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="street">Street</label>
+                        <input class="form-control" type="text" placeholder="Street" th:field="*{place.street}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="number">Number</label>
+                        <input class="form-control" type="text" placeholder="Number" th:field="*{place.number}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="letter">Letter</label>
+                        <input class="form-control" type="text" placeholder="Letter" th:field="*{place.letter}">
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label h5" th:for="street">Street</label>
-                    <input class="form-control" type="text" placeholder="Street" th:field="*{place.street}"
-                           required>
+                <div class="disable-form" id="removeFormButton" hidden>
+                    <button type="button" class="btn btn btn-danger" onclick="removePlaceForm()">Remove place
+                    </button>
                 </div>
-
-                <div class="mb-4">
-                    <label class="form-label h5" th:for="number">Number</label>
-                    <input class="form-control" type="text" placeholder="Number" th:field="*{place.number}"
-                           required>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label h5" th:for="letter">Letter</label>
-                    <input class="form-control" type="text" placeholder="Letter" th:field="*{place.letter}"
-                           required>
-                </div>
-            </div>
-
-            <input class="btn btn-success text-center mt-5" type="submit" value="Add event">
+            </section>
         </form>
     </div>
-</main>
+</div>
+
+<script th:src="@{/js/placeForm.js}"></script>
 </body>
 </html>
