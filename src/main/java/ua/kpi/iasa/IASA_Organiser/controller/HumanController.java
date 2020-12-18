@@ -38,7 +38,7 @@ public class HumanController {
 
     @GetMapping("/{id}")
     public String getHuman(@PathVariable UUID id, Model model) {
-        Human human = humanService.getHumanById(id);
+        Human human = humanService.getHumanAndEventsByHumanId(id);
         List<Event> allEvents = eventService.getAllEvents();
         allEvents.removeAll(human.getEvents());
         model.addAttribute("human", human);
