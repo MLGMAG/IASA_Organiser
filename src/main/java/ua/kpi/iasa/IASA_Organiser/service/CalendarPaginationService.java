@@ -1,7 +1,5 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
@@ -18,8 +16,6 @@ public class CalendarPaginationService {
     private final EventRepository eventRepository;
 
     private final CalendarService calendarService;
-
-    private static final Logger logger = LoggerFactory.getLogger(CalendarPaginationService.class);
 
     public CalendarPaginationService(EventRepository eventRepository, CalendarService calendarService) {
         this.eventRepository = eventRepository;

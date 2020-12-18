@@ -1,7 +1,5 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
@@ -26,8 +24,6 @@ public class EventService {
 
     private final HumanRepository humanRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
-
     public EventService(CalendarService calendarService, EventRepository eventRepository, HumanRepository humanRepository) {
         this.calendarService = calendarService;
         this.eventRepository = eventRepository;
@@ -35,7 +31,6 @@ public class EventService {
     }
 
     public void createEvent(Event event) {
-        logger.debug("Method was called with {}", event);
         if (event.getPlace().getCountry().equals("")) {
             event.setPlace(null);
         }
@@ -43,7 +38,6 @@ public class EventService {
     }
 
     public List<Event> getAllEvents() {
-        logger.debug("Method was called...");
         List<Event> events = eventRepository.findAll();
         return sortEventsByPriority(events);
     }
@@ -54,12 +48,10 @@ public class EventService {
     }
 
     public void removeEvent(Event event) {
-        logger.debug("Method was called with {}", event);
         eventRepository.delete(event);
     }
 
     public void filterExpiredEvents() {
-        logger.debug("Method was called...");
         List<Event> currentEvents = eventRepository.findAll();
         List<Event> expiredEvents = calendarService.getExpiredEvents(currentEvents);
         eventRepository.deleteAll(expiredEvents);

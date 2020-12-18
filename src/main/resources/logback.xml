@@ -1,14 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="LOG_PATH" value="/home/mlgmag/IdeaProjects/IASA_Organiser/log"/>
+    <property name="PATTERN" value="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>log/iasaOrganiser.log</file>
+    <appender name="ORGANISER" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/organiser.log</file>
         <append>false</append>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %M - %msg%n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="FILE" />
+    <appender name="SPRING" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/spring.log</file>
+        <append>false</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/error.log</file>
+        <append>false</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="debug" additivity="false">
+        <appender-ref ref="SPRING"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="ua.kpi.iasa.IASA_Organiser" level="debug" additivity="false">
+        <appender-ref ref="ORGANISER"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
