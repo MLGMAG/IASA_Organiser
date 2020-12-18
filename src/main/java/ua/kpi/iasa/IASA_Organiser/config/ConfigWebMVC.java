@@ -30,6 +30,8 @@ public class ConfigWebMVC implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/assets/static/css/");
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/assets/static/js/");
     }
 
     @Override
