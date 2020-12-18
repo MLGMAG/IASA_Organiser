@@ -39,7 +39,7 @@ public class Human implements Serializable {
     @Column(name = "human_email")
     private String email;
 
-    @ManyToMany(mappedBy = "invited", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "invited")
     private Set<Event> events = new HashSet<>();
 
     public Human() {
@@ -122,7 +122,8 @@ public class Human implements Serializable {
     @Override
     public String toString() {
         return "Human{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +

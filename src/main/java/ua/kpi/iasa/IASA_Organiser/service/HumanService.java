@@ -6,6 +6,7 @@ import ua.kpi.iasa.IASA_Organiser.model.Human;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,16 @@ public class HumanService {
     }
 
     public Human getHumanById(UUID id) {
-        return humanRepository.findById(id).orElse(null);
+        Human human = humanRepository.findById(id).orElse(null);
+        if (human == null) {
+            return null;
+        }
+        human.setEvents(Collections.emptySet());
+        return human;
+    }
+
+    public Human getHumanAndEventsByHumanId(UUID id) {
+        return humanRepository.findHumanAndEvents(id).orElseGet(() -> getHumanById(id));
     }
 
     public void createHuman(Human human) {
@@ -38,20 +48,10 @@ public class HumanService {
     }
 
     public void deleteById(UUID id) {
-        Optional<Human> optHuman = humanRepository.findById(id);
-        if (optHuman.isEmpty()) {
-            return;
-        }
-        Human human = optHuman.get();
-        if (human.getEvents().isEmpty()) {
-            humanRepository.deleteById(id);
-            return;
-        }
-        List<Event> allEvents = eventRepository.findAllById(human.getEvents().stream().map(Event::getId).collect(Collectors.toSet()));
-        allEvents.forEach(event -> {
+        humanRepository.findHumanAndEvents(id).ifPresent(human -> human.getEvents().forEach(event -> {
             event.getInvited().remove(human);
             eventRepository.save(event);
-        });
+        }));
         humanRepository.deleteById(id);
     }
 
@@ -85,19 +85,10 @@ public class HumanService {
     }
 
     public void joinEvent(UUID humanId, UUID eventId) {
-        Optional<Human> optHuman = humanRepository.findById(humanId);
-        if (optHuman.isEmpty()) {
-            return;
-        }
-        Optional<Event> optEvent = eventRepository.findById(eventId);
-        if (optEvent.isEmpty()) {
-            return;
-        }
-        Human human = optHuman.get();
-        Event event = optEvent.get();
-        event.getInvited().add(human);
-//        human.getEvents().add(event);
-//        humanRepository.save(human);
-        eventRepository.save(event);
+        humanRepository.findById(humanId).ifPresent(human -> eventRepository.findById(eventId).ifPresent(event ->
+        {
+            event.getInvited().add(human);
+            eventRepository.save(event);
+        }));
     }
 }
