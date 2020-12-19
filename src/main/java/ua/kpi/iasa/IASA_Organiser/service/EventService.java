@@ -77,11 +77,11 @@ public class EventService {
     }
 
     public void createListEvents(List<Event> events) {
-        eventRepository.saveAll(events);
+        events.forEach(eventRepository::save);
     }
 
     public void deleteListEvent(List<Event> events) {
-        eventRepository.deleteAll(events);
+        events.stream().map(Event::getId).forEach(eventRepository::deleteById);
     }
 
 }
