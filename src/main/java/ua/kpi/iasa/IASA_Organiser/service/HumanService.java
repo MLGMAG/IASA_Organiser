@@ -1,7 +1,6 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.springframework.stereotype.Service;
-import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
@@ -9,7 +8,6 @@ import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -60,13 +58,10 @@ public class HumanService {
     }
 
     public void changeEmailById(UUID id, String email) {
-        Optional<Human> humanById = humanRepository.findById(id);
-        if (humanById.isEmpty()) {
-            return;
-        }
-        Human human = humanById.get();
-        human.setEmail(email);
-        humanRepository.save(human);
+        humanRepository.findById(id).ifPresent(human -> {
+            human.setEmail(email);
+            humanRepository.save(human);
+        });
     }
 
     public void updateHuman(UUID id, Human human) {
@@ -91,4 +86,5 @@ public class HumanService {
             eventRepository.save(event);
         }));
     }
+
 }
