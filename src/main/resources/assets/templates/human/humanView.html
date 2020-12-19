@@ -54,13 +54,18 @@
                         <tr class="active">
                             <th>Event Name</th>
                             <th>Date</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
 
-                        <tbody th:each="event : *{events}">
+                        <tbody th:each="eventItem : *{events}">
                         <tr>
-                            <td class="data" th:text="${event.name}"></td>
-                            <td class="data" th:text="${event.date}"></td>
+                            <td class="data" th:text="${eventItem.name}"></td>
+                            <td class="data" th:text="${eventItem.date}"></td>
+                            <td>
+                                <a th:href="@{'/humans/' + ${human.id} + '/leave/' + ${eventItem.id}}"
+                                   class="btn btn-danger">Leave</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
