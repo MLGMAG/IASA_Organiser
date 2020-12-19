@@ -1,6 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +40,9 @@ public class PersistenceConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Bean
+    @Bean(name = "customDataSource")
     public DataSource getDataSource() {
-        var dataSource = new BasicDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(dbDriverClassName);
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(dbUsername);
@@ -50,8 +51,8 @@ public class PersistenceConfiguration {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        var factoryBean = new LocalContainerEntityManagerFactoryBean();
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("customDataSource") DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setPackagesToScan("ua.kpi.iasa.IASA_Organiser.model");
 
@@ -68,7 +69,7 @@ public class PersistenceConfiguration {
 
     @Bean
     public PlatformTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
-        var transactionManager = new JpaTransactionManager();
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory.getObject());
         return transactionManager;
     }
@@ -79,7 +80,7 @@ public class PersistenceConfiguration {
     }
 
     private Properties getJpaProperties() {
-        var properties = new Properties();
+        Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
         return properties;
