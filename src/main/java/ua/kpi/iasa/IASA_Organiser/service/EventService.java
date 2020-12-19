@@ -6,6 +6,7 @@ import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,19 +55,28 @@ public class EventService {
     }
 
     public Event getEventById(UUID id) {
-        return eventRepository.findById(id).orElse(null);
+        Event event = eventRepository.findById(id).orElse(null);
+        if (event == null) {
+            return null;
+        }
+        event.setInvited(new HashSet<>());
+        return event;
+    }
+
+    public Event getEventAndHumansByEventId(UUID id) {
+        return eventRepository.findEventAndHumans(id).orElseGet(() -> getEventById(id));
     }
 
     public void deleteById(UUID id) {
-        eventRepository.findById(id)
-                .ifPresent(event -> event.getInvited()
-                        .stream()
-                        .map(human -> humanRepository.findHumanAndEvents(human.getId()))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get).forEach(human -> {
-                            human.getEvents().remove(event);
-                            humanRepository.save(human);
-                        }));
+        Event event = getEventAndHumansByEventId(id);
+        event.getInvited().stream()
+                .map(human -> humanRepository.findHumanAndEvents(human.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(human -> {
+                    human.getEvents().remove(event);
+                    humanRepository.save(human);
+                });
         eventRepository.deleteById(id);
     }
 
