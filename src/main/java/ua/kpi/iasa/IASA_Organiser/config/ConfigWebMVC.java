@@ -1,6 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.config;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -48,6 +49,7 @@ public class ConfigWebMVC implements WebMvcConfigurer {
         registry.viewResolver(thymeleafViewResolver);
     }
 
+    @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
@@ -58,10 +60,12 @@ public class ConfigWebMVC implements WebMvcConfigurer {
         return templateResolver;
     }
 
+    @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }
+
 }
