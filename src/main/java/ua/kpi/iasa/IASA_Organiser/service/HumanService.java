@@ -1,6 +1,7 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
 import org.springframework.stereotype.Service;
+import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
@@ -18,9 +19,12 @@ public class HumanService {
 
     private final EventRepository eventRepository;
 
-    public HumanService(HumanRepository humanRepository, EventRepository eventRepository) {
+    private final EventService eventService;
+
+    public HumanService(HumanRepository humanRepository, EventRepository eventRepository, EventService eventService) {
         this.humanRepository = humanRepository;
         this.eventRepository = eventRepository;
+        this.eventService = eventService;
     }
 
     public List<Human> getAllHumans() {
@@ -47,8 +51,9 @@ public class HumanService {
 
     public void deleteById(UUID id) {
         humanRepository.findHumanAndEvents(id).ifPresent(human -> human.getEvents().forEach(event -> {
-            event.getInvited().remove(human);
-            eventRepository.save(event);
+            Event eventWithHumans = eventService.getEventAndHumansByEventId(event.getId());
+            eventWithHumans.getInvited().remove(human);
+            eventRepository.save(eventWithHumans);
         }));
         humanRepository.deleteById(id);
     }
@@ -80,11 +85,11 @@ public class HumanService {
     }
 
     public void joinEvent(UUID humanId, UUID eventId) {
-        humanRepository.findById(humanId).ifPresent(human -> eventRepository.findById(eventId).ifPresent(event ->
-        {
+        humanRepository.findById(humanId).ifPresent(human -> {
+            Event event = eventService.getEventAndHumansByEventId(eventId);
             event.getInvited().add(human);
             eventRepository.save(event);
-        }));
+        });
     }
 
 }

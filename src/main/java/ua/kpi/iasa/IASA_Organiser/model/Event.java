@@ -21,15 +21,14 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "event")
-@Entity(name = "event")
-public class Event implements Comparator<Event>, Serializable {
+@Entity
+public class Event implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -48,7 +47,7 @@ public class Event implements Comparator<Event>, Serializable {
                     {@JoinColumn(name = "place_id", referencedColumnName = "place_id")})
     private Place place;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "event_human",
             joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "human_id", referencedColumnName = "human_id"))
@@ -195,36 +194,16 @@ public class Event implements Comparator<Event>, Serializable {
     }
 
     @Override
-    public int compare(Event event1, Event event2) {
-        int yearDif = event1.getDate().getYear() - event2.getDate().getYear();
-        int dayDif = event1.getDate().getDayOfYear() - event2.getDate().getDayOfYear();
-        int hourDif = event1.getTime().getHour() - event2.getTime().getHour();
-        int minuteDif = event1.getTime().getMinute() - event2.getTime().getMinute();
-        int secondDif = event1.getTime().getSecond() - event2.getTime().getSecond();
-        if (yearDif != 0) {
-            return yearDif;
-        } else if (dayDif != 0) {
-            return dayDif;
-        } else if (hourDif != 0) {
-            return hourDif;
-        } else if (minuteDif != 0) {
-            return minuteDif;
-        } else {
-            return secondDif;
-        }
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id);
+        return id.equals(event.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, place, invited, date, time, priority, tags, duration, links, types);
+        return Objects.hash(id, name, place, date, time, priority, duration);
     }
 
     @Override

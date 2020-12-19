@@ -34,7 +34,7 @@ public class EventController {
 
     @GetMapping("/{id}")
     public String getEvent(@PathVariable UUID id, Model model) {
-        Event event = eventService.getEventById(id);
+        Event event = eventService.getEventAndHumansByEventId(id);
         model.addAttribute("event", event);
         model.addAttribute("tags", event.getTags());
         model.addAttribute("links", event.getLinks());
