@@ -92,4 +92,11 @@ public class HumanService {
         });
     }
 
+    public void leaveEvent(UUID humanId, UUID eventId) {
+        humanRepository.findById(humanId).ifPresent(human -> {
+            Event event = eventService.getEventAndHumansByEventId(eventId);
+            event.getInvited().remove(human);
+            eventRepository.save(event);
+        });
+    }
 }

@@ -82,4 +82,10 @@ public class HumanController {
         return "redirect:/humans/" + humanId;
     }
 
+    @GetMapping("/{humanId}/leave/{eventId}")
+    public String leaveEvent(@PathVariable(name = "humanId") UUID humanId, @PathVariable(name = "eventId") UUID eventId) {
+        humanService.leaveEvent(humanId, eventId);
+        return "redirect:/humans/" + humanId;
+    }
+
 }
