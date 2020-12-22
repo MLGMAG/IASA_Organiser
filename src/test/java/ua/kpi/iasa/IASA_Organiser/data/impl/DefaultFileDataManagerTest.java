@@ -111,12 +111,11 @@ public class DefaultFileDataManagerTest {
 
     @Test
     public void shouldGetAllEventsList() {
-        when(defaultFileDataManager.getEvents()).thenReturn(eventList);
-        when(defaultFileDataManager.getAllEventsList()).thenCallRealMethod();
+        doCallRealMethod().when(defaultFileDataManager).getAllEventsList();
 
-        List<Event> actual = defaultFileDataManager.getAllEventsList();
+        defaultFileDataManager.getAllEventsList();
 
-        assertEquals(eventList, actual);
+        verify(defaultFileDataManager).getEvents();
     }
 
     @Test(expected = UnsupportedOperationException.class)
