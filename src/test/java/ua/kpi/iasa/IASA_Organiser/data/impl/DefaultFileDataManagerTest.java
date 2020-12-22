@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnitRunner;
+import ua.kpi.iasa.IASA_Organiser.builder.EventBuilder;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.util.FileUtility;
 
@@ -159,37 +160,28 @@ public class DefaultFileDataManagerTest {
 
     @Test
     public void shouldUpdate() {
-        Event updatedEvent = mock(Event.class);
-        Event event1 = mock(Event.class);
-        Event event2 = mock(Event.class);
-        UUID uuid1 = UUID.randomUUID();
-        UUID uuid2 = UUID.randomUUID();
+        Event updatedEvent = new EventBuilder().setName("update").setId(UUID.randomUUID()).build();
+        Event event1 = new EventBuilder().setName("ev1").setId(UUID.randomUUID()).build();
+        Event event2 = new EventBuilder().setName("ev2").setId(updatedEvent.getId()).build();
         List<Event> testData = asList(event1, event2);
         when(defaultFileDataManager.getEvents()).thenReturn(testData);
-        when(updatedEvent.getId()).thenReturn(uuid1);
-        when(event1.getId()).thenReturn(uuid2);
-        when(event2.getId()).thenReturn(uuid1);
         doCallRealMethod().when(defaultFileDataManager).update(updatedEvent);
 
         defaultFileDataManager.update(updatedEvent);
 
         verify(defaultFileDataManager).saveAll(testData);
-        assertEquals(updatedEvent, testData.get(1));
+        assertTrue(testData.contains(updatedEvent));
+        assertTrue(testData.stream().anyMatch(event3 -> event3.getName().equals(updatedEvent.getName())));
+        assertFalse(testData.stream().anyMatch(event3 -> event3.getName().equals(event2.getName())));
     }
 
     @Test
     public void shouldNotUpdate() {
-        Event updatedEvent = mock(Event.class);
-        Event event1 = mock(Event.class);
-        Event event2 = mock(Event.class);
-        UUID uuid1 = UUID.randomUUID();
-        UUID uuid2 = UUID.randomUUID();
-        UUID uuid3 = UUID.randomUUID();
+        Event updatedEvent = new EventBuilder().setId(UUID.randomUUID()).build();
+        Event event1 = new EventBuilder().setId(UUID.randomUUID()).build();
+        Event event2 = new EventBuilder().setId(UUID.randomUUID()).build();
         List<Event> testData = asList(event1, event2);
         when(defaultFileDataManager.getEvents()).thenReturn(testData);
-        when(updatedEvent.getId()).thenReturn(uuid1);
-        when(event1.getId()).thenReturn(uuid2);
-        when(event2.getId()).thenReturn(uuid3);
         doCallRealMethod().when(defaultFileDataManager).update(updatedEvent);
 
         defaultFileDataManager.update(updatedEvent);
