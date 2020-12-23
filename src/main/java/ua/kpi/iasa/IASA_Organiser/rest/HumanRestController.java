@@ -68,4 +68,14 @@ public class HumanRestController {
         humanService.changeEmailById(id, email);
     }
 
+    @GetMapping("{humanId}/join/{eventId}")
+    public void joinEvent(@PathVariable(name = "humanId") UUID humanId, @PathVariable(name = "eventId") UUID eventId) {
+        humanService.joinEvent(humanId, eventId);
+    }
+
+    @GetMapping("{humanId}/leave/{eventId}")
+    public void leaveEvent(@PathVariable(name = "humanId") UUID humanId, @PathVariable(name = "eventId") UUID eventId) {
+        humanService.leaveEvent(humanId, eventId);
+    }
+
 }
