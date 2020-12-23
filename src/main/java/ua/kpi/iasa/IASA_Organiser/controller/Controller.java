@@ -107,7 +107,7 @@ public class Controller {
      * <p>
      * Receives instance of Event, calls {@link EventService#removeEvent(Event)} and puts received instance to it.
      *
-     * @param event instance Event that would be removed
+     * @param event instance of Event that would be removed
      * @see EventService
      */
     public void removeEvent(Event event) {
