@@ -1,14 +1,15 @@
 package ua.kpi.iasa.IASA_Organiser.service;
 
+import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
 import ua.kpi.iasa.IASA_Organiser.model.Event;
 import ua.kpi.iasa.IASA_Organiser.model.Human;
 import ua.kpi.iasa.IASA_Organiser.repository.EventRepository;
 import ua.kpi.iasa.IASA_Organiser.repository.HumanRepository;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,11 +34,12 @@ public class HumanService {
     }
 
     public Human getHumanById(UUID id) {
-        Human human = humanRepository.findById(id).orElse(null);
-        if (human == null) {
+        Optional<Human> optHuman = humanRepository.findById(id);
+        if (optHuman.isEmpty()) {
             return null;
         }
-        human.setEvents(Collections.emptySet());
+        Human human = optHuman.get();
+        human.setEvents(Sets.newHashSet());
         return human;
     }
 
@@ -50,11 +52,9 @@ public class HumanService {
     }
 
     public void deleteById(UUID id) {
-        humanRepository.findHumanAndEvents(id).ifPresent(human -> human.getEvents().forEach(event -> {
-            Event eventWithHumans = eventService.getEventAndHumansByEventId(event.getId());
-            eventWithHumans.getInvited().remove(human);
-            eventRepository.save(eventWithHumans);
-        }));
+        humanRepository.findHumanAndEvents(id)
+                .ifPresent(human -> human.getEvents()
+                        .forEach(event -> removeEventFromHumanAndSave(human, event.getId())));
         humanRepository.deleteById(id);
     }
 
@@ -85,18 +85,23 @@ public class HumanService {
     }
 
     public void joinEvent(UUID humanId, UUID eventId) {
-        humanRepository.findById(humanId).ifPresent(human -> {
-            Event event = eventService.getEventAndHumansByEventId(eventId);
-            event.getInvited().add(human);
-            eventRepository.save(event);
-        });
+        humanRepository.findById(humanId).ifPresent(human -> addHumanToEvent(eventId, human));
+    }
+
+    void addHumanToEvent(UUID eventId, Human human) {
+        Event event = eventService.getEventAndHumansByEventId(eventId);
+        event.getInvited().add(human);
+        eventRepository.save(event);
     }
 
     public void leaveEvent(UUID humanId, UUID eventId) {
-        humanRepository.findById(humanId).ifPresent(human -> {
-            Event event = eventService.getEventAndHumansByEventId(eventId);
-            event.getInvited().remove(human);
-            eventRepository.save(event);
-        });
+        humanRepository.findById(humanId).ifPresent(human -> removeEventFromHumanAndSave(human, eventId));
     }
+
+    void removeEventFromHumanAndSave(Human human, UUID eventId) {
+        Event eventWithHumans = eventService.getEventAndHumansByEventId(eventId);
+        eventWithHumans.getInvited().remove(human);
+        eventRepository.save(eventWithHumans);
+    }
+
 }
