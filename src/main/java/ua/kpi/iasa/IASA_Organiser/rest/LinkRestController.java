@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/rest/tags")
+@RequestMapping("/rest/links")
 @ComponentScan(basePackages = "ua.kpi.iasa.IASA_Organiser.service")
 public class LinkRestController {
 
